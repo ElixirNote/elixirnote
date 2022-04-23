@@ -1,13 +1,12 @@
 <div align="center">
-    <img src="/jupyterlab/staging/assets/notebook.svg" width=120 alt="logo" />
+    <img src="/jupyterlab/staging/assets/exilir-note-2.svg" width=120 alt="logo" />
     <br />
     <br />
-    <small>JupyterLab</small>
+    <small>A Better Data Science Notebook</small>
 </div>
 
 # ElixirNote
 
-[![PyPI version](https://badge.fury.io/py/jupyterlab.svg)](https://badge.fury.io/py/jupyterlab)
 [![Downloads](https://pepy.tech/badge/jupyterlab/month)](https://pepy.tech/project/jupyterlab/month)
 [![Build Status](https://github.com/jupyterlab/jupyterlab/workflows/Linux%20Tests/badge.svg)](https://github.com/jupyterlab/jupyterlab/actions?query=branch%3Amaster+workflow%3A%22Linux+Tests%22)
 [![Build Status](https://github.com/jupyterlab/jupyterlab/workflows/Windows%20Tests/badge.svg)](https://github.com/jupyterlab/jupyterlab/actions?query=branch%3Amaster+workflow%3A%22Windows+Tests%22)
@@ -46,41 +45,20 @@ Read the current JupyterLab documentation on [ReadTheDocs](http://jupyterlab.rea
 
 ### Installation
 
-JupyterLab can be installed using [conda](https://docs.conda.io/en/latest/), [mamba](https://mamba.readthedocs.io/en/latest/) or [pip](https://docs.python.org/3.6/installing/index.html). For more detailed instructions, consult the [installation guide](http://jupyterlab.readthedocs.io/en/3.3.x/getting_started/installation.html).
-
 Project installation instructions from the git sources are available in the [contributor documentation](CONTRIBUTING.md).
-
-### mamba and conda
-
-If you use `mamba` or `conda`, you can install it with:
-
-```shell
-mamba install -c conda-forge jupyterlab
-```
-
-or
-
-```shell
-conda install -c conda-forge jupyterlab
-```
 
 ### pip
 
 If you use `pip`, you can install it with:
 
 ```shell
-pip install jupyterlab
-```
-
-If installing using `pip install --user`, you must add the user-level `bin` directory to your `PATH` environment variable in order to launch `jupyter lab`. If you are using a Unix derivative (e.g., FreeBSD, GNU/Linux, macOS), you can do this by running `export PATH="$HOME/.local/bin:$PATH"`. If you are using a macOS version that comes with Python 2, run `pip3` instead of `pip`.
-
-#### Installing with Previous Versions of Jupyter Notebook
-
-When using a version of Jupyter Notebook earlier than 5.3, the following command must be run
-after installation to enable the JupyterLab server extension:
-
-```bash
-jupyter serverextension enable --py jupyterlab --sys-prefix
+git clone git@github.com:ElixirNote/elixirnote.git
+cd elixirnote
+pip install -e .
+jlpm install
+jlpm run build  # Build the dev mode assets (optional)
+jlpm run build:core  # Build the core mode assets (optional)
+jupyter lab build  # Build the app dir assets (optional)
 ```
 
 ### Running
@@ -88,7 +66,8 @@ jupyter serverextension enable --py jupyterlab --sys-prefix
 Start up JupyterLab using:
 
 ```bash
-jupyter lab
+mkdir -p /data/notebooks
+jupyter lab --dev-mode --watch --allow-root --no-browser --notebook-dir=/data/notebooks --ip=0.0.0.0
 ```
 
 JupyterLab will open automatically in the browser. See the [documentation](http://jupyterlab.readthedocs.io/en/3.3.x/getting_started/starting.html) for additional details.

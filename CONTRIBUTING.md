@@ -1,4 +1,4 @@
-# Contributing to JupyterLab
+# Contributing to ElixirNote
 
 If you're reading this section, you're probably interested in contributing to
 JupyterLab. Welcome and thanks for your interest in contributing!
