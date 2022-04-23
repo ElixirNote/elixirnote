@@ -68,8 +68,7 @@ jupyter lab build  # Build the app dir assets (optional)
 Start up JupyterLab using:
 
 ```bash
-mkdir -p /data/notebooks
-jupyter lab --dev-mode --watch --allow-root --no-browser --notebook-dir=/data/notebooks --ip=0.0.0.0
+jupyter lab --dev-mode --watch --allow-root --no-browser --ip=0.0.0.0
 ```
 
 JupyterLab will open automatically in the browser. See the [documentation](http://jupyterlab.readthedocs.io/en/3.3.x/getting_started/starting.html) for additional details.

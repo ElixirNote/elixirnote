@@ -1,0 +1,46 @@
+MANIFEST
+build
+dist
+_build
+docs/man/*.gz
+docs/source/api/generated
+docs/source/config.rst
+docs/gh-pages
+jupyter_server/i18n/*/LC_MESSAGES/*.mo
+jupyter_server/i18n/*/LC_MESSAGES/nbjs.json
+jupyter_server/static/style/*.min.css*
+node_modules
+*.py[co]
+__pycache__
+*.egg-info
+*~
+*.bak
+.ipynb_checkpoints
+.tox
+.DS_Store
+\#*#
+.#*
+.coverage*
+.pytest_cache
+src
+
+*.swp
+*.map
+Read the Docs
+config.rst
+
+/.project
+/.pydevproject
+
+# copied changelog file
+docs/source/other/changelog.md
+
+# jetbrains ide stuff
+*.iml
+.idea/
+
+# vscode ide stuff
+*.code-workspace
+.history
+.vscode/*
+!.vscode/*.template
