@@ -1,0 +1,54 @@
+{
+  "extends": "../../tsconfigbase.test",
+  "include": ["src/*", "test/*"],
+  "references": [
+    {
+      "path": "../coreutils"
+    },
+    {
+      "path": "../observables"
+    },
+    {
+      "path": "../services"
+    },
+    {
+      "path": "../settingregistry"
+    },
+    {
+      "path": "../statedb"
+    },
+    {
+      "path": "../translation"
+    },
+    {
+      "path": "../ui-components"
+    },
+    {
+      "path": "."
+    },
+    {
+      "path": "../../testutils"
+    },
+    {
+      "path": "../coreutils"
+    },
+    {
+      "path": "../observables"
+    },
+    {
+      "path": "../services"
+    },
+    {
+      "path": "../settingregistry"
+    },
+    {
+      "path": "../statedb"
+    },
+    {
+      "path": "../translation"
+    },
+    {
+      "path": "../ui-components"
+    }
+  ]
+}

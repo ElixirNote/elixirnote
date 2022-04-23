@@ -1,0 +1,4 @@
+{
+  "out": "../../docs/api/console-extension",
+  "theme": "../../typedoc-theme"
+}

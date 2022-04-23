@@ -1,0 +1,4 @@
+{
+  "out": "../../docs/api/services",
+  "theme": "../../typedoc-theme"
+}

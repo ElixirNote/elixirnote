@@ -1,0 +1,4 @@
+{
+  "out": "../../docs/api/statedb",
+  "theme": "../../typedoc-theme"
+}

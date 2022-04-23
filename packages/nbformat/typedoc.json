@@ -1,0 +1,4 @@
+{
+  "out": "../../docs/api/nbformat",
+  "theme": "../../typedoc-theme"
+}

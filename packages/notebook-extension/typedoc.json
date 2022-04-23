@@ -1,0 +1,4 @@
+{
+  "out": "../../docs/api/notebook-extension",
+  "theme": "../../typedoc-theme"
+}

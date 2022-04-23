@@ -1,0 +1,43 @@
+{
+  "extends": "../../tsconfigbase",
+  "compilerOptions": {
+    "outDir": "lib",
+    "rootDir": "src"
+  },
+  "include": ["src/*"],
+  "references": [
+    {
+      "path": "../application"
+    },
+    {
+      "path": "../cells"
+    },
+    {
+      "path": "../docmanager"
+    },
+    {
+      "path": "../fileeditor"
+    },
+    {
+      "path": "../markdownviewer"
+    },
+    {
+      "path": "../notebook"
+    },
+    {
+      "path": "../rendermime"
+    },
+    {
+      "path": "../settingregistry"
+    },
+    {
+      "path": "../toc"
+    },
+    {
+      "path": "../translation"
+    },
+    {
+      "path": "../ui-components"
+    }
+  ]
+}

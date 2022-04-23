@@ -1,0 +1,4 @@
+{
+  "out": "../../docs/api/codemirror",
+  "theme": "../../typedoc-theme"
+}

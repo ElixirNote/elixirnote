@@ -1,0 +1,4 @@
+{
+  "out": "../../docs/api/vdom-extension",
+  "theme": "../../typedoc-theme"
+}

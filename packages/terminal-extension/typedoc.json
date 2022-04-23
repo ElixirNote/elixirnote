@@ -1,0 +1,4 @@
+{
+  "out": "../../docs/api/terminal-extension",
+  "theme": "../../typedoc-theme"
+}

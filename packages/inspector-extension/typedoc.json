@@ -1,0 +1,4 @@
+{
+  "out": "../../docs/api/inspector-extension",
+  "theme": "../../typedoc-theme"
+}

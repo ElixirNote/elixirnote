@@ -1,0 +1,12 @@
+/*-----------------------------------------------------------------------------
+| Copyright (c) Jupyter Development Team.
+|
+| Distributed under the terms of the Modified BSD License.
+|----------------------------------------------------------------------------*/
+
+#jp-MainLogo {
+  /*width: calc(var(--jp-private-sidebar-tab-width) + var(--jp-border-width));*/
+  height: 52px;
+  z-index: 10;
+  margin-left: 15px;
+}
