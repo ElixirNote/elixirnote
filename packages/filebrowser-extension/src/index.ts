@@ -29,7 +29,7 @@ import {
   FileBrowser,
   FileUploadStatus,
   FilterFileBrowserModel,
-  IFileBrowserFactory
+  IFileBrowserFactory,
 } from '@jupyterlab/filebrowser';
 import { Launcher } from '@jupyterlab/launcher';
 import { Contents } from '@jupyterlab/services';
@@ -51,11 +51,13 @@ import {
   newFolderIcon,
   pasteIcon,
   stopIcon,
+  terminalIcon,
   textEditorIcon
 } from '@jupyterlab/ui-components';
 import { find, IIterator, map, reduce, toArray } from '@lumino/algorithm';
 import { CommandRegistry } from '@lumino/commands';
 import { ContextMenu } from '@lumino/widgets';
+import { Terminal } from "@jupyterlab/terminal";
 
 /**
  * The command IDs used by the file browser plugin.
@@ -67,6 +69,8 @@ namespace CommandIDs {
 
   // For main browser only.
   export const createLauncher = 'filebrowser:create-main-launcher';
+
+  export const createTerminal = 'filebrowser:create-main-terminal';
 
   export const cut = 'filebrowser:cut';
 
@@ -1027,6 +1031,12 @@ function addCommands(
     label: trans.__('New Text File')
   });
 
+  commands.addCommand(CommandIDs.createTerminal, {
+    execute: () => Private.createTerminal(commands, browser),
+    icon: terminalIcon.bindprops({ stylesheet: 'menuItem' }),
+    label: trans.__('New Terminal')
+  });
+
   commands.addCommand(CommandIDs.createNewMarkdownFile, {
     execute: () => {
       const widget = tracker.currentWidget;
@@ -1186,6 +1196,19 @@ namespace Private {
       });
   }
 
+  export function createTerminal(
+    commands: CommandRegistry,
+    browser: FileBrowser
+  ): Promise<MainAreaWidget<Terminal>> {
+    const { model } = browser;
+
+    return commands
+      .execute('terminal:create-new', { cwd: model.path })
+      .then((terminal: MainAreaWidget<Terminal>) => {
+        return terminal;
+      });
+  }
+
   /**
    * Get browser object given file path.
    */
@@ -1299,7 +1322,7 @@ namespace Private {
 const plugins: JupyterFrontEndPlugin<any>[] = [
   factory,
   browser,
-  // shareFile,
+  shareFile,
   fileUploadStatus,
   // downloadPlugin,
   browserWidget,

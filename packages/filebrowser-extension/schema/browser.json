@@ -83,6 +83,11 @@
         "rank": 4
       },
       {
+        "command": "filebrowser:create-main-terminal",
+        "selector": ".jp-DirListing-content",
+        "rank": 4
+      },
+      {
         "type": "separator",
         "selector": ".jp-DirListing-item[data-isdir]",
         "rank": 4

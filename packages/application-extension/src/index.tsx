@@ -336,7 +336,7 @@ const mainCommands: JupyterFrontEndPlugin<void> = {
         }
       });
 
-      // Fixme by Bingqi_Ji
+      // Fixme by cius
       // commands.addCommand(CommandIDs.toggleMode, {
       //   label: trans.__('Simple Interface'),
       //   isToggled: () => labShell.mode === 'single-document',
