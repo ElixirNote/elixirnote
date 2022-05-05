@@ -156,7 +156,8 @@ export namespace Palette {
         if (modal) {
           modalPalette.activate();
         } else {
-          shell.activateById(palette.id);
+          modalPalette.activate();
+          // shell.activateById(palette.id);
         }
       },
       label: trans.__('Activate Command Palette')

@@ -47,6 +47,7 @@ export const STATUSBAR_PLUGIN_ID = '@jupyterlab/statusbar-extension:plugin';
 /**
  * Initialization data for the statusbar extension.
  */
+// @ts-ignore
 const statusBar: JupyterFrontEndPlugin<IStatusBar> = {
   id: STATUSBAR_PLUGIN_ID,
   requires: [ITranslator],
@@ -75,7 +76,7 @@ const statusBar: JupyterFrontEndPlugin<IStatusBar> = {
     const command: string = 'statusbar:toggle';
 
     app.commands.addCommand(command, {
-      label: trans.__('Show Status Bar'),
+      label: trans.__('Show Extension Bar'),
       execute: (args: any) => {
         statusBar.setHidden(statusBar.isVisible);
         if (settingRegistry) {
@@ -325,9 +326,11 @@ export const runningSessionsItem: JupyterFrontEndPlugin<void> = {
   }
 };
 
+
 /**
  * The simple interface mode switch in the status bar.
  */
+// @ts-ignore
 const modeSwitch: JupyterFrontEndPlugin<void> = {
   id: '@jupyterlab/statusbar-extension:mode-switch',
   requires: [ILabShell, ITranslator, IStatusBar],
@@ -406,8 +409,8 @@ const plugins: JupyterFrontEndPlugin<any>[] = [
   statusBar,
   lineColItem,
   kernelStatus,
-  runningSessionsItem,
-  modeSwitch
+  // runningSessionsItem,
+  // modeSwitch
 ];
 
 export default plugins;

@@ -40,6 +40,7 @@ import { ITranslator, TranslationBundle } from '@jupyterlab/translation';
 import {
   buildIcon,
   ContextMenuSvg,
+  helpIcon,
   jupyterIcon,
   RankedMenu
 } from '@jupyterlab/ui-components';
@@ -937,6 +938,20 @@ const JupyterLogo: JupyterFrontEndPlugin<void> = {
   }
 };
 
+const JupyterHelp: JupyterFrontEndPlugin<void> = {
+  id: '@jupyterlab/application-extension:bottom-help',
+  autoStart: true,
+  requires: [ILabShell],
+  activate: (app: JupyterFrontEnd, shell: ILabShell) => {
+    const help = new Widget();
+    help.title.icon = helpIcon;
+    help.title.caption = 'Elixir Help';
+    help.id = 'elixir-help';
+    // help.node.addEventListener('click', () => console.log(123));
+    shell.add(help, 'left', { rank: 10000, mode: 'split-bottom' });
+  }
+};
+
 /**
  * Export the plugins as default.
  */
@@ -955,7 +970,8 @@ const plugins: JupyterFrontEndPlugin<any>[] = [
   info,
   paths,
   propertyInspector,
-  JupyterLogo
+  JupyterLogo,
+  JupyterHelp
 ];
 
 export default plugins;

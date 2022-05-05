@@ -64,6 +64,7 @@
   /* transform: translateY(var(--jp-border-width)); */
   color: var(--jp-info-color2);
   background: var(--jp-info-color3);
+  transform: rotate(-90deg);
 }
 
 .jp-SideBar .lm-TabBar-tab.lm-mod-current .jp-icon3 {
@@ -80,6 +81,7 @@
 .jp-SideBar .lm-TabBar-tab:not(.lm-mod-current),
 #jp-down-stack .lm-TabBar-tab:not(.lm-mod-current) {
   background: var(--jp-layout-color1);
+  transform: rotate(-90deg);
 }
 
 .jp-SideBar .lm-TabBar-tabIcon.jp-SideBar-tabIcon {
@@ -132,8 +134,13 @@
 /* Transforms */
 
 .jp-SideBar.lm-TabBar.jp-mod-left .lm-TabBar-content {
-  flex-direction: row-reverse;
-  transform: rotate(-90deg) translateX(-100%);
+  /*flex-direction: row-reverse;*/
+  /*transform: rotate(-90deg) translateX(-100%);*/
+}
+
+.jp-SideBar.lm-TabBar.jp-mod-left .lm-TabBar-content li:last-child {
+  position: absolute;
+  bottom: 0
 }
 
 .jp-SideBar.lm-TabBar.jp-mod-left
