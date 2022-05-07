@@ -20,7 +20,7 @@
       "properties": {},
       "additionalProperties": {
         "type": "string",
-        "enum": ["left", "right"]
+        "enum": ["left"]
       }
     }
   },

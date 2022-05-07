@@ -784,36 +784,14 @@ third-party extensions, and some extensions may introduce security
 risks or contain malicious code that runs on your machine.`)}
           </div>
           <div style={{ paddingTop: 8 }}>
-            {ListModel.isDisclaimed() && (
-              <Button
-                className="jp-extensionmanager-disclaimer-disable"
-                onClick={(e: React.MouseEvent<Element, MouseEvent>) => {
-                  this._settings.set('disclaimed', false).catch(reason => {
-                    console.error(
-                      `Something went wrong when setting disclaimed.\n${reason}`
-                    );
-                  });
-                }}
-              >
-                {this._trans.__('Disable')}
-              </Button>
-            )}
-            {!ListModel.isDisclaimed() && (
-              <Button
-                className="jp-extensionmanager-disclaimer-enable"
-                // Fixme by ciusji, notebook extension apps is designing ...
-                // onClick={(e: React.MouseEvent<Element, MouseEvent>) => {
-                //   this._forceOpen = true;
-                //   this._settings.set('disclaimed', true).catch(reason => {
-                //     console.error(
-                //       `Something went wrong when setting disclaimed.\n${reason}`
-                //     );
-                //   });
-                // }}
-              >
-                {this._trans.__('Enable')}
-              </Button>
-            )}
+            <Button
+              className="jp-extensionmanager-disclaimer-enable"
+              onClick={() => {
+                window.open('https://www.yuque.com/ciusji/qhw8df/mxy55q', '_target')
+              }}
+            >
+              {this._trans.__('Visit Extensions')}
+            </Button>
           </div>
         </div>
       </CollapsibleSection>
