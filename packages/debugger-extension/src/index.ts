@@ -490,6 +490,7 @@ const variables: JupyterFrontEndPlugin<void> = {
 /**
  * Debugger sidebar provider plugin.
  */
+// @ts-ignore
 const sidebar: JupyterFrontEndPlugin<IDebugger.ISidebar> = {
   id: '@jupyterlab/debugger-extension:sidebar',
   provides: IDebuggerSidebar,
@@ -549,7 +550,6 @@ const sidebar: JupyterFrontEndPlugin<IDebugger.ISidebar> = {
       setting.changed.connect(updateSettings);
       service.sessionChanged.connect(updateSettings);
     }
-
     return sidebar;
   }
 };
@@ -893,7 +893,7 @@ const plugins: JupyterFrontEndPlugin<any>[] = [
   files,
   notebooks,
   variables,
-  sidebar,
+  // sidebar,
   main,
   sources,
   configuration

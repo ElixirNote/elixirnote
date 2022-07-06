@@ -1,8 +1,8 @@
 <div align="center">
-    <img src="/jupyterlab/staging/assets/exilir-note-2.svg" width=120 alt="logo" />
+    <img src="/jupyterlab/staging/assets/elixirnote2.svg" width=120 alt="logo" />
     <br />
     <br />
-    <small>A Better Data Science Notebook</small>
+    <small>a Better Data Science Notebook</small>
 </div>
 
 # ElixirNote

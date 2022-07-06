@@ -332,7 +332,7 @@
 }
 
 .jp-extensionmanager-disclaimer-enable {
-  background-color: var(--jp-error-color1) !important;
+  background-color: var(--jp-brand-color1) !important;
   color: white !important;
   border: 0;
   background-image: none !important;

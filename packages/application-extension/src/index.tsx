@@ -40,10 +40,11 @@ import { ITranslator, TranslationBundle } from '@jupyterlab/translation';
 import {
   buildIcon,
   ContextMenuSvg,
+  helpIcon,
   jupyterIcon,
   RankedMenu
 } from '@jupyterlab/ui-components';
-import { each, iter, toArray } from '@lumino/algorithm';
+import { iter, toArray } from '@lumino/algorithm';
 import { JSONExt, PromiseDelegate } from '@lumino/coreutils';
 import { DisposableDelegate, DisposableSet } from '@lumino/disposable';
 import { DockLayout, DockPanel, Widget } from '@lumino/widgets';
@@ -336,7 +337,7 @@ const mainCommands: JupyterFrontEndPlugin<void> = {
         }
       });
 
-      // Fixme by Bingqi_Ji
+      // Fixme by cius
       // commands.addCommand(CommandIDs.toggleMode, {
       //   label: trans.__('Simple Interface'),
       //   isToggled: () => labShell.mode === 'single-document',
@@ -648,13 +649,13 @@ const layout: JupyterFrontEndPlugin<ILayoutRestorer> = {
       labShell.layoutModified.connect(() => {
         void restorer.save(labShell.saveLayout());
       });
-      Private.activateSidebarSwitcher(
-        app,
-        labShell,
-        settingRegistry,
-        translator,
-        saved
-      );
+      // Private.activateSidebarSwitcher(
+      //   app,
+      //   labShell,
+      //   settingRegistry,
+      //   translator,
+      //   saved
+      // );
     });
 
     return restorer;
@@ -937,6 +938,21 @@ const JupyterLogo: JupyterFrontEndPlugin<void> = {
   }
 };
 
+const JupyterHelp: JupyterFrontEndPlugin<void> = {
+  id: '@jupyterlab/application-extension:bottom-help',
+  autoStart: true,
+  requires: [ILabShell],
+  activate: (app: JupyterFrontEnd, shell: ILabShell) => {
+    const help = new Widget();
+    help.title.icon = helpIcon;
+    help.title.caption = 'Elixir Help';
+    help.id = 'elixir-help';
+    // help.node.addEventListener('click', () => console.log(123));
+    shell.add(help, 'left', { rank: 10000 });
+    console.log(shell);
+  }
+};
+
 /**
  * Export the plugins as default.
  */
@@ -955,13 +971,14 @@ const plugins: JupyterFrontEndPlugin<any>[] = [
   info,
   paths,
   propertyInspector,
-  JupyterLogo
+  JupyterLogo,
+  JupyterHelp
 ];
 
 export default plugins;
 
 namespace Private {
-  type SidebarOverrides = { [id: string]: 'left' | 'right' };
+  // type SidebarOverrides = { [id: string]: 'left' | 'right' };
 
   async function displayInformation(trans: TranslationBundle): Promise<void> {
     const result = await showDialog({
@@ -1141,79 +1158,79 @@ namespace Private {
     });
   }
 
-  export function activateSidebarSwitcher(
-    app: JupyterFrontEnd,
-    labShell: ILabShell,
-    settingRegistry: ISettingRegistry,
-    translator: ITranslator,
-    initial: ILabShell.ILayout
-  ): void {
-    const setting = '@jupyterlab/application-extension:sidebar';
-    const trans = translator.load('jupyterlab');
-    let overrides: SidebarOverrides = {};
-    const update = (_: ILabShell, layout: ILabShell.ILayout | void) => {
-      each(labShell.widgets('left'), widget => {
-        if (overrides[widget.id] && overrides[widget.id] === 'right') {
-          labShell.add(widget, 'right');
-          if (layout && layout.rightArea?.currentWidget === widget) {
-            labShell.activateById(widget.id);
-          }
-        }
-      });
-      each(labShell.widgets('right'), widget => {
-        if (overrides[widget.id] && overrides[widget.id] === 'left') {
-          labShell.add(widget, 'left');
-          if (layout && layout.leftArea?.currentWidget === widget) {
-            labShell.activateById(widget.id);
-          }
-        }
-      });
-    };
-    // Fetch overrides from the settings system.
-    void Promise.all([settingRegistry.load(setting), app.restored]).then(
-      ([settings]) => {
-        overrides = (settings.get('overrides').composite ||
-          {}) as SidebarOverrides;
-        settings.changed.connect(settings => {
-          overrides = (settings.get('overrides').composite ||
-            {}) as SidebarOverrides;
-          update(labShell);
-        });
-        labShell.layoutModified.connect(update);
-        update(labShell, initial);
-      }
-    );
-
-    // Add a command to switch a side panels's side
-    app.commands.addCommand(CommandIDs.switchSidebar, {
-      label: trans.__('Switch Sidebar Side'),
-      execute: () => {
-        // First, try to find the correct panel based on the application
-        // context menu click. Bail if we don't find a sidebar for the widget.
-        const contextNode: HTMLElement | undefined = app.contextMenuHitTest(
-          node => !!node.dataset.id
-        );
-        if (!contextNode) {
-          return;
-        }
-
-        const id = contextNode.dataset['id']!;
-        const leftPanel = document.getElementById('jp-left-stack');
-        const node = document.getElementById(id);
-        let side: 'left' | 'right';
-
-        if (leftPanel && node && leftPanel.contains(node)) {
-          side = 'right';
-        } else {
-          side = 'left';
-        }
-
-        // Move the panel to the other side.
-        return settingRegistry.set(setting, 'overrides', {
-          ...overrides,
-          [id]: side
-        });
-      }
-    });
-  }
+  // export function activateSidebarSwitcher(
+  //   app: JupyterFrontEnd,
+  //   labShell: ILabShell,
+  //   settingRegistry: ISettingRegistry,
+  //   translator: ITranslator,
+  //   initial: ILabShell.ILayout
+  // ): void {
+  //   const setting = '@jupyterlab/application-extension:sidebar';
+  //   const trans = translator.load('jupyterlab');
+  //   let overrides: SidebarOverrides = {};
+  //   const update = (_: ILabShell, layout: ILabShell.ILayout | void) => {
+  //     each(labShell.widgets('left'), widget => {
+  //       if (overrides[widget.id] && overrides[widget.id] === 'right') {
+  //         labShell.add(widget, 'right');
+  //         if (layout && layout.rightArea?.currentWidget === widget) {
+  //           labShell.activateById(widget.id);
+  //         }
+  //       }
+  //     });
+  //     each(labShell.widgets('right'), widget => {
+  //       if (overrides[widget.id] && overrides[widget.id] === 'left') {
+  //         labShell.add(widget, 'left');
+  //         if (layout && layout.leftArea?.currentWidget === widget) {
+  //           labShell.activateById(widget.id);
+  //         }
+  //       }
+  //     });
+  //   };
+  //   // Fetch overrides from the settings system.
+  //   void Promise.all([settingRegistry.load(setting), app.restored]).then(
+  //     ([settings]) => {
+  //       overrides = (settings.get('overrides').composite ||
+  //         {}) as SidebarOverrides;
+  //       settings.changed.connect(settings => {
+  //         overrides = (settings.get('overrides').composite ||
+  //           {}) as SidebarOverrides;
+  //         update(labShell);
+  //       });
+  //       labShell.layoutModified.connect(update);
+  //       update(labShell, initial);
+  //     }
+  //   );
+  //
+  //   // Add a command to switch a side panels's side
+  //   app.commands.addCommand(CommandIDs.switchSidebar, {
+  //     label: trans.__('Switch Sidebar Side'),
+  //     execute: () => {
+  //       // First, try to find the correct panel based on the application
+  //       // context menu click. Bail if we don't find a sidebar for the widget.
+  //       const contextNode: HTMLElement | undefined = app.contextMenuHitTest(
+  //         node => !!node.dataset.id
+  //       );
+  //       if (!contextNode) {
+  //         return;
+  //       }
+  //
+  //       const id = contextNode.dataset['id']!;
+  //       const leftPanel = document.getElementById('jp-left-stack');
+  //       const node = document.getElementById(id);
+  //       let side: 'left' | 'right';
+  //
+  //       if (leftPanel && node && leftPanel.contains(node)) {
+  //         side = 'right';
+  //       } else {
+  //         side = 'left';
+  //       }
+  //
+  //       // Move the panel to the other side.
+  //       return settingRegistry.set(setting, 'overrides', {
+  //         ...overrides,
+  //         [id]: side
+  //       });
+  //     }
+  //   });
+  // }
 }

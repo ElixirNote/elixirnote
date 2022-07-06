@@ -73,6 +73,7 @@ import regexSvgstr from '../../style/icons/search/regex.svg';
 import runSvgstr from '../../style/icons/toolbar/run.svg';
 import runningSvgstr from '../../style/icons/sidebar/running.svg';
 import saveSvgstr from '../../style/icons/toolbar/save.svg';
+import helpSvgstr from '../../style/icons/toolbar/help.svg';
 import searchSvgstr from '../../style/icons/toolbar/search.svg';
 import settingsSvgstr from '../../style/icons/filetype/settings.svg';
 import spreadsheetSvgstr from '../../style/icons/filetype/spreadsheet.svg';
@@ -155,6 +156,7 @@ export const regexIcon = new LabIcon({ name: 'ui-components:regex', svgstr: rege
 export const runIcon = new LabIcon({ name: 'ui-components:run', svgstr: runSvgstr });
 export const runningIcon = new LabIcon({ name: 'ui-components:running', svgstr: runningSvgstr });
 export const saveIcon = new LabIcon({ name: 'ui-components:save', svgstr: saveSvgstr });
+export const helpIcon = new LabIcon({ name: 'ui-components:help', svgstr: helpSvgstr });
 export const searchIcon = new LabIcon({ name: 'ui-components:search', svgstr: searchSvgstr });
 export const settingsIcon = new LabIcon({ name: 'ui-components:settings', svgstr: settingsSvgstr });
 export const spreadsheetIcon = new LabIcon({ name: 'ui-components:spreadsheet', svgstr: spreadsheetSvgstr });

@@ -1421,7 +1421,6 @@ function activateNotebookHandler(
           ''
         );
       }
-      console.log(args);
       if (args['isContextMenu']) {
         return trans.__('New Notebook');
       }
