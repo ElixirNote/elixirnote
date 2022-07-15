@@ -1,6 +1,8 @@
+<div align="right">
+    <img src="/jupyterlab/staging/assets/guinsoolab-badge.png" width=60 alt="badge">
+</div>
 <div align="center">
     <img src="/jupyterlab/staging/assets/elixirnote2.svg" width=120 alt="logo" />
-    <br />
     <br />
     <small>a Better Data Science Notebook</small>
 </div>
