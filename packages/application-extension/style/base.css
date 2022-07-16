@@ -5,10 +5,19 @@
 |----------------------------------------------------------------------------*/
 
 #jp-MainLogo {
-  /*width: calc(var(--jp-private-sidebar-tab-width) + var(--jp-border-width));*/
-  height: 52px;
+  height: 56px;
   z-index: 10;
-  margin-left: 15px;
+  width: 61px;
+  background: #2e3e52;
+  border-right: var(--jp-border-width) solid var(--jp-border-color0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#jp-MainLogo > svg {
+  width: 34px;
+  height: 34px;
 }
 
 #elixir-help {

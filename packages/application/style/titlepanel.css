@@ -30,7 +30,7 @@
   font-weight: normal;
   font-family: var(--jp-ui-font-family);
   line-height: var(--jp-private-title-panel-height);
-  color: white;
+  color: #000000;
   outline: none;
   appearance: none;
   -webkit-appearance: none;
