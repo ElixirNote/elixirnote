@@ -45,6 +45,28 @@ Read the current JupyterLab documentation on [ReadTheDocs](http://jupyterlab.rea
 
 ---
 
+### Screenshot & Gifs
+
+### Install Packages
+
+![overview-1](/jupyterlab/staging/assets/overview-1.png)
+
+### One Dot Per Zipcode
+
+![overview-2](/jupyterlab/staging/assets/overview-2.png)
+
+
+### Multiple Marks
+
+![overview-3](/jupyterlab/staging/assets/overview-3.png)
+
+
+### Hexbin Chart 
+
+![overview-4](/jupyterlab/staging/assets/overview-4.png)
+
+---
+
 ## Getting started
 
 ### Installation
@@ -71,6 +93,12 @@ Start up JupyterLab using:
 
 ```bash
 jupyter lab --dev-mode --watch --allow-root --no-browser --ip=0.0.0.0
+```
+
+If you want load extensions in dev mode:
+
+```bash
+jupyter lab --dev-mode --watch --allow-root --no-browser --extensions-in-dev-mode --ip=0.0.0.0
 ```
 
 JupyterLab will open automatically in the browser. See the [documentation](http://jupyterlab.readthedocs.io/en/3.3.x/getting_started/starting.html) for additional details.
