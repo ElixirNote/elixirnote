@@ -779,15 +779,15 @@ administrator to verify the listings configuration.`)}
           <div>
             {this._trans
               .__(`The notebook development team is excited to have a robust
-third-party extension community. However, we do not review
-third-party extensions, and some extensions may introduce security
-risks or contain malicious code that runs on your machine.`)}
+                third-party extension community. However, we do not review
+                third-party extensions, and some extensions may introduce security
+                risks or contain malicious code that runs on your machine.`)}
           </div>
           <div style={{ paddingTop: 8 }}>
             <Button
               className="jp-extensionmanager-disclaimer-enable"
               onClick={() => {
-                window.open('https://www.yuque.com/ciusji/qhw8df/mxy55q', '_target')
+                window.open('https://ciusji.gitbook.io/elixirnote/guides/extensions', '_target')
               }}
             >
               {this._trans.__('Visit Extensions')}

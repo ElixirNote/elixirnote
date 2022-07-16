@@ -18,7 +18,7 @@
 
 .lm-MenuBar {
   /*background: var(--jp-layout-color1);*/
-  color: white;
+  color: #000000;
   font-size: var(--jp-ui-font-size1);
 }
 
@@ -47,7 +47,8 @@
   /*background: var(--jp-layout-color0);*/
   /*border-left: var(--jp-border-width) solid var(--jp-border-color1);*/
   /*border-right: var(--jp-border-width) solid var(--jp-border-color1);*/
-  box-shadow: var(--jp-elevation-z6);
+  /*box-shadow: var(--jp-elevation-z6);*/
+  color: #135280;
 }
 
 .jp-LabShell[data-shell-mode='single-document']

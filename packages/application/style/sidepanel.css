@@ -24,7 +24,8 @@
 .jp-SideBar.lm-TabBar,
 #jp-down-stack .lm-TabBar {
   color: var(--jp-ui-font-color1);
-  background: var(--jp-layout-color1);
+  /*background: var(--jp-layout-color1);*/
+  background: #2e3e52;
   font-size: var(--jp-ui-font-size1);
   overflow: visible;
 }
@@ -50,7 +51,6 @@
   margin: 10px;
   border: none;
   overflow: visible;
-  background: var(--jp-info-color3);
   border-radius: 4px;
 }
 
@@ -62,8 +62,10 @@
   /*  var(--jp-private-sidebar-tab-width) + var(--jp-border-width)*/
   /*);*/
   /* transform: translateY(var(--jp-border-width)); */
-  color: var(--jp-info-color2);
-  background: var(--jp-info-color3);
+  /*color: var(--jp-info-color2);*/
+  color: #ffffff;
+  /*background: var(--jp-info-color3);*/
+  background: #051C38;
   transform: rotate(-90deg);
 }
 
@@ -75,12 +77,24 @@
   /*  var(--jp-private-sidebar-tab-width) + var(--jp-border-width)*/
   /*);*/
   /* transform: translateY(var(--jp-border-width)); */
-  fill: var(--jp-brand-color1);
+  fill: var(--jp-layout-color1);
+}
+
+.jp-SideBar .lm-TabBar-tab .jp-icon3 {
+  /*min-height: calc(*/
+  /*  var(--jp-private-sidebar-tab-width) + var(--jp-border-width)*/
+  /*);*/
+  /*max-height: calc(*/
+  /*  var(--jp-private-sidebar-tab-width) + var(--jp-border-width)*/
+  /*);*/
+  /* transform: translateY(var(--jp-border-width)); */
+  fill: #f8f8f8;
 }
 
 .jp-SideBar .lm-TabBar-tab:not(.lm-mod-current),
 #jp-down-stack .lm-TabBar-tab:not(.lm-mod-current) {
-  background: var(--jp-layout-color1);
+  /*background: var(--jp-layout-color1);*/
+  background: #2e3e52;
   transform: rotate(-90deg);
 }
 
@@ -100,7 +114,7 @@
 
 .jp-SideBar .lm-TabBar-tab:hover:not(.lm-mod-current),
 #jp-down-stack .lm-TabBar-tab:hover:not(.lm-mod-current) {
-  background: var(--jp-layout-color1);
+  /*background: var(--jp-layout-color1);*/
 }
 
 /* Left */

@@ -43,7 +43,7 @@ body {
 
 #jp-top-panel {
   border-bottom: var(--jp-border-width) solid var(--jp-border-color0);
-  background: #2b2f32;
+  background: #ffffff;
   display: flex;
   min-height: var(--jp-private-menubar-height);
   overflow: visible;
@@ -51,7 +51,7 @@ body {
 
 #jp-menu-panel {
   min-height: var(--jp-private-menu-panel-height);
-  background: #2b2f32;
+  background: #ffffff;
 }
 
 #jp-down-stack {
@@ -79,7 +79,7 @@ body {
 }
 
 #jp-single-document-mode {
-  margin: 0px 8px;
+  margin: 0 8px;
   display: flex;
   align-items: center;
 }
