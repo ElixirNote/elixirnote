@@ -24,8 +24,7 @@
 .jp-SideBar.lm-TabBar,
 #jp-down-stack .lm-TabBar {
   color: var(--jp-ui-font-color1);
-  /*background: var(--jp-layout-color1);*/
-  background: #2e3e52;
+  background: var(--jp-layout-color1);
   font-size: var(--jp-ui-font-size1);
   overflow: visible;
 }
@@ -34,6 +33,7 @@
   min-width: calc(var(--jp-private-sidebar-tab-width) + var(--jp-border-width));
   max-width: calc(var(--jp-private-sidebar-tab-width) + var(--jp-border-width));
   display: block;
+  background: #2e3e52;
 }
 
 .jp-SideBar .lm-TabBar-content {
