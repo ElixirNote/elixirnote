@@ -16,9 +16,9 @@
 [![GitHub](https://img.shields.io/badge/issue_tracking-github-blue.svg)](https://github.com/jupyterlab/jupyterlab/issues)
 
 An extensible environment for interactive and reproducible computing, based on the
-Jupyter Notebook and Architecture.
+Jupyter Notebook and Ecosystem.
 
-![architecture](/jupyterlab/staging/assets/architecture.jpg)
+![ecosystem](/jupyterlab/staging/assets/elixir-ecosystem.svg)
 
 [ElixirNote](https://github.com/ElixirNote/elixirnote/tags) is the next-generation user interface for [Project Jupyter](https://jupyter.org) offering
 all the familiar building blocks of the classic Jupyter Notebook (notebook,
