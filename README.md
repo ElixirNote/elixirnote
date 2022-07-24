@@ -117,7 +117,7 @@ See our [documentation](https://ciusji.gitbook.io/elixirnote/guides/installation
 
 ## Getting help
 
-We encourage you to ask questions on the [Discussion forum](https://github.com/orgs/ElixirNote/discussions). A question answered there can become a useful resource for others.
+We encourage you to ask questions on the [discussion forum](https://github.com/orgs/ElixirNote/discussions). A question answered there can become a useful resource for others.
 
 ### Bug report
 
