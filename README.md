@@ -52,13 +52,11 @@ Read the current ElixirNote documentation on [ElixirNote Docs](https://ciusji.gi
 
 ![overview-2](/jupyterlab/staging/assets/overview-2.png)
 
-
 ### Multiple Marks
 
 ![overview-3](/jupyterlab/staging/assets/overview-3.png)
 
-
-### Hexbin Chart 
+### Hexbin Chart
 
 ![overview-4](/jupyterlab/staging/assets/overview-4.png)
 
@@ -76,7 +74,10 @@ If you use `pip`, you can install it with:
 
 ```shell
 git clone git@github.com:ElixirNote/elixirnote.git
-cd elixirnote
+cd ./exlixirnote/server
+pip install ./
+cd ../elixirnote
+# root path
 pip install -e .
 jlpm install
 jlpm run build  # Build the dev mode assets (optional)
@@ -121,7 +122,6 @@ We encourage you to ask questions on the [Discourse forum](https://github.com/or
 ### Bug report
 
 To report a bug please read the [guidelines](https://github.com/ElixirNote/elixirnote/issues) and then open a [Github issue](https://github.com/ElixirNote/elixirnote/issues). To keep resolved issues self-contained, the [lock bot](https://github.com/apps/lock) will lock closed issues as resolved after a period of inactivity. If related discussion is still needed after an issue is locked, please open a new issue and reference the old issue.
-
 
 ## Development
 

@@ -101,7 +101,7 @@ or loaded from a JSON file in the ``jupyter_server_config.d`` directory under on
 Authoring a configurable extension application
 ==============================================
 
-Some extensions are full-fledged client applications that sit on top of the Jupyter Server. For example, `JupyterLab <https://jupyterlab.readthedocs.io/en/stable/>`_ is a server extension. It can be launched from the command line, configured by CLI or config files, and serves+loads static assets behind the server (i.e. html templates, Javascript, etc.)
+Some extensions are full-fledged client applications that sit on top of the Jupyter Server. For example, `JupyterLab <https://jupyterlab.readthedocs.io/en/3.3.x/>`_ is a server extension. It can be launched from the command line, configured by CLI or config files, and serves+loads static assets behind the server (i.e. html templates, Javascript, etc.)
 
 Jupyter Server offers a convenient base class, ``ExtensionsApp``, that handles most of the boilerplate code for building such extensions.
 
