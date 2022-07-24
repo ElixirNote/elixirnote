@@ -121,3 +121,5 @@ junit.xml
 .vs
 
 .jupyter_releaser_checkout
+jupyterhub_cookie_secret
+jupyterhub.sqlite
