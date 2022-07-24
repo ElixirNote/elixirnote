@@ -33,4 +33,4 @@ If you want to switch to Jupyter Server, but you still want to serve `Jupyter No
 
 NBClassic is a Jupyter Server extension that serves the Notebook frontend (i.e. all static assets) on top of Jupyter Server. It even loads Jupyter Notebook's config files.
 
-.. warning:: NBClassic will only work for a limited time. Jupyter Server is likely to evolve beyond a point where Jupyter Notebook frontend will no longer work with the underlying server. Consider switching to `JupyterLab <https://jupyterlab.readthedocs.io/en/stable/>`_ or `nteract <https://nteract.io/>`_ where there is active development happening.
+.. warning:: NBClassic will only work for a limited time. Jupyter Server is likely to evolve beyond a point where Jupyter Notebook frontend will no longer work with the underlying server. Consider switching to `JupyterLab <https://jupyterlab.readthedocs.io/en/3.3.x/>`_ or `nteract <https://nteract.io/>`_ where there is active development happening.
