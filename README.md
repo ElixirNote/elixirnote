@@ -18,7 +18,7 @@
 An extensible environment for interactive and reproducible computing, based on the
 Jupyter Notebook and Ecosystem.
 
-![ecosystem](/jupyterlab/staging/assets/elixir-ecosystem.svg)
+![ecosystem](/jupyterlab/staging/assets/elixir-ecosystem-v2.svg)
 
 [ElixirNote](https://github.com/ElixirNote/elixirnote/tags) is the next-generation user interface for [Project Jupyter](https://jupyter.org) offering
 all the familiar building blocks of the classic Jupyter Notebook (notebook,

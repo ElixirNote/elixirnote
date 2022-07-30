@@ -9,17 +9,10 @@ import {
   JupyterFrontEnd,
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
-import {
-  Dialog,
-  ICommandPalette,
-  showDialog
-} from '@jupyterlab/apputils';
+import { Dialog, ICommandPalette, showDialog } from '@jupyterlab/apputils';
 import { PageConfig } from '@jupyterlab/coreutils';
 import { ITranslator } from '@jupyterlab/translation';
-import {
-  jupyterIcon,
-  jupyterlabWordmarkIcon
-} from '@jupyterlab/ui-components';
+import { jupyterIcon, jupyterlabWordmarkIcon } from '@jupyterlab/ui-components';
 import * as React from 'react';
 
 /**
@@ -88,8 +81,7 @@ const about: JupyterFrontEndPlugin<void> = {
 
         // Create the body of the about dialog
         const jupyterURL = 'https://github.com/ElixirNote';
-        const contributorsURL =
-          'https://github.com/ElixirNote';
+        const contributorsURL = 'https://github.com/ElixirNote';
         const externalLinks = (
           <span className="jp-About-externalLinks">
             <a
@@ -191,7 +183,7 @@ const jupyterForum: JupyterFrontEndPlugin<void> = {
     commands.addCommand(CommandIDs.jupyterForum, {
       label: trans.__('ElixirNote Handbook'),
       execute: () => {
-        window.open('');
+        window.open('https://ciusji.gitbook.io/elixirnote/');
       }
     });
 
