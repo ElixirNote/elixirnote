@@ -23,21 +23,9 @@ git config --global user.email foo@bar.com
 pip install -q --upgrade pip --user
 pip --version
 # Show a verbose install if the install fails, for debugging
-pip install -e ".[test]" || pip install -v -e ".[test]"
+pip install -e ".[dev,test]" || pip install -v -e ".[dev,test]"
 jlpm versions
 jlpm config current
-
-# TODO: remove when we no longer support classic notebook
-jupyter serverextension enable jupyterlab
-jupyter serverextension list 1>serverextensions 2>&1
-cat serverextensions
-cat serverextensions | grep -i "jupyterlab.*enabled"
-cat serverextensions | grep -i "jupyterlab.*OK"
-rm serverextensions
-
-if [[ $GROUP == integrity ]]; then
-    pip install notebook==4.3.1
-fi
 
 if [[ $GROUP == nonode ]]; then
     # Build the wheel
@@ -54,7 +42,3 @@ fi
 if [[ $GROUP == js-debugger ]]; then
     pip install xeus-python">=0.9.0,<0.10.0"
 fi
-
-# Pin the jedi dependency to prevent a temporary breakage
-# See https://github.com/ipython/ipython/issues/12740, https://github.com/ipython/ipython/pull/12751
-pip install 'jedi<0.18'

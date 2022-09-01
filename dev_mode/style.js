@@ -3,8 +3,10 @@
 
 import '@jupyterlab/application-extension/style/index.js';
 import '@jupyterlab/apputils-extension/style/index.js';
+import '@jupyterlab/cell-toolbar-extension/style/index.js';
 import '@jupyterlab/celltags-extension/style/index.js';
 import '@jupyterlab/codemirror-extension/style/index.js';
+import '@jupyterlab/collaboration-extension/style/index.js';
 import '@jupyterlab/completer-extension/style/index.js';
 import '@jupyterlab/console-extension/style/index.js';
 import '@jupyterlab/csvviewer-extension/style/index.js';
@@ -24,8 +26,10 @@ import '@jupyterlab/javascript-extension/style/index.js';
 import '@jupyterlab/json-extension/style/index.js';
 import '@jupyterlab/launcher-extension/style/index.js';
 import '@jupyterlab/logconsole-extension/style/index.js';
+import '@jupyterlab/lsp-extension/style/index.js';
 import '@jupyterlab/mainmenu-extension/style/index.js';
 import '@jupyterlab/markdownviewer-extension/style/index.js';
+import '@jupyterlab/markedparser-extension/style/index.js';
 import '@jupyterlab/mathjax2-extension/style/index.js';
 import '@jupyterlab/notebook-extension/style/index.js';
 import '@jupyterlab/pdf-extension/style/index.js';

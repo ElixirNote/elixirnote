@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) Jupyter Development Team.
+ * Distributed under the terms of the Modified BSD License.
+ */
+
 const fs = require('fs');
 
 const packages = [
@@ -12,6 +17,8 @@ const packages = [
   'codeeditor',
   'codemirror-extension',
   'codemirror',
+  'collaboration',
+  'collaboration-extension',
   'completer-extension',
   'completer',
   'console-extension',
@@ -48,6 +55,7 @@ const packages = [
   'launcher',
   'logconsole-extension',
   'logconsole',
+  'lsp-extension',
   'mainmenu-extension',
   'mainmenu',
   'markdownviewer-extension',
@@ -103,7 +111,8 @@ const entryPoints = packages
 const exclude =
   packages.flatMap(p => [`packages/${p}/test`]) +
   [
-    'packages/application-extension/src/index.tsx'
+    'packages/application-extension/src/index.tsx',
+    'examples/example.spec.ts'
     //'packages/*/test/*.spec.ts',
   ];
 
@@ -114,8 +123,9 @@ module.exports = {
   out: 'docs/api',
   // json: 'docs/api.json',
   readme: 'README.md',
-  theme: 'typedoc-theme',
+  theme: 'default',
   tsconfig: 'tsconfigdoc.json'
+  //plugin: "./typedoc-theme/lib/index.js"
 
   // theme: minimal,
   // excludePrivate: true,

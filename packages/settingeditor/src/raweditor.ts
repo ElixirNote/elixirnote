@@ -1,17 +1,16 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
 
-import { CommandToolbarButton, Toolbar } from '@jupyterlab/apputils';
 import { CodeEditor, CodeEditorWrapper } from '@jupyterlab/codeeditor';
 import { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import { ITranslator, nullTranslator } from '@jupyterlab/translation';
+import { CommandToolbarButton, Toolbar } from '@jupyterlab/ui-components';
 import { CommandRegistry } from '@lumino/commands';
 import { Message } from '@lumino/messaging';
 import { ISignal, Signal } from '@lumino/signaling';
-import { BoxLayout, Widget } from '@lumino/widgets';
+import { BoxLayout, SplitPanel, Widget } from '@lumino/widgets';
 import { createInspector } from './inspector';
-import { SplitPanel } from './splitpanel';
 
 /**
  * A class name added to all raw editors.
@@ -76,7 +75,6 @@ export class RawEditor extends SplitPanel {
     );
 
     this.addClass(RAW_EDITOR_CLASS);
-    // FIXME-TRANS: onSaveError must have an optional translator?
     this._onSaveError = options.onSaveError;
     this.addWidget(Private.defaultsEditor(defaults, this.translator));
     this.addWidget(
@@ -225,20 +223,6 @@ export class RawEditor extends SplitPanel {
   }
 
   /**
-   * Handle `'update-request'` messages.
-   */
-  protected onUpdateRequest(msg: Message): void {
-    const settings = this._settings;
-    const defaults = this._defaults;
-    const user = this._user;
-
-    if (settings) {
-      defaults.editor.refresh();
-      user.editor.refresh();
-    }
-  }
-
-  /**
    * Handle text changes in the underlying editor.
    */
   private _onTextChanged(): void {
@@ -338,7 +322,7 @@ export namespace RawEditor {
     /**
      * A function the raw editor calls on save errors.
      */
-    onSaveError: (reason: any) => void;
+    onSaveError: (reason: any, translator?: ITranslator) => void;
 
     /**
      * The setting registry used by the editor.

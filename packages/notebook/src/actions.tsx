@@ -5,6 +5,7 @@ import {
   Clipboard,
   Dialog,
   ISessionContext,
+  sessionContextDialogs,
   showDialog
 } from '@jupyterlab/apputils';
 import {
@@ -99,7 +100,7 @@ export class NotebookActions {
   }
 
   /**
-   * A signal that emits whenever a cell execution is scheduled.
+   * A signal that emits when one notebook's cells are all executed.
    */
   static get selectionExecuted(): ISignal<
     any,
@@ -149,6 +150,9 @@ export namespace NotebookActions {
       return;
     }
 
+    if (!Private.isNotebookRendered(notebook)) {
+      return;
+    }
     const state = Private.getState(notebook);
 
     notebook.deselectAll();
@@ -244,6 +248,9 @@ export namespace NotebookActions {
       return;
     }
 
+    if (!Private.isNotebookRendered(notebook)) {
+      return;
+    }
     const state = Private.getState(notebook);
     const toMerge: string[] = [];
     const toDelete: ICellModel[] = [];
@@ -340,6 +347,9 @@ export namespace NotebookActions {
       return;
     }
 
+    if (!Private.isNotebookRendered(notebook)) {
+      return;
+    }
     const state = Private.getState(notebook);
 
     Private.deleteCells(notebook);
@@ -362,6 +372,9 @@ export namespace NotebookActions {
       return;
     }
 
+    if (!Private.isNotebookRendered(notebook)) {
+      return;
+    }
     const state = Private.getState(notebook);
     const model = notebook.model;
     const cell = model.contentFactory.createCell(
@@ -394,6 +407,9 @@ export namespace NotebookActions {
       return;
     }
 
+    if (!Private.isNotebookRendered(notebook)) {
+      return;
+    }
     const state = Private.getState(notebook);
     const model = notebook.model;
     const cell = model.contentFactory.createCell(
@@ -419,6 +435,9 @@ export namespace NotebookActions {
       return;
     }
 
+    if (!Private.isNotebookRendered(notebook)) {
+      return;
+    }
     const state = Private.getState(notebook);
     const cells = notebook.model.cells;
     const widgets = notebook.widgets;
@@ -450,6 +469,9 @@ export namespace NotebookActions {
       return;
     }
 
+    if (!Private.isNotebookRendered(notebook)) {
+      return;
+    }
     const state = Private.getState(notebook);
     const cells = notebook.model.cells;
     const widgets = notebook.widgets;
@@ -594,6 +616,9 @@ export namespace NotebookActions {
       return Promise.resolve(false);
     }
 
+    if (!Private.isNotebookRendered(notebook)) {
+      return Promise.resolve(false);
+    }
     const state = Private.getState(notebook);
     const promise = Private.runSelected(notebook, sessionContext);
     const model = notebook.model;
@@ -835,6 +860,126 @@ export namespace NotebookActions {
     Private.handleState(notebook, state, true);
   }
 
+  /** Insert new heading of same level above active cell.
+   *
+   * @param notebook - The target notebook widget
+   */
+  export function insertSameLevelHeadingAbove(notebook: Notebook) {
+    if (!notebook.model || !notebook.activeCell) {
+      return;
+    }
+    let headingLevel = Private.Headings.determineHeadingLevel(
+      notebook.activeCell,
+      notebook
+    );
+    if (headingLevel == -1) {
+      Private.Headings.insertHeadingAboveCellIndex(0, 1, notebook);
+    } else {
+      Private.Headings.insertHeadingAboveCellIndex(
+        notebook.activeCellIndex!,
+        headingLevel,
+        notebook
+      );
+    }
+  }
+
+  /** Insert new heading of same level at end of current section.
+   *
+   * @param notebook - The target notebook widget
+   */
+  export function insertSameLevelHeadingBelow(notebook: Notebook) {
+    if (!notebook.model || !notebook.activeCell) {
+      return;
+    }
+    let headingLevel = Private.Headings.determineHeadingLevel(
+      notebook.activeCell,
+      notebook
+    );
+    headingLevel = headingLevel > -1 ? headingLevel : 1;
+    let cellIdxOfHeadingBelow =
+      Private.Headings.findLowerEqualLevelHeadingBelow(
+        notebook.activeCell,
+        notebook,
+        true
+      ) as number;
+    Private.Headings.insertHeadingAboveCellIndex(
+      cellIdxOfHeadingBelow == -1
+        ? notebook.model.cells.length
+        : cellIdxOfHeadingBelow,
+      headingLevel,
+      notebook
+    );
+  }
+
+  /**
+   * Select the heading above the active cell or, if already at heading, collapse it.
+   *
+   * @param notebook - The target notebook widget.
+   *
+   * #### Notes
+   * The widget mode will be preserved.
+   * This is a no-op if the active cell is the topmost heading in collapsed state
+   * The existing selection will be cleared.
+   */
+  export function selectHeadingAboveOrCollapseHeading(
+    notebook: Notebook
+  ): void {
+    if (!notebook.model || !notebook.activeCell) {
+      return;
+    }
+    const state = Private.getState(notebook);
+    let hInfoActiveCell = getHeadingInfo(notebook.activeCell);
+    // either collapse or find the right heading to jump to
+    if (hInfoActiveCell.isHeading && !hInfoActiveCell.collapsed) {
+      setHeadingCollapse(notebook.activeCell, true, notebook);
+    } else {
+      let targetHeadingCellIdx =
+        Private.Headings.findLowerEqualLevelParentHeadingAbove(
+          notebook.activeCell,
+          notebook,
+          true
+        ) as number;
+      if (targetHeadingCellIdx > -1) {
+        notebook.activeCellIndex = targetHeadingCellIdx;
+      }
+    }
+    // clear selection and handle state
+    notebook.deselectAll();
+    Private.handleState(notebook, state, true);
+  }
+
+  /**
+   * Select the heading below the active cell or, if already at heading, expand it.
+   *
+   * @param notebook - The target notebook widget.
+   *
+   * #### Notes
+   * The widget mode will be preserved.
+   * This is a no-op if the active cell is the last heading in expanded state
+   * The existing selection will be cleared.
+   */
+  export function selectHeadingBelowOrExpandHeading(notebook: Notebook): void {
+    if (!notebook.model || !notebook.activeCell) {
+      return;
+    }
+    const state = Private.getState(notebook);
+    let hInfo = getHeadingInfo(notebook.activeCell);
+    if (hInfo.isHeading && hInfo.collapsed) {
+      setHeadingCollapse(notebook.activeCell, false, notebook);
+    } else {
+      let targetHeadingCellIdx = Private.Headings.findHeadingBelow(
+        notebook.activeCell,
+        notebook,
+        true // return index of heading cell
+      ) as number;
+      if (targetHeadingCellIdx > -1) {
+        notebook.activeCellIndex = targetHeadingCellIdx;
+      }
+    }
+    notebook.deselectAll();
+    Private.handleState(notebook, state, true);
+  }
+
   /**
    * Extend the selection to the cell above.
    *
@@ -930,7 +1075,7 @@ export namespace NotebookActions {
   }
 
   /**
-   * Copy the selected cell data to a clipboard.
+   * Copy the selected cell(s) data to a clipboard.
    *
    * @param notebook - The target notebook widget.
    */
@@ -948,6 +1093,9 @@ export namespace NotebookActions {
    * A new code cell is added if all cells are cut.
    */
   export function cut(notebook: Notebook): void {
+    if (!Private.isNotebookRendered(notebook)) {
+      return;
+    }
     Private.copyOrCut(notebook, true);
   }
 
@@ -956,10 +1104,11 @@ export namespace NotebookActions {
    *
    * @param notebook - The target notebook widget.
    *
-   * @param mode - the mode of the paste operation: 'below' pastes cells
-   *   below the active cell, 'above' pastes cells above the active cell,
-   *   and 'replace' removes the currently selected cells and pastes cells
-   *   in their place.
+   * @param mode - the mode of adding cells:
+   *   'below' (default) adds cells below the active cell,
+   *   'belowSelected' adds cells below all selected cells,
+   *   'above' adds cells above the active cell, and
+   *   'replace' removes the currently selected cells and adds cells in their place.
    *
    * #### Notes
    * The last pasted cell becomes the active cell.
@@ -968,9 +1117,9 @@ export namespace NotebookActions {
    */
   export function paste(
     notebook: Notebook,
-    mode: 'below' | 'above' | 'replace' = 'below'
+    mode: 'below' | 'belowSelected' | 'above' | 'replace' = 'below'
   ): void {
-    if (!notebook.model || !notebook.activeCell) {
+    if (!Private.isNotebookRendered(notebook)) {
       return;
     }
 
@@ -980,8 +1129,72 @@ export namespace NotebookActions {
       return;
     }
 
-    const state = Private.getState(notebook);
     const values = clipboard.getData(JUPYTER_CELL_MIME) as nbformat.IBaseCell[];
+
+    addCells(notebook, mode, values, true);
+  }
+
+  /**
+   * Duplicate selected cells in the notebook without using the application clipboard.
+   *
+   * @param notebook - The target notebook widget.
+   *
+   * @param mode - the mode of adding cells:
+   *   'below' (default) adds cells below the active cell,
+   *   'belowSelected' adds cells below all selected cells,
+   *   'above' adds cells above the active cell, and
+   *   'replace' removes the currently selected cells and adds cells in their place.
+   *
+   * #### Notes
+   * The last pasted cell becomes the active cell.
+   * This is a no-op if there is no cell data on the clipboard.
+   * This action can be undone.
+   */
+  export function duplicate(
+    notebook: Notebook,
+    mode: 'below' | 'belowSelected' | 'above' | 'replace' = 'below'
+  ): void {
+    const values = Private.selectedCells(notebook);
+
+    if (!values || values.length === 0) {
+      return;
+    }
+
+    addCells(notebook, mode, values, false); // Cells not from the clipboard
+  }
+
+  /**
+   * Adds cells to the notebook.
+   *
+   * @param notebook - The target notebook widget.
+   *
+   * @param mode - the mode of adding cells:
+   *   'below' (default) adds cells below the active cell,
+   *   'belowSelected' adds cells below all selected cells,
+   *   'above' adds cells above the active cell, and
+   *   'replace' removes the currently selected cells and adds cells in their place.
+   *
+   * @param values — The cells to add to the notebook.
+   *
+   * @param cellsFromClipboard — True if the cells were sourced from the clipboard.
+   *
+   * #### Notes
+   * The last added cell becomes the active cell.
+   * This is a no-op if values is an empty array.
+   * This action can be undone.
+   */
+
+  function addCells(
+    notebook: Notebook,
+    mode: 'below' | 'belowSelected' | 'above' | 'replace' = 'below',
+    values: nbformat.IBaseCell[],
+    cellsFromClipboard: boolean = false
+  ): void {
+    if (!notebook.model || !notebook.activeCell) {
+      return;
+    }
+
+    const state = Private.getState(notebook);
     const model = notebook.model;
 
     notebook.mode = 'command';
@@ -993,9 +1206,9 @@ export namespace NotebookActions {
             notebook.lastClipboardInteraction === 'cut' &&
             typeof cell.id === 'string'
           ) {
-            let cell_id = cell.id as string;
+            let cellId = cell.id as string;
             return model.contentFactory.createCodeCell({
-              id: cell_id,
+              id: cellId,
               cell: cell
             });
           } else {
@@ -1017,6 +1230,14 @@ export namespace NotebookActions {
     switch (mode) {
       case 'below':
         index = notebook.activeCellIndex;
+        break;
+      case 'belowSelected':
+        notebook.widgets.forEach((child, childIndex) => {
+          if (notebook.isSelectedOrActive(child)) {
+            index = childIndex;
+          }
+        });
+
         break;
       case 'above':
         index = notebook.activeCellIndex - 1;
@@ -1054,7 +1275,9 @@ export namespace NotebookActions {
 
     notebook.activeCellIndex += newCells.length;
     notebook.deselectAll();
-    notebook.lastClipboardInteraction = 'paste';
+    if (cellsFromClipboard) {
+      notebook.lastClipboardInteraction = 'paste';
+    }
     Private.handleState(notebook, state);
   }
 
@@ -1071,6 +1294,9 @@ export namespace NotebookActions {
       return;
     }
 
+    if (!Private.isNotebookRendered(notebook)) {
+      return;
+    }
     const state = Private.getState(notebook);
 
     notebook.mode = 'command';
@@ -1452,7 +1678,7 @@ export namespace NotebookActions {
    * There will always be one blank space after the header.
    * The cells will be unrendered.
    */
-  export function setMarkdownHeader(notebook: Notebook, level: number) {
+  export function setMarkdownHeader(notebook: Notebook, level: number): void {
     if (!notebook.model || !notebook.activeCell) {
       return;
     }
@@ -1475,7 +1701,7 @@ export namespace NotebookActions {
    *
    * @param notebook - The target notebook widget.
    */
-  export function collapseAll(notebook: Notebook): any {
+  export function collapseAllHeadings(notebook: Notebook): any {
     for (const cell of notebook.widgets) {
       if (NotebookActions.getHeadingInfo(cell).isHeading) {
         NotebookActions.setHeadingCollapse(cell, true, notebook);
@@ -1718,9 +1944,11 @@ export namespace NotebookActions {
    *
    * @param cell - The target cell widget.
    */
-  export function getHeadingInfo(
-    cell: Cell
-  ): { isHeading: boolean; headingLevel: number; collapsed?: boolean } {
+  export function getHeadingInfo(cell: Cell): {
+    isHeading: boolean;
+    headingLevel: number;
+    collapsed?: boolean;
+  } {
     if (!(cell instanceof MarkdownCell)) {
       return { isHeading: false, headingLevel: 7 };
     }
@@ -1761,7 +1989,7 @@ export namespace NotebookActions {
         )}
         <br />
         {trans.__(
-          'Selecting trust will re-render this notebook in a trusted state.'
+          'Selecting "Trust" will re-render this notebook in a trusted state.'
         )}
         <br />
         {trans.__('For more information, see')}{' '}
@@ -1772,13 +2000,14 @@ export namespace NotebookActions {
         >
           {trans.__('the Jupyter security documentation')}
         </a>
+        .
       </p>
     );
 
     if (trusted) {
       return showDialog({
         body: trans.__('Notebook is already trusted'),
-        buttons: [Dialog.okButton({ label: trans.__('Ok') })]
+        buttons: [Dialog.okButton()]
       }).then(() => undefined);
     }
 
@@ -1786,8 +2015,8 @@ export namespace NotebookActions {
       body: trustMessage,
       title: trans.__('Trust this notebook?'),
       buttons: [
-        Dialog.cancelButton({ label: trans.__('Cancel') }),
-        Dialog.warnButton({ label: trans.__('Ok') })
+        Dialog.cancelButton(),
+        Dialog.warnButton({ label: trans.__('Trust') })
       ] // FIXME?
     }).then(result => {
       if (result.button.accept) {
@@ -1845,6 +2074,30 @@ namespace Private {
      * The active cell before the action.
      */
     activeCell: Cell | null;
+  }
+
+  export function isNotebookRendered(notebook: Notebook): boolean {
+    const translator = notebook.translator;
+    const trans = translator.load('jupyterlab');
+
+    if (notebook.remainingCellToRenderCount !== 0) {
+      showDialog({
+        body: trans.__(
+          `Notebook is still rendering and has for now (%1) remaining cells to render.
+
+Please wait for the complete rendering before invoking that action.`,
+          notebook.remainingCellToRenderCount
+        ),
+        buttons: [Dialog.okButton()]
+      }).catch(reason => {
+        console.error(
+          'An error occurred when displaying notebook rendering warning',
+          reason
+        );
+      });
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -2006,7 +2259,7 @@ namespace Private {
                 'The kernel for %1 appears to be terminating. You can not run any cell for now.',
                 sessionContext.session?.path
               ),
-              buttons: [Dialog.okButton({ label: trans.__('Ok') })]
+              buttons: [Dialog.okButton()]
             });
             break;
           }
@@ -2016,8 +2269,12 @@ namespace Private {
               body: trans.__(
                 'The cell has not been executed to avoid kernel deadlock as there is another pending input! Submit your pending input and try again.'
               ),
-              buttons: [Dialog.okButton({ label: trans.__('Ok') })]
+              buttons: [Dialog.okButton()]
             });
+            return Promise.resolve(false);
+          }
+          if (sessionContext.hasNoKernel) {
+            void sessionContextDialogs.selectKernel(sessionContext);
             return Promise.resolve(false);
           }
           const deletedCells = notebook.model?.deletedCells ?? [];
@@ -2114,11 +2371,30 @@ namespace Private {
   }
 
   /**
+   * Get the selected cell(s) without affecting the clipboard.
+   *
+   * @param notebook - The target notebook widget.
+   *
+   * @returns A list of 0 or more selected cells
+   */
+  export function selectedCells(notebook: Notebook): nbformat.ICell[] {
+    return notebook.widgets
+      .filter(cell => notebook.isSelectedOrActive(cell))
+      .map(cell => cell.model.toJSON())
+      .map(cellJSON => {
+        if ((cellJSON.metadata as JSONObject).deletable !== undefined) {
+          delete (cellJSON.metadata as JSONObject).deletable;
+        }
+        return cellJSON;
+      });
+  }
+
+  /**
    * Copy or cut the selected cell data to the application clipboard.
    *
    * @param notebook - The target notebook widget.
    *
-   * @param cut - Whether to copy or cut.
+   * @param cut - True if the cells should be cut, false if they should be copied.
    */
   export function copyOrCut(notebook: Notebook, cut: boolean): void {
     if (!notebook.model || !notebook.activeCell) {
@@ -2131,15 +2407,7 @@ namespace Private {
     notebook.mode = 'command';
     clipboard.clear();
 
-    const data = notebook.widgets
-      .filter(cell => notebook.isSelectedOrActive(cell))
-      .map(cell => cell.model.toJSON())
-      .map(cellJSON => {
-        if ((cellJSON.metadata as JSONObject).deletable !== undefined) {
-          delete (cellJSON.metadata as JSONObject).deletable;
-        }
-        return cellJSON;
-      });
+    const data = Private.selectedCells(notebook);
 
     clipboard.setData(JUPYTER_CELL_MIME, data);
     if (cut) {
@@ -2278,7 +2546,7 @@ namespace Private {
   /**
    * Set the markdown header level of a cell.
    */
-  export function setMarkdownHeader(cell: ICellModel, level: number) {
+  export function setMarkdownHeader(cell: ICellModel, level: number): void {
     // Remove existing header or leading white space.
     let source = cell.value.text;
     const regex = /^(#+\s*)|^(\s*)/;
@@ -2289,5 +2557,192 @@ namespace Private {
       source = source.slice(matches[0].length);
     }
     cell.value.text = newHeader + source;
+  }
+
+  /** Functionality related to collapsible headings */
+  export namespace Headings {
+    /** Find the heading that is parent to cell.
+     *
+     * @param childCell - The cell that is child to the sought heading
+     * @param notebook - The target notebook widget
+     * @param includeChildCell [default=false] - if set to true and childCell is a heading itself, the childCell will be returned
+     * @param returnIndex [default=false] - if set to true, the cell index is returned rather than the cell object.
+     *
+     * @returns the (index | Cell object) of the parent heading or (-1 | null) if there is no parent heading.
+     */
+    export function findParentHeading(
+      childCell: Cell,
+      notebook: Notebook,
+      includeChildCell = false,
+      returnIndex = false
+    ): number | Cell | null {
+      let cellIdx =
+        notebook.widgets.indexOf(childCell) - (includeChildCell ? 1 : 0);
+      while (cellIdx >= 0) {
+        let headingInfo = NotebookActions.getHeadingInfo(
+          notebook.widgets[cellIdx]
+        );
+        if (headingInfo.isHeading) {
+          return returnIndex ? cellIdx : notebook.widgets[cellIdx];
+        }
+        cellIdx--;
+      }
+      return returnIndex ? -1 : null;
+    }
+
+    /** Find heading above with leq level than baseCell heading level.
+     *
+     * @param baseCell - cell relative to which so search
+     * @param notebook - target notebook widget
+     * @param returnIndex [default=false] - if set to true, the cell index is returned rather than the cell object.
+     *
+     * @returns the (index | Cell object) of the found heading or (-1 | null) if no heading found.
+     */
+    export function findLowerEqualLevelParentHeadingAbove(
+      baseCell: Cell,
+      notebook: Notebook,
+      returnIndex = false
+    ): number | Cell | null {
+      let baseHeadingLevel = Private.Headings.determineHeadingLevel(
+        baseCell,
+        notebook
+      );
+      if (baseHeadingLevel == -1) {
+        baseHeadingLevel = 1; // if no heading level can be determined, assume we're on level 1
+      }
+
+      // find the heading above with heading level <= baseHeadingLevel and return its index
+      let cellIdx = notebook.widgets.indexOf(baseCell) - 1;
+      while (cellIdx >= 0) {
+        let cell = notebook.widgets[cellIdx];
+        let headingInfo = NotebookActions.getHeadingInfo(cell);
+        if (
+          headingInfo.isHeading &&
+          headingInfo.headingLevel <= baseHeadingLevel
+        ) {
+          return returnIndex ? cellIdx : cell;
+        }
+        cellIdx--;
+      }
+      return returnIndex ? -1 : null; // no heading found
+    }
+
+    /** Find next heading with equal or lower level.
+     *
+     * @param baseCell - cell relative to which so search
+     * @param notebook - target notebook widget
+     * @param returnIndex [default=false] - if set to true, the cell index is returned rather than the cell object.
+     *
+     * @returns the (index | Cell object) of the found heading or (-1 | null) if no heading found.
+     */
+    export function findLowerEqualLevelHeadingBelow(
+      baseCell: Cell,
+      notebook: Notebook,
+      returnIndex = false
+    ): number | Cell | null {
+      let baseHeadingLevel = Private.Headings.determineHeadingLevel(
+        baseCell,
+        notebook
+      );
+      if (baseHeadingLevel == -1) {
+        baseHeadingLevel = 1; // if no heading level can be determined, assume we're on level 1
+      }
+      let cellIdx = notebook.widgets.indexOf(baseCell) + 1;
+      while (cellIdx < notebook.widgets.length) {
+        let cell = notebook.widgets[cellIdx];
+        let headingInfo = NotebookActions.getHeadingInfo(cell);
+        if (
+          headingInfo.isHeading &&
+          headingInfo.headingLevel <= baseHeadingLevel
+        ) {
+          return returnIndex ? cellIdx : cell;
+        }
+        cellIdx++;
+      }
+      return returnIndex ? -1 : null;
+    }
+
+    /** Find next heading.
+     *
+     * @param baseCell - cell relative to which so search
+     * @param notebook - target notebook widget
+     * @param returnIndex [default=false] - if set to true, the cell index is returned rather than the cell object.
+     *
+     * @returns the (index | Cell object) of the found heading or (-1 | null) if no heading found.
+     */
+    export function findHeadingBelow(
+      baseCell: Cell,
+      notebook: Notebook,
+      returnIndex = false
+    ): number | Cell | null {
+      let cellIdx = notebook.widgets.indexOf(baseCell) + 1;
+      while (cellIdx < notebook.widgets.length) {
+        let cell = notebook.widgets[cellIdx];
+        let headingInfo = NotebookActions.getHeadingInfo(cell);
+        if (headingInfo.isHeading) {
+          return returnIndex ? cellIdx : cell;
+        }
+        cellIdx++;
+      }
+      return returnIndex ? -1 : null;
+    }
+
+    /** Determine the heading level of a cell.
+     *
+     * @param baseCell - The cell of which the heading level shall be determined
+     * @param notebook - The target notebook widget
+     *
+     * @returns the heading level or -1 if there is no parent heading
+     *
+     * #### Notes
+     * If the baseCell is a heading itself, the heading level of baseCell is returned.
+     * If the baseCell is not a heading itself, the level of the parent heading is returned.
+     * If there is no parent heading, -1 is returned.
+     */
+    export function determineHeadingLevel(
+      baseCell: Cell,
+      notebook: Notebook
+    ): number {
+      let headingInfoBaseCell = NotebookActions.getHeadingInfo(baseCell);
+      // fill baseHeadingLevel or return null if there is no heading at or above baseCell
+      if (headingInfoBaseCell.isHeading) {
+        return headingInfoBaseCell.headingLevel;
+      } else {
+        let parentHeading = findParentHeading(
+          baseCell,
+          notebook,
+          true
+        ) as Cell | null;
+        if (parentHeading == null) {
+          return -1;
+        }
+        return NotebookActions.getHeadingInfo(parentHeading).headingLevel;
+      }
+    }
+
+    /** Insert a new heading cell at given position.
+     *
+     * @param cellIndex - where to insert
+     * @param headingLevel - level of the new heading
+     * @param notebook - target notebook
+     *
+     * #### Notes
+     * Enters edit mode after insert.
+     */
+    export function insertHeadingAboveCellIndex(
+      cellIndex: number,
+      headingLevel: number,
+      notebook: Notebook
+    ) {
+      const state = Private.getState(notebook);
+      const newCell = notebook.model!.contentFactory.createMarkdownCell({});
+      notebook.model!.cells.insert(cellIndex, newCell);
+      Private.setMarkdownHeader(newCell, headingLevel);
+      notebook.activeCellIndex = cellIndex;
+      notebook.deselectAll();
+      Private.handleState(notebook, state, true);
+      notebook.mode = 'edit';
+      notebook.widgets[cellIndex].setHidden(false);
+    }
   }
 }

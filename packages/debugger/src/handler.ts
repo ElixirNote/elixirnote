@@ -2,38 +2,20 @@
 // Distributed under the terms of the Modified BSD License.
 
 import { JupyterFrontEnd } from '@jupyterlab/application';
-
-import {
-  ISessionContext,
-  SessionContext,
-  ToolbarButton
-} from '@jupyterlab/apputils';
-
+import { ISessionContext, SessionContext } from '@jupyterlab/apputils';
 import { ConsolePanel } from '@jupyterlab/console';
-
 import { IChangedArgs } from '@jupyterlab/coreutils';
-
 import { DocumentWidget } from '@jupyterlab/docregistry';
-
 import { FileEditor } from '@jupyterlab/fileeditor';
-
 import { NotebookPanel } from '@jupyterlab/notebook';
-
 import { Kernel, KernelMessage, Session } from '@jupyterlab/services';
-
 import { ITranslator, nullTranslator } from '@jupyterlab/translation';
-
-import { bugDotIcon, bugIcon } from '@jupyterlab/ui-components';
-
+import { bugDotIcon, bugIcon, ToolbarButton } from '@jupyterlab/ui-components';
 import { Debugger } from './debugger';
-
-import { IDebugger } from './tokens';
-
 import { ConsoleHandler } from './handlers/console';
-
 import { FileHandler } from './handlers/file';
-
 import { NotebookHandler } from './handlers/notebook';
+import { IDebugger } from './tokens';
 
 const TOOLBAR_DEBUGGER_ITEM = 'debugger-icon';
 
@@ -152,7 +134,6 @@ export class DebuggerHandler implements DebuggerHandler.IHandler {
       _: Session.ISessionConnection,
       status: Kernel.Status
     ): void => {
-      // FIXME-TRANS: Localizable?
       if (status.endsWith('restarting')) {
         void this.updateWidget(widget, connection);
       }
@@ -205,9 +186,8 @@ export class DebuggerHandler implements DebuggerHandler.IHandler {
       void this.update(widget, connection);
     };
 
-    const contextKernelChangedHandlers = this._contextKernelChangedHandlers[
-      widget.id
-    ];
+    const contextKernelChangedHandlers =
+      this._contextKernelChangedHandlers[widget.id];
 
     if (contextKernelChangedHandlers) {
       sessionContext.kernelChanged.disconnect(contextKernelChangedHandlers);
@@ -300,7 +280,6 @@ export class DebuggerHandler implements DebuggerHandler.IHandler {
       updateAttribute();
     };
 
-    // @ts-ignore
     const addToolbarButton = (enabled: boolean = true): void => {
       const debugButton = this._iconButtons[widget.id];
       if (!debugButton) {
@@ -359,7 +338,18 @@ export class DebuggerHandler implements DebuggerHandler.IHandler {
       }
     };
 
-    // addToolbarButton(false);
+    addToolbarButton(false);
+
+    // listen to the disposed signals
+    widget.disposed.connect(async () => {
+      if (isDebuggerOn()) {
+        await stopDebugger();
+      }
+      removeHandlers();
+      delete this._iconButtons[widget.id];
+      delete this._contextKernelChangedHandlers[widget.id];
+    });
+
     const debuggingEnabled = await this._service.isAvailable(connection);
     if (!debuggingEnabled) {
       removeHandlers();
@@ -401,9 +391,6 @@ export class DebuggerHandler implements DebuggerHandler.IHandler {
     // if the debugger is started but there is no handler, create a new one
     createHandler();
     this._previousConnection = connection;
-
-    // listen to the disposed signals
-    widget.disposed.connect(removeHandlers);
   }
 
   private _type: DebuggerHandler.SessionType;

@@ -1,3 +1,6 @@
+.. Copyright (c) Jupyter Development Team.
+.. Distributed under the terms of the Modified BSD License.
+
 Using JupyterLab components
 ===========================
 
@@ -8,7 +11,7 @@ IDE-like experience. However, developers are encouraged to use these to bring
 to life their own visions of what a computational environment should look
 like.
 
-The JupyterLab repository has `many examples <https://github.com/jupyterlab/jupyterlab/tree/3.3.x/examples>`_
+The JupyterLab repository has `many examples <https://github.com/jupyterlab/jupyterlab/tree/master/examples>`_
 to get you started.
 
 The ``examples`` directory contains:

@@ -100,17 +100,15 @@ export namespace Palette {
       'aria-label',
       trans.__('Command Palette Section')
     );
-    shell.add(palette, 'left', { rank: 900 });
-
+    shell.add(palette, 'left', { rank: 300, type: 'Command Palette' });
     if (settingRegistry) {
       const loadSettings = settingRegistry.load(PALETTE_PLUGIN_ID);
       const updateSettings = (settings: ISettingRegistry.ISettings): void => {
         const newModal = settings.get('modal').composite as boolean;
-        console.log("newModal: ", newModal)
         if (modal && !newModal) {
           palette.parent = null;
           modalPalette.detach();
-          shell.add(palette, 'left', { rank: 900 });
+          shell.add(palette, 'left', { rank: 300, type: 'Command Palette' });
         } else if (!modal && newModal) {
           palette.parent = null;
           modalPalette.palette = palette;
@@ -152,12 +150,10 @@ export namespace Palette {
 
     commands.addCommand(CommandIDs.activate, {
       execute: () => {
-        console.log("modal: ", modal);
         if (modal) {
           modalPalette.activate();
         } else {
-          modalPalette.activate();
-          // shell.activateById(palette.id);
+          shell.activateById(palette.id);
         }
       },
       label: trans.__('Activate Command Palette')

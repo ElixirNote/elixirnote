@@ -1,16 +1,28 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
 
-import { ReactWidget } from '@jupyterlab/apputils';
 import { ITranslator, nullTranslator } from '@jupyterlab/translation';
-import { caretDownEmptyIcon, searchIcon } from '@jupyterlab/ui-components';
+
+import {
+  caretDownEmptyIcon,
+  ReactWidget,
+  searchIcon
+} from '@jupyterlab/ui-components';
+
 import { ArrayExt } from '@lumino/algorithm';
+
 import { CommandRegistry } from '@lumino/commands';
-import React, { useEffect, useState } from 'react';
+
 import { DebugProtocol } from '@vscode/debugprotocol';
+
+import React, { useEffect, useState } from 'react';
+
 import { convertType } from '.';
+
 import { Debugger } from '../../debugger';
+
 import { IDebugger } from '../../tokens';
+
 import { VariablesModel } from './model';
 
 /**
@@ -123,14 +135,8 @@ interface IVariablesComponentProps {
  * @param props.filter Optional variable filter list.
  */
 const VariablesComponent = (props: IVariablesComponentProps): JSX.Element => {
-  const {
-    commands,
-    data,
-    service,
-    filter,
-    translator,
-    handleSelectVariable
-  } = props;
+  const { commands, data, service, filter, translator, handleSelectVariable } =
+    props;
   const [variables, setVariables] = useState(data);
 
   useEffect(() => {

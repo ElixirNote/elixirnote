@@ -1,10 +1,15 @@
-import { VDomModel, VDomRenderer } from '@jupyterlab/apputils';
+/*
+ * Copyright (c) Jupyter Development Team.
+ * Distributed under the terms of the Modified BSD License.
+ */
+
 import { TextItem } from '@jupyterlab/statusbar';
 import {
   ITranslator,
   nullTranslator,
   TranslationBundle
 } from '@jupyterlab/translation';
+import { VDomModel, VDomRenderer } from '@jupyterlab/ui-components';
 import * as React from 'react';
 import { Notebook, NotebookMode } from '.';
 
@@ -71,7 +76,7 @@ export class CommandEditStatus extends VDomRenderer<CommandEditStatus.Model> {
   /**
    * Render the CommandEdit status item.
    */
-  render() {
+  render(): JSX.Element | null {
     if (!this.model) {
       return null;
     }
@@ -104,7 +109,7 @@ export namespace CommandEditStatus {
     /**
      * The current mode of the current notebook.
      */
-    get notebookMode() {
+    get notebookMode(): NotebookMode {
       return this._notebookMode;
     }
 

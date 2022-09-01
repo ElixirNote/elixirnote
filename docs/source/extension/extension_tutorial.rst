@@ -1,3 +1,6 @@
+.. Copyright (c) Jupyter Development Team.
+.. Distributed under the terms of the Modified BSD License.
+
 .. _extension_tutorial:
 
 Extension Tutorial
@@ -81,7 +84,7 @@ Create a repository
 -------------------
 
 Create a new repository for your extension (see, for example, the
-`GitHub instructions <https://help.github.com/articles/create-a-repo/>`__. This is an
+`GitHub instructions <https://docs.github.com/en/get-started/quickstart/create-a-repo>`__. This is an
 optional step, but highly recommended if you want to share your
 extension.
 
@@ -208,7 +211,7 @@ After you reload the page with the console open, you should see a message that s
 ``JupyterLab extension jupyterlab_apod is activated!`` in the console.
 If you do, congratulations, you're ready to start modifying the extension!
 If not, go back make sure you didn't miss a step, and `reach
-out <https://github.com/jupyterlab/jupyterlab/blob/3.3.x/README.md#getting-help>`__ if you're stuck.
+out <https://github.com/jupyterlab/jupyterlab/blob/master/README.md#getting-help>`__ if you're stuck.
 
 Note: Leave the terminal running the ``jupyter lab`` command open and running
 JupyterLab to see the effects of changes below.
@@ -806,30 +809,43 @@ entire list of import statements looks like the following:
     import { Widget } from '@lumino/widgets';
 
 Then add the ``ILayoutRestorer`` interface to the ``JupyterFrontEndPlugin``
-definition. This addition passes the global ``LayoutRestorer`` as the
+definition as ``optional``. This addition passes the global ``LayoutRestorer`` as the
 third parameter of the ``activate`` function.
 
 .. code-block:: typescript
-    :emphasize-lines: 4
+    :emphasize-lines: 5
 
     const extension: JupyterFrontEndPlugin<void> = {
       id: 'jupyterlab_apod',
       autoStart: true,
-      requires: [ICommandPalette, ILayoutRestorer],
+      requires: [ICommandPalette],
+      optional: [ILayoutRestorer],
       activate: activate
     };
+
+Here ``ILayoutRestorer`` is specified as an ``optional`` token, as the corresponding service might
+not be available in a customized JupyterLab distribution that does not provide layout restoration
+functionalities. Having it ``optional`` make it a nice to have, and enable your extension to be loaded
+in more JupyterLab based applications.
+
+.. note::
+
+    You can learn more about ``requires`` and ``optional`` in the :ref:`tokens` section
+    of the Extension Developer Guide.
 
 Finally, rewrite the ``activate`` function so that it:
 
 1. Declares a widget variable, but does not create an instance
    immediately.
-2. Constructs a ``WidgetTracker`` and tells the ``ILayoutRestorer``
+2. Adds the global ``LayoutRestorer`` as the third parameter of the ``activate`` function.
+   This parameter is declared as ``ILayoutRestorer | null`` since the token is specified as ``optional``.
+3. Constructs a ``WidgetTracker`` and tells the ``ILayoutRestorer``
    to use it to save/restore panel state.
-3. Creates, tracks, shows, and refreshes the widget panel appropriately.
+4. Creates, tracks, shows, and refreshes the widget panel appropriately.
 
 .. code-block:: typescript
 
-    function activate(app: JupyterFrontEnd, palette: ICommandPalette, restorer: ILayoutRestorer) {
+    function activate(app: JupyterFrontEnd, palette: ICommandPalette, restorer: ILayoutRestorer | null) {
       console.log('JupyterLab extension jupyterlab_apod is activated!');
 
       // Declare a widget variable
@@ -871,10 +887,12 @@ Finally, rewrite the ``activate`` function so that it:
       let tracker = new WidgetTracker<MainAreaWidget<APODWidget>>({
         namespace: 'apod'
       });
-      restorer.restore(tracker, {
-        command,
-        name: () => 'apod'
-      });
+      if (restorer) {
+        restorer.restore(tracker, {
+          command,
+          name: () => 'apod'
+        });
+      }
     }
 
 Rebuild your extension one last time and refresh your browser tab.

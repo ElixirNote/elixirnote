@@ -5,22 +5,21 @@ import { ITranslator, nullTranslator } from '@jupyterlab/translation';
 
 import { showErrorMessage } from '@jupyterlab/apputils';
 
-import { ToolbarButton } from '@jupyterlab/apputils';
-
-import { refreshIcon, searchIcon } from '@jupyterlab/ui-components';
-
-import { Panel } from '@lumino/widgets';
+import {
+  PanelWithToolbar,
+  refreshIcon,
+  searchIcon,
+  ToolbarButton
+} from '@jupyterlab/ui-components';
 
 import { IDebugger } from '../../tokens';
 
 import { KernelSourcesBody } from './body';
 
-import { KernelSourcesHeader } from './header';
-
 /**
  * A Panel that shows a preview of the source code while debugging.
  */
-export class KernelSources extends Panel {
+export class KernelSources extends PanelWithToolbar {
   /**
    * Instantiate a new Sources preview Panel.
    *
@@ -32,10 +31,7 @@ export class KernelSources extends Panel {
     this._model = model;
     const trans = (options.translator ?? nullTranslator).load('jupyterlab');
     this.title.label = trans.__('Kernel Sources');
-
-    const header = new KernelSourcesHeader(model, options.translator);
-
-    header.addClass('jp-DebuggerKernelSources-header');
+    this.toolbar.addClass('jp-DebuggerKernelSources-header');
 
     this._body = new KernelSourcesBody({
       service,
@@ -43,7 +39,7 @@ export class KernelSources extends Panel {
       translator: options.translator
     });
 
-    header.toolbar.addItem(
+    this.toolbar.addItem(
       'open-filter',
       new ToolbarButton({
         icon: searchIcon,
@@ -54,7 +50,7 @@ export class KernelSources extends Panel {
       })
     );
 
-    header.toolbar.addItem(
+    this.toolbar.addItem(
       'refresh',
       new ToolbarButton({
         icon: refreshIcon,
@@ -72,10 +68,8 @@ export class KernelSources extends Panel {
     );
 
     this.addClass('jp-DebuggerKernelSources-header');
-    this.addClass('jp-DebuggerKernelSources');
-
-    this.addWidget(header);
     this.addWidget(this._body);
+    this.addClass('jp-DebuggerKenelSources');
   }
 
   public set filter(filter: string) {

@@ -293,7 +293,9 @@ describe('rendermime/registry', () => {
       });
 
       it('should be a no-op if the mimeType is not registered', () => {
-        r.removeMimeType('text/foo');
+        expect(() => {
+          r.removeMimeType('text/foo');
+        }).not.toThrow();
       });
     });
 
@@ -452,9 +454,8 @@ describe('rendermime/registry', () => {
         });
 
         it('should resolve escapes correctly', async () => {
-          const contextPromise = resolverPath.getDownloadUrl(
-            'foo%20%23%2520test'
-          );
+          const contextPromise =
+            resolverPath.getDownloadUrl('foo%20%23%2520test');
           const contentsPromise = contents.getDownloadUrl('foo #%20test');
           const values = await Promise.all([contextPromise, contentsPromise]);
           expect(values[0]).toBe(values[1]);

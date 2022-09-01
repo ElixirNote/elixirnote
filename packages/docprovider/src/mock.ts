@@ -1,22 +1,18 @@
+/*
+ * Copyright (c) Jupyter Development Team.
+ * Distributed under the terms of the Modified BSD License.
+ */
+
 import { IDocumentProvider } from './index';
 
 export class ProviderMock implements IDocumentProvider {
-  requestInitialContent(): Promise<boolean> {
-    return Promise.resolve(false);
-  }
-  putInitializedState(): void {
-    /* nop */
-  }
-  acquireLock(): Promise<number> {
-    return Promise.resolve(0);
-  }
-  releaseLock(lock: number): void {
-    /* nop */
-  }
   destroy(): void {
     /* nop */
   }
   setPath(path: string): void {
     /* nop */
+  }
+  get renameAck(): Promise<boolean> {
+    return Promise.resolve(false);
   }
 }

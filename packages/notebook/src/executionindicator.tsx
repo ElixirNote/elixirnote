@@ -1,12 +1,7 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
 
-import {
-  ISessionContext,
-  translateKernelStatuses,
-  VDomModel,
-  VDomRenderer
-} from '@jupyterlab/apputils';
+import { ISessionContext, translateKernelStatuses } from '@jupyterlab/apputils';
 
 import { ITranslator, nullTranslator } from '@jupyterlab/translation';
 import React from 'react';
@@ -15,7 +10,9 @@ import { interactiveItem, ProgressCircle } from '@jupyterlab/statusbar';
 import {
   circleIcon,
   LabIcon,
-  offlineBoltIcon
+  offlineBoltIcon,
+  VDomModel,
+  VDomRenderer
 } from '@jupyterlab/ui-components';
 
 import { Notebook } from './widget';
@@ -80,6 +77,7 @@ export function ExecutionIndicatorComponent(
     <div
       className={'jp-Notebook-ExecutionIndicator'}
       title={showProgress ? '' : titleFactory(kernelStatuses[status])}
+      data-status={status}
     >
       {circle}
       <div
@@ -119,7 +117,7 @@ export function ExecutionIndicatorComponent(
     return reactElement('busy', progressBar(percentage), [
       <span key={0}>
         {trans.__(
-          `Executed ${executedCellNumber}/${scheduledCellNumber} requests`
+          `Executed ${executedCellNumber}/${scheduledCellNumber} cells`
         )}
       </span>,
       <span key={1}>
@@ -127,26 +125,29 @@ export function ExecutionIndicatorComponent(
       </span>
     ]);
   } else {
-    if (time === 0) {
-      return reactElement('idle', progressBar(100), []);
-    } else {
-      return reactElement('idle', progressBar(100), [
-        <span key={0}>
-          {trans._n(
-            'Executed %1 request',
-            'Executed %1 requests',
-            scheduledCellNumber
-          )}
-        </span>,
-        <span key={1}>
-          {trans._n(
-            'Elapsed time: %1 second',
-            'Elapsed time: %1 seconds',
-            time
-          )}
-        </span>
-      ]);
-    }
+    // No cell is scheduled, fall back to the status of kernel
+    const progress = state.kernelStatus === 'busy' ? 0 : 100;
+    const popup =
+      state.kernelStatus === 'busy' || time === 0
+        ? []
+        : [
+            <span key={0}>
+              {trans._n(
+                'Executed %1 cell',
+                'Executed %1 cells',
+                scheduledCellNumber
+              )}
+            </span>,
+            <span key={1}>
+              {trans._n(
+                'Elapsed time: %1 second',
+                'Elapsed time: %1 seconds',
+                time
+              )}
+            </span>
+          ];
+
+    return reactElement(state.kernelStatus, progressBar(progress), popup);
   }
 }
 
@@ -294,17 +295,7 @@ export namespace ExecutionIndicator {
             const message = msg.msg;
             const msgId = message.header.msg_id;
 
-            if (
-              KernelMessage.isCommMsgMsg(message) &&
-              message.content.data['method']
-            ) {
-              // Execution request from Comm message
-              const method = message.content.data['method'];
-              if (method !== 'request_state' && method !== 'update') {
-                this._cellScheduledCallback(nb, msgId);
-                this._startTimer(nb);
-              }
-            } else if (message.header.msg_type === 'execute_request') {
+            if (message.header.msg_type === 'execute_request') {
               // A cell code is scheduled for executing
               this._cellScheduledCallback(nb, msgId);
             } else if (
@@ -377,7 +368,7 @@ export namespace ExecutionIndicator {
      * @param nb - The notebook used to identify execution
      * state.
      *
-     * @return - The associated execution state.
+     * @returns - The associated execution state.
      */
     public executionState(nb: Notebook): Private.IExecutionState | undefined {
       return this._notebookExecutionProgress.get(nb);
@@ -541,15 +532,16 @@ export namespace ExecutionIndicator {
       context: panel.sessionContext
     });
 
-    panel.disposed.connect(() => {
-      toolbarItem.dispose();
-    });
     if (loadSettings) {
       loadSettings
         .then(settings => {
-          toolbarItem.model.updateRenderOption(getSettingValue(settings));
-          settings.changed.connect(newSettings => {
+          const updateSettings = (newSettings: ISettingRegistry.ISettings) => {
             toolbarItem.model.updateRenderOption(getSettingValue(newSettings));
+          };
+          settings.changed.connect(updateSettings);
+          updateSettings(settings);
+          toolbarItem.disposed.connect(() => {
+            settings.changed.disconnect(updateSettings);
           });
         })
         .catch((reason: Error) => {
@@ -559,9 +551,10 @@ export namespace ExecutionIndicator {
     return toolbarItem;
   }
 
-  export function getSettingValue(
-    settings: ISettingRegistry.ISettings
-  ): { showOnToolBar: boolean; showProgress: boolean } {
+  export function getSettingValue(settings: ISettingRegistry.ISettings): {
+    showOnToolBar: boolean;
+    showProgress: boolean;
+  } {
     let showOnToolBar = true;
     let showProgress = true;
     const configValues = settings.get('kernelStatus').composite as JSONObject;

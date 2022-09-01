@@ -1,3 +1,6 @@
+.. Copyright (c) Jupyter Development Team.
+.. Distributed under the terms of the Modified BSD License.
+
 
 Advanced Usage
 ==============
@@ -81,7 +84,7 @@ LabConfig Directories
 ---------------------
 For each config path ``<jupyter_config_path>`` listed in ``jupyter --paths``, the ``<jupyter_config_path>/labconfig`` directory contains configuration data. This configuration data from all of these directories is combined into a single configuration, with priority order given by ``jupyter --paths``.
 
-The primary file used by JupyterLab is ``page_config.json``.  
+The primary file used by JupyterLab is ``page_config.json``.
 The ``page_config.json`` data is used to provide configuration data to the
 application environment.
 
@@ -322,4 +325,3 @@ environments. The location can be modified using the
 
 These files can be imported and exported to create default "profiles", using
 the :ref:`workspace command line tool <url-workspaces-cli>`.
-

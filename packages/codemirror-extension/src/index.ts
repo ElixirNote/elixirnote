@@ -10,21 +10,26 @@ import {
   JupyterFrontEnd,
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
-import { IEditorServices } from '@jupyterlab/codeeditor';
+import {
+  CodeEditor,
+  IEditorServices,
+  IPositionModel,
+  LineCol
+} from '@jupyterlab/codeeditor';
 import {
   CodeMirrorEditor,
   editorServices,
   EditorSyntaxStatus,
-  ICodeMirror,
   Mode
 } from '@jupyterlab/codemirror';
 import { IDocumentWidget } from '@jupyterlab/docregistry';
 import { FileEditor, IEditorTracker } from '@jupyterlab/fileeditor';
-import { IEditMenu, IMainMenu } from '@jupyterlab/mainmenu';
+import { IMainMenu } from '@jupyterlab/mainmenu';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import { IStatusBar } from '@jupyterlab/statusbar';
 import { ITranslator } from '@jupyterlab/translation';
-import CodeMirror from 'codemirror';
+import { Widget } from '@lumino/widgets';
+import { findNext, gotoLine } from '@codemirror/search';
 
 /**
  * The command IDs used by the codemirror plugin.
@@ -41,13 +46,6 @@ namespace CommandIDs {
   export const goToLine = 'codemirror:go-to-line';
 }
 
-/** The CodeMirror singleton. */
-const codemirrorSingleton: JupyterFrontEndPlugin<ICodeMirror> = {
-  id: '@jupyterlab/codemirror-extension:codemirror',
-  provides: ICodeMirror,
-  activate: activateCodeMirror
-};
-
 /**
  * The editor services.
  */
@@ -62,7 +60,7 @@ const services: JupyterFrontEndPlugin<IEditorServices> = {
  */
 const commands: JupyterFrontEndPlugin<void> = {
   id: '@jupyterlab/codemirror-extension:commands',
-  requires: [IEditorTracker, ISettingRegistry, ITranslator, ICodeMirror],
+  requires: [IEditorTracker, ISettingRegistry, ITranslator],
   optional: [IMainMenu],
   activate: activateEditorCommands,
   autoStart: true
@@ -91,9 +89,9 @@ export const editorSyntaxStatus: JupyterFrontEndPlugin<void> = {
     labShell.currentChanged.connect(() => {
       const current = labShell.currentWidget;
       if (current && tracker.has(current) && item.model) {
-        item.model.editor = (current as IDocumentWidget<
-          FileEditor
-        >).content.editor;
+        item.model.editor = (
+          current as IDocumentWidget<FileEditor>
+        ).content.editor;
       }
     });
     statusBar.registerStatusItem(
@@ -112,13 +110,82 @@ export const editorSyntaxStatus: JupyterFrontEndPlugin<void> = {
 };
 
 /**
+ * A plugin providing a line/column status item to the application.
+ */
+export const lineColItem: JupyterFrontEndPlugin<IPositionModel> = {
+  id: '@jupyterlab/codemirror-extension:line-col-status',
+  autoStart: true,
+  requires: [ITranslator],
+  optional: [ILabShell, IStatusBar],
+  provides: IPositionModel,
+  activate: (
+    app: JupyterFrontEnd,
+    translator: ITranslator,
+    labShell: ILabShell | null,
+    statusBar: IStatusBar | null
+  ): IPositionModel => {
+    const item = new LineCol(translator);
+
+    const providers = new Set<
+      (widget: Widget | null) => CodeEditor.IEditor | null
+    >();
+
+    if (statusBar) {
+      // Add the status item to the status bar.
+      statusBar.registerStatusItem(lineColItem.id, {
+        item,
+        align: 'right',
+        rank: 2,
+        isActive: () => !!item.model.editor
+      });
+    }
+
+    const addEditorProvider = (
+      provider: (widget: Widget | null) => CodeEditor.IEditor | null
+    ): void => {
+      providers.add(provider);
+
+      if (app.shell.currentWidget) {
+        updateEditor(app.shell, {
+          newValue: app.shell.currentWidget,
+          oldValue: null
+        });
+      }
+    };
+
+    const update = (): void => {
+      updateEditor(app.shell, {
+        oldValue: app.shell.currentWidget,
+        newValue: app.shell.currentWidget
+      });
+    };
+
+    function updateEditor(
+      shell: JupyterFrontEnd.IShell,
+      changes: ILabShell.IChangedArgs
+    ) {
+      item.model.editor =
+        [...providers]
+          .map(provider => provider(changes.newValue))
+          .filter(editor => editor !== null)[0] ?? null;
+    }
+
+    if (labShell) {
+      labShell.currentChanged.connect(updateEditor);
+    }
+
+    return { addEditorProvider, update };
+  }
+};
+
+/**
  * Export the plugins as default.
  */
 const plugins: JupyterFrontEndPlugin<any>[] = [
   commands,
   services,
   editorSyntaxStatus,
-  codemirrorSingleton
+  lineColItem
 ];
 export default plugins;
 
@@ -131,33 +198,10 @@ const id = commands.id;
  * Set up the editor services.
  */
 function activateEditorServices(app: JupyterFrontEnd): IEditorServices {
-  CodeMirror.prototype.save = () => {
+  CodeMirrorEditor.prototype.save = () => {
     void app.commands.execute('docmanager:save');
   };
   return editorServices;
-}
-
-/**
- * Simplest implementation of the CodeMirror singleton provider.
- */
-class CodeMirrorSingleton implements ICodeMirror {
-  get CodeMirror() {
-    return CodeMirror;
-  }
-
-  async ensureVimKeymap() {
-    if (!('Vim' in (CodeMirror as any))) {
-      // @ts-expect-error
-      await import('codemirror/keymap/vim.js');
-    }
-  }
-}
-
-/**
- * Set up the CodeMirror singleton.
- */
-function activateCodeMirror(app: JupyterFrontEnd): ICodeMirror {
-  return new CodeMirrorSingleton();
 }
 
 /**
@@ -168,7 +212,6 @@ function activateEditorCommands(
   tracker: IEditorTracker,
   settingRegistry: ISettingRegistry,
   translator: ITranslator,
-  codeMirror: ICodeMirror,
   mainMenu: IMainMenu | null
 ): void {
   const trans = translator.load('jupyterlab');
@@ -191,30 +234,13 @@ function activateEditorCommands(
   ): Promise<void> {
     keyMap = (settings.get('keyMap').composite as string | null) || keyMap;
 
-    // Lazy loading of vim mode
-    if (keyMap === 'vim') {
-      await codeMirror.ensureVimKeymap();
-    }
-
     theme = (settings.get('theme').composite as string | null) || theme;
-
-    // Lazy loading of theme stylesheets
-    if (theme !== 'jupyter' && theme !== 'default') {
-      const filename =
-        theme === 'solarized light' || theme === 'solarized dark'
-          ? 'solarized'
-          : theme;
-
-      await import(`codemirror/theme/${filename}.css`);
-    }
 
     scrollPastEnd =
       (settings.get('scrollPastEnd').composite as boolean | null) ??
       scrollPastEnd;
     styleActiveLine =
-      (settings.get('styleActiveLine').composite as
-        | boolean
-        | CodeMirror.StyleActiveLine) ?? styleActiveLine;
+      (settings.get('styleActiveLine').composite as boolean) ?? styleActiveLine;
     styleSelectedText =
       (settings.get('styleSelectedText').composite as boolean) ??
       styleSelectedText;
@@ -292,10 +318,7 @@ function activateEditorCommands(
    * Create a menu for the editor.
    */
   commands.addCommand(CommandIDs.changeTheme, {
-    label: args =>
-      args.theme === 'default'
-        ? trans.__('codemirror')
-        : trans.__((args.theme as string) ?? theme),
+    label: args => (args.theme as string) ?? theme,
     execute: args => {
       const key = 'theme';
       const value = (theme = (args['theme'] as string) ?? theme);
@@ -333,33 +356,45 @@ function activateEditorCommands(
         return;
       }
       const editor = widget.content.editor as CodeMirrorEditor;
-      editor.execCommand('find');
+      editor.execCommand(findNext);
     },
     isEnabled
   });
 
   commands.addCommand(CommandIDs.goToLine, {
     label: trans.__('Go to Line…'),
-    execute: () => {
+    execute: args => {
       const widget = tracker.currentWidget;
       if (!widget) {
         return;
       }
       const editor = widget.content.editor as CodeMirrorEditor;
-      editor.execCommand('jumpToLine');
+
+      const line = args['line'] as number | undefined;
+      const column = args['column'] as number | undefined;
+      if (line !== undefined || column !== undefined) {
+        editor.setCursorPosition({
+          line: (line ?? 1) - 1,
+          column: (column ?? 1) - 1
+        });
+      } else {
+        editor.execCommand(gotoLine);
+      }
     },
     isEnabled
   });
 
   commands.addCommand(CommandIDs.changeMode, {
-    label: args => args['name'] as string,
+    label: args =>
+      (args['name'] as string) ??
+      trans.__('Change editor mode to the provided `name`.'),
     execute: args => {
       const name = args['name'] as string;
       const widget = tracker.currentWidget;
       if (name && widget) {
         const spec = Mode.findByName(name);
         if (spec) {
-          widget.content.model.mimeType = spec.mime;
+          widget.content.model.mimeType = spec.mime as string;
         }
       }
     },
@@ -392,7 +427,7 @@ function activateEditorCommands(
         })
         .forEach(spec => {
           // Avoid mode name with a curse word.
-          if (spec.mode.indexOf('brainf') === 0) {
+          if (spec.name.indexOf('brainf') === 0) {
             return;
           }
           modeMenu.addItem({
@@ -403,11 +438,8 @@ function activateEditorCommands(
     }
     // Add go to line capabilities to the edit menu.
     mainMenu.editMenu.goToLiners.add({
-      tracker,
-      goToLine: (widget: IDocumentWidget<FileEditor>) => {
-        const editor = widget.content.editor as CodeMirrorEditor;
-        editor.execCommand('jumpToLine');
-      }
-    } as IEditMenu.IGoToLiner<IDocumentWidget<FileEditor>>);
+      id: CommandIDs.goToLine,
+      isEnabled: (w: Widget) => tracker.currentWidget !== null && tracker.has(w)
+    });
   }
 }

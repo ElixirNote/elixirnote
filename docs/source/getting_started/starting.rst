@@ -1,3 +1,6 @@
+.. Copyright (c) Jupyter Development Team.
+.. Distributed under the terms of the Modified BSD License.
+
 .. _starting:
 
 Starting JupyterLab
@@ -36,10 +39,6 @@ JupyterLab provides a way for users to copy URLs that
 JupyterLab URLs are an advanced part of the user interface that allows for
 managing :ref:`workspaces <url-workspaces-ui>`. To learn more about URLs in
 Jupyterlab, visit :ref:`urls`.
-
-To open the classic Notebook from JupyterLab, select "Launch Classic Notebook"
-from the JupyterLab Help menu, or you can change the URL
-from ``/lab`` to ``/tree``.
 
 JupyterLab runs on top of Jupyter Server, so see the `security
 section <https://jupyter-server.readthedocs.io/en/latest/operators/security.html>`__

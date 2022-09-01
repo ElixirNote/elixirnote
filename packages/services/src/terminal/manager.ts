@@ -175,7 +175,11 @@ export class TerminalManager extends BaseManager implements Terminal.IManager {
   async startNew(
     options?: Terminal.ITerminal.IOptions
   ): Promise<Terminal.ITerminalConnection> {
-    const model = await startNew(this.serverSettings, options?.name);
+    const model = await startNew(
+      this.serverSettings,
+      options?.name,
+      options?.cwd
+    );
     await this.refreshRunning();
     return this.connectTo({ model });
   }
@@ -293,6 +297,73 @@ export namespace TerminalManager {
     /**
      * When the manager stops polling the API. Defaults to `when-hidden`.
      */
-    standby?: Poll.Standby;
+    standby?: Poll.Standby | (() => boolean | Poll.Standby);
+  }
+
+  /**
+   * A no-op terminal manager to be used when starting terminals is not supported.
+   */
+  export class NoopManager extends TerminalManager {
+    /**
+     * Whether the manager is active.
+     */
+    get isActive(): boolean {
+      return false;
+    }
+
+    /**
+     * Used for testing.
+     */
+    get parentReady(): Promise<void> {
+      return super.ready;
+    }
+
+    /**
+     * A promise that fulfills when the manager is ready (never).
+     */
+    get ready(): Promise<void> {
+      return this.parentReady.then(() => this._readyPromise);
+    }
+
+    /**
+     * Create a new terminal session - throw an error since it is not supported.
+     *
+     */
+    async startNew(
+      options?: Terminal.ITerminal.IOptions
+    ): Promise<Terminal.ITerminalConnection> {
+      return Promise.reject(
+        new Error('Not implemented in no-op Terminal Manager')
+      );
+    }
+
+    /*
+     * Connect to a running terminal - throw an error since it is not supported.
+     */
+    connectTo(
+      options: Omit<Terminal.ITerminalConnection.IOptions, 'serverSettings'>
+    ): Terminal.ITerminalConnection {
+      throw Error('Not implemented in no-op Terminal Manager');
+    }
+
+    /**
+     * Shut down a session by id - throw an error since it is not supported.
+     */
+    async shutdown(id: string): Promise<void> {
+      return Promise.reject(
+        new Error('Not implemented in no-op Terminal Manager')
+      );
+    }
+
+    /**
+     * Execute a request to the server to poll running sessions and update state.
+     */
+    protected async requestRunning(): Promise<void> {
+      return Promise.resolve();
+    }
+
+    private _readyPromise = new Promise<void>(() => {
+      /* no-op */
+    });
   }
 }

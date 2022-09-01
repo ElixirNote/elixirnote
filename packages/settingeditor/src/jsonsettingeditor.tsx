@@ -3,22 +3,20 @@
 | Distributed under the terms of the Modified BSD License.
 |----------------------------------------------------------------------------*/
 
-import { ReactWidget } from '@jupyterlab/apputils';
 import { CodeEditor } from '@jupyterlab/codeeditor';
 import { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import { IStateDB } from '@jupyterlab/statedb';
 import { ITranslator, nullTranslator } from '@jupyterlab/translation';
-import { jupyterIcon } from '@jupyterlab/ui-components';
+import { jupyterIcon, ReactWidget } from '@jupyterlab/ui-components';
 import { CommandRegistry } from '@lumino/commands';
 import { JSONExt, JSONObject, JSONValue } from '@lumino/coreutils';
 import { Message } from '@lumino/messaging';
 import { ISignal } from '@lumino/signaling';
-import { Widget } from '@lumino/widgets';
+import { SplitPanel, Widget } from '@lumino/widgets';
 import * as React from 'react';
 import { PluginEditor } from './plugineditor';
 import { PluginList } from './pluginlist';
-import { SplitPanel } from './splitpanel';
 
 /**
  * The ratio panes in the setting editor.
@@ -336,9 +334,8 @@ export class JsonSettingEditor extends SplitPanel {
   private _instructions: Widget;
   private _list: PluginList;
   private _saving = false;
-  private _state: JsonSettingEditor.ILayoutState = JSONExt.deepCopy(
-    DEFAULT_LAYOUT
-  );
+  private _state: JsonSettingEditor.ILayoutState =
+    JSONExt.deepCopy(DEFAULT_LAYOUT);
   private _when: Promise<any>;
 }
 

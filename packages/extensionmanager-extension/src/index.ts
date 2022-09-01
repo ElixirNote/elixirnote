@@ -23,6 +23,7 @@ const PLUGIN_ID = '@jupyterlab/extensionmanager-extension:plugin';
  * IDs of the commands added by this extension.
  */
 namespace CommandIDs {
+  export const showPanel = 'extensionmanager:show-panel';
   export const toggle = 'extensionmanager:toggle';
 }
 
@@ -67,7 +68,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
         'aria-label',
         trans.__('Extension Manager section')
       );
-      labShell.add(view, 'left', { rank: 1000 });
+      labShell.add(view, 'left', { rank: 1000, type: 'Extension Manager' });
     }
 
     // If the extension is enabled or disabled,
@@ -89,7 +90,10 @@ const plugin: JupyterFrontEndPlugin<void> = {
               trans.__('Extension Manager section')
             );
             if (labShell) {
-              labShell.add(view, 'left', { rank: 1000 });
+              labShell.add(view, 'left', {
+                rank: 1000,
+                type: 'Extension Manager'
+              });
             }
           } else if (!enabled && view?.isAttached) {
             app.commands.notifyCommandChanged(CommandIDs.toggle);
@@ -102,6 +106,16 @@ const plugin: JupyterFrontEndPlugin<void> = {
           `Something went wrong when reading the settings.\n${reason}`
         );
       });
+
+    commands.addCommand(CommandIDs.showPanel, {
+      label: trans.__('Extension Manager'),
+      execute: () => {
+        if (view) {
+          labShell?.activateById(view.id);
+        }
+      },
+      isVisible: () => enabled && labShell !== null
+    });
 
     commands.addCommand(CommandIDs.toggle, {
       label: trans.__('Enable Extension Manager'),
@@ -141,8 +155,8 @@ namespace Private {
   ): Promise<boolean> {
     return showDialog({
       title: trans.__('Enable Extension Manager?'),
-      body: trans.__(`Thanks for trying out Notebook's extension manager.
-The Notebook development team is excited to have a robust
+      body: trans.__(`Thanks for trying out JupyterLab's extension manager.
+The JupyterLab development team is excited to have a robust
 third-party extension community.
 However, we cannot vouch for every extension,
 and some may introduce security risks.

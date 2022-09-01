@@ -1,8 +1,8 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
 
-import { galata, test } from '@jupyterlab/galata';
-import { expect, Page } from '@playwright/test';
+import { expect, galata, test } from '@jupyterlab/galata';
+import { Page } from '@playwright/test';
 import * as path from 'path';
 
 const nbFile = 'simple_notebook.ipynb';
@@ -22,8 +22,8 @@ test.use({
 });
 
 test.describe('Workspace', () => {
-  test.beforeAll(async ({ baseURL, tmpPath }) => {
-    const contents = galata.newContentsHelper(baseURL);
+  test.beforeAll(async ({ baseURL, request, tmpPath }) => {
+    const contents = galata.newContentsHelper(baseURL, undefined, request);
     await contents.uploadFile(
       path.resolve(__dirname, `./notebooks/${nbFile}`),
       `${tmpPath}/${nbFile}`
@@ -34,8 +34,8 @@ test.describe('Workspace', () => {
     );
   });
 
-  test.afterAll(async ({ baseURL, tmpPath }) => {
-    const contents = galata.newContentsHelper(baseURL);
+  test.afterAll(async ({ baseURL, request, tmpPath }) => {
+    const contents = galata.newContentsHelper(baseURL, undefined, request);
     await contents.deleteDirectory(tmpPath);
   });
 

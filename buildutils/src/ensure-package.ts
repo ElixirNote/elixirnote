@@ -332,9 +332,6 @@ export async function ensurePackage(
     Object.keys(testReferences).forEach(name => {
       tsConfigTestData.references.push({ path: testReferences[name] });
     });
-    Object.keys(references).forEach(name => {
-      tsConfigTestData.references.push({ path: testReferences[name] });
-    });
     utils.writeJSONFile(tsConfigTestPath, tsConfigTestData);
   }
 
@@ -463,13 +460,21 @@ export async function ensurePackage(
 
   // Ensure style and lib are included in files metadata.
   const filePatterns: string[] = data.files || [];
+  const ignoreDirs: string[] = ['.ipynb_checkpoints'];
 
   // Function to get all of the files in a directory, recursively.
-  function recurseDir(dirname: string, files: string[]) {
+  function recurseDir(
+    dirname: string,
+    files: string[],
+    skipDirs: string[] = ignoreDirs
+  ) {
     if (!fs.existsSync(dirname)) {
       return files;
     }
     fs.readdirSync(dirname).forEach(fpath => {
+      if (skipDirs.includes(fpath)) {
+        return files;
+      }
       const absolute = path.join(dirname, fpath);
       if (fs.statSync(absolute).isDirectory())
         return recurseDir(absolute, files);
@@ -545,7 +550,8 @@ export async function ensurePackage(
   const buildScript = data.scripts?.build || '';
   if (
     buildScript &&
-    (pkgPath.indexOf('packages') == -1 || buildScript.indexOf('tsc') == -1) &&
+    ((pkgPath.indexOf('packages') == -1 && pkgPath.indexOf('template') == -1) ||
+      buildScript.indexOf('tsc') == -1) &&
     !isPrivate
   ) {
     data.scripts['build:all'] = 'npm run build';
@@ -689,7 +695,7 @@ export async function ensureUiComponents(
 
   // sort the statements and then join them
   const iconCSSUrls = _iconCSSUrls.sort().join('\n');
-  const iconCSSDeclarations = _iconCSSDeclarations.sort().join('\n');
+  const iconCSSDeclarations = _iconCSSDeclarations.sort().join('\n\n');
 
   // generate the actual contents of the iconCSSClasses file
   const iconCSSClassesPath = path.join(iconCSSDir, 'deprecated.css');

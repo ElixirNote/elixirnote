@@ -8,6 +8,7 @@
  */
 
 import {
+  ILabShell,
   JupyterFrontEnd,
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
@@ -21,14 +22,6 @@ import {
 } from '@jupyterlab/translation';
 
 /**
- * A namespace for command IDs.
- */
-export namespace CommandIDs {
-  export const installAdditionalLanguages =
-    'jupyterlab-translation:install-additional-languages';
-}
-
-/**
  * Translation plugins
  */
 const PLUGIN_ID = '@jupyterlab/translation-extension:plugin';
@@ -37,11 +30,13 @@ const translator: JupyterFrontEndPlugin<ITranslator> = {
   id: '@jupyterlab/translation:translator',
   autoStart: true,
   requires: [JupyterFrontEnd.IPaths, ISettingRegistry],
+  optional: [ILabShell],
   provides: ITranslator,
   activate: async (
     app: JupyterFrontEnd,
     paths: JupyterFrontEnd.IPaths,
-    settings: ISettingRegistry
+    settings: ISettingRegistry,
+    labShell: ILabShell | null
   ) => {
     const setting = await settings.load(PLUGIN_ID);
     const currentLocale: string = setting.get('locale').composite as string;
@@ -57,6 +52,14 @@ const translator: JupyterFrontEndPlugin<ITranslator> = {
       serverSettings
     );
     await translationManager.fetch(currentLocale);
+
+    // Set translator to UI
+    if (labShell) {
+      labShell.translator = translationManager;
+    }
+
+    Dialog.translator = translationManager;
+
     return translationManager;
   }
 };

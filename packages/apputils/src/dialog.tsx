@@ -1,14 +1,19 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
 
-import { Button, closeIcon, LabIcon } from '@jupyterlab/ui-components';
+import { ITranslator, nullTranslator } from '@jupyterlab/translation';
+import {
+  Button,
+  closeIcon,
+  LabIcon,
+  ReactWidget,
+  Styling
+} from '@jupyterlab/ui-components';
 import { ArrayExt, each, map, toArray } from '@lumino/algorithm';
 import { PromiseDelegate } from '@lumino/coreutils';
 import { Message, MessageLoop } from '@lumino/messaging';
 import { Panel, PanelLayout, Widget } from '@lumino/widgets';
 import * as React from 'react';
-import { Styling } from './styling';
-import { ReactWidget } from './vdom';
 import { WidgetTracker } from './widgettracker';
 
 /**
@@ -35,11 +40,11 @@ export function showDialog<T>(
  */
 export function showErrorMessage(
   title: string,
-  error: any,
-  buttons: ReadonlyArray<Dialog.IButton> = [
-    Dialog.okButton({ label: 'Dismiss' })
-  ]
+  error: string | Dialog.IError,
+  buttons?: ReadonlyArray<Dialog.IButton>
 ): Promise<void> {
+  const trans = Dialog.translator.load('jupyterlab');
+  buttons = buttons ?? [Dialog.okButton({ label: trans.__('Dismiss') })];
   console.warn('Showing error:', error);
 
   // Cache promises to prevent multiple copies of identical dialogs showing
@@ -93,6 +98,23 @@ export class Dialog<T> extends Widget {
         return renderer.createButtonNode(button);
       })
     );
+
+    this._checkboxNode = null;
+    if (normalized.checkbox) {
+      const {
+        label = '',
+        caption = '',
+        checked = false,
+        className = ''
+      } = normalized.checkbox;
+      this._checkboxNode = renderer.createCheckboxNode({
+        label,
+        caption: caption ?? label,
+        checked,
+        className
+      });
+    }
+
     this._lastMouseDownInDialog = false;
 
     const layout = (this.layout = new PanelLayout());
@@ -111,7 +133,7 @@ export class Dialog<T> extends Widget {
       options
     );
     const body = renderer.createBody(normalized.body);
-    const footer = renderer.createFooter(this._buttonNodes);
+    const footer = renderer.createFooter(this._buttonNodes, this._checkboxNode);
     content.addWidget(header);
     content.addWidget(body);
     content.addWidget(footer);
@@ -152,7 +174,11 @@ export class Dialog<T> extends Widget {
     return promises.then(() => {
       // Do not show Dialog if it was disposed of before it was at the front of the launch queue
       if (!this._promise) {
-        return Promise.resolve({ button: Dialog.cancelButton(), value: null });
+        return Promise.resolve({
+          button: Dialog.cancelButton(),
+          isChecked: null,
+          value: null
+        });
       }
       Widget.attach(this, this._host);
       return promise.promise;
@@ -245,7 +271,7 @@ export class Dialog<T> extends Widget {
         this._primary = el as HTMLElement;
       }
     }
-    this._primary.focus();
+    this._primary?.focus();
   }
 
   /**
@@ -388,7 +414,7 @@ export class Dialog<T> extends Widget {
     const target = event.target as HTMLElement;
     if (!this.node.contains(target as HTMLElement)) {
       event.stopPropagation();
-      this._buttonNodes[this._defaultButton].focus();
+      this._buttonNodes[this._defaultButton]?.focus();
     }
   }
 
@@ -427,11 +453,18 @@ export class Dialog<T> extends Widget {
       value = body.getValue();
     }
     this.dispose();
-    promise.resolve({ button, value });
+    promise.resolve({
+      button,
+      isChecked:
+        this._checkboxNode?.querySelector<HTMLInputElement>('input')?.checked ??
+        null,
+      value
+    });
   }
 
   private _buttonNodes: ReadonlyArray<HTMLElement>;
   private _buttons: ReadonlyArray<Dialog.IButton>;
+  private _checkboxNode: HTMLElement | null;
   private _original: HTMLElement;
   private _first: HTMLElement;
   private _primary: HTMLElement;
@@ -448,6 +481,11 @@ export class Dialog<T> extends Widget {
  * The namespace for Dialog class statics.
  */
 export namespace Dialog {
+  /**
+   * Translator object.
+   */
+  export let translator: ITranslator = nullTranslator;
+
   /**
    * The body input types.
    */
@@ -514,6 +552,41 @@ export namespace Dialog {
   }
 
   /**
+   * The options used to make a checkbox item.
+   */
+  export interface ICheckbox {
+    /**
+     * The label for the checkbox.
+     */
+    label: string;
+
+    /**
+     * The caption for the checkbox.
+     */
+    caption: string;
+
+    /**
+     * The initial checkbox state.
+     */
+    checked: boolean;
+
+    /**
+     * The extra class name for the checkbox.
+     */
+    className: string;
+  }
+
+  /**
+   * Error object interface
+   */
+  export interface IError {
+    /**
+     * Error message
+     */
+    message: string | React.ReactElement<any>;
+  }
+
+  /**
    * The options used to create a dialog.
    */
   export interface IOptions<T> {
@@ -545,6 +618,11 @@ export namespace Dialog {
      * The buttons to display. Defaults to cancel and accept buttons.
      */
     buttons: ReadonlyArray<IButton>;
+
+    /**
+     * The checkbox to display in the footer. Defaults no checkbox.
+     */
+    checkbox: Partial<ICheckbox> | null;
 
     /**
      * The index of the default button.  Defaults to the last button.
@@ -591,7 +669,7 @@ export namespace Dialog {
     /**
      * Create the body of the dialog.
      *
-     * @param value - The input value for the body.
+     * @param body - The input value for the body.
      *
      * @returns A widget for the body.
      */
@@ -601,10 +679,14 @@ export namespace Dialog {
      * Create the footer of the dialog.
      *
      * @param buttons - The button nodes to add to the footer.
+     * @param checkbox - The checkbox node to add to the footer.
      *
      * @returns A widget for the footer.
      */
-    createFooter(buttons: ReadonlyArray<HTMLElement>): Widget;
+    createFooter(
+      buttons: ReadonlyArray<HTMLElement>,
+      checkbox: HTMLElement | null
+    ): Widget;
 
     /**
      * Create a button node for the dialog.
@@ -614,6 +696,15 @@ export namespace Dialog {
      * @returns A node for the button.
      */
     createButtonNode(button: IButton): HTMLElement;
+
+    /**
+     * Create a checkbox node for the dialog.
+     *
+     * @param checkbox - The checkbox data.
+     *
+     * @returns A node for the checkbox.
+     */
+    createCheckboxNode(checkbox: ICheckbox): HTMLElement;
   }
 
   /**
@@ -626,6 +717,14 @@ export namespace Dialog {
     button: IButton;
 
     /**
+     * State of the dialog checkbox.
+     *
+     * #### Notes
+     * It will be null if no checkbox is defined for the dialog.
+     */
+    isChecked: boolean | null;
+
+    /**
      * The value retrieved from `.getValue()` if given on the widget.
      */
     value: T | null;
@@ -636,7 +735,8 @@ export namespace Dialog {
    */
   export function createButton(value: Partial<IButton>): Readonly<IButton> {
     value.accept = value.accept !== false;
-    const defaultLabel = value.accept ? 'OK' : 'Cancel';
+    const trans = translator.load('jupyterlab');
+    const defaultLabel = value.accept ? trans.__('Ok') : trans.__('Cancel');
     return {
       label: value.label || defaultLabel,
       iconClass: value.iconClass || '',
@@ -726,6 +826,7 @@ export namespace Dialog {
       };
 
       if (typeof title === 'string') {
+        const trans = translator.load('jupyterlab');
         header = ReactWidget.create(
           <>
             {title}
@@ -734,7 +835,7 @@ export namespace Dialog {
                 className="jp-Dialog-close-button"
                 onMouseDown={handleMouseDown}
                 onKeyDown={handleKeyDown}
-                title="Cancel"
+                title={trans.__('Cancel')}
                 minimal
               >
                 <LabIcon.resolveReact
@@ -783,13 +884,24 @@ export namespace Dialog {
     /**
      * Create the footer of the dialog.
      *
-     * @param buttonNodes - The buttons nodes to add to the footer.
+     * @param buttons - The buttons nodes to add to the footer.
+     * @param checkbox - The checkbox node to add to the footer.
      *
      * @returns A widget for the footer.
      */
-    createFooter(buttons: ReadonlyArray<HTMLElement>): Widget {
+    createFooter(
+      buttons: ReadonlyArray<HTMLElement>,
+      checkbox: HTMLElement | null
+    ): Widget {
       const footer = new Widget();
       footer.addClass('jp-Dialog-footer');
+      if (checkbox) {
+        footer.node.appendChild(checkbox);
+        footer.node.insertAdjacentHTML(
+          'beforeend',
+          '<div class="jp-Dialog-spacer"></div>'
+        );
+      }
       each(buttons, button => {
         footer.node.appendChild(button);
       });
@@ -809,6 +921,28 @@ export namespace Dialog {
       e.className = this.createItemClass(button);
       e.appendChild(this.renderIcon(button));
       e.appendChild(this.renderLabel(button));
+      return e;
+    }
+
+    /**
+     * Create a checkbox node for the dialog.
+     *
+     * @param checkbox - The checkbox data.
+     *
+     * @returns A node for the checkbox.
+     */
+    createCheckboxNode(checkbox: ICheckbox): HTMLElement {
+      const e = document.createElement('label');
+      e.className = 'jp-Dialog-checkbox';
+      if (checkbox.className) {
+        e.classList.add(checkbox.className);
+      }
+      e.title = checkbox.caption;
+      e.textContent = checkbox.label;
+      const input = document.createElement('input') as HTMLInputElement;
+      input.type = 'checkbox';
+      input.checked = !!checkbox.checked;
+      e.insertAdjacentElement('afterbegin', input);
       return e;
     }
 
@@ -928,6 +1062,7 @@ namespace Private {
       title: options.title ?? '',
       body: options.body ?? '',
       host: options.host ?? document.body,
+      checkbox: options.checkbox ?? null,
       buttons,
       defaultButton: options.defaultButton ?? buttons.length - 1,
       renderer: options.renderer ?? Dialog.defaultRenderer,

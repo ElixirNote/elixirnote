@@ -81,13 +81,11 @@ describe('@jupyterlab/shortcut-extension', () => {
 
       await settingRegistry.load(bar.id);
 
-      await Promise.resolve(
-        plugin.default.activate(
-          {
-            commands: new CommandRegistry()
-          } as any,
-          settingRegistry
-        )
+      void plugin.default.activate(
+        {
+          commands: new CommandRegistry()
+        } as any,
+        settingRegistry
       );
 
       const settings = await settingRegistry.load(plugin.default.id);
@@ -151,13 +149,11 @@ describe('@jupyterlab/shortcut-extension', () => {
 
       await settingRegistry.load(bar.id);
 
-      await Promise.resolve(
-        plugin.default.activate(
-          {
-            commands: new CommandRegistry()
-          } as any,
-          settingRegistry
-        )
+      void plugin.default.activate(
+        {
+          commands: new CommandRegistry()
+        } as any,
+        settingRegistry
       );
 
       const settings = await settingRegistry.load(plugin.default.id);
