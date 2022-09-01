@@ -1,5 +1,9 @@
-import { test } from '@jupyterlab/galata';
-import { expect } from '@playwright/test';
+/*
+ * Copyright (c) Jupyter Development Team.
+ * Distributed under the terms of the Modified BSD License.
+ */
+
+import { expect, test } from '@jupyterlab/galata';
 
 const TERMINAL_SELECTOR = '.jp-Terminal';
 const TERMINAL_THEME_ATTRIBUTE = 'data-term-theme';
@@ -83,4 +87,19 @@ test.describe('Terminal', () => {
       expect(await terminal.screenshot()).toMatchSnapshot('dark-term-dark.png');
     });
   });
+});
+
+test('Terminal should open in Launcher cwd', async ({ page, tmpPath }) => {
+  await page.waitForSelector(`.jp-Launcher-cwd > h3:has-text("${tmpPath}")`);
+
+  await page.locator('[role="main"] >> p:has-text("Terminal")').click();
+
+  const terminal = page.locator(TERMINAL_SELECTOR);
+  await terminal.waitFor();
+
+  await page.waitForTimeout(1000);
+  await page.keyboard.type('basename $PWD');
+  await page.keyboard.press('Enter');
+  await page.waitForTimeout(1000);
+  expect(await terminal.screenshot()).toMatchSnapshot('launcher-term.png');
 });

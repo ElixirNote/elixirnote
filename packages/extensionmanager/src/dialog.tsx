@@ -15,7 +15,7 @@ export function reportInstallError(
   name: string,
   errorMessage?: string,
   translator?: ITranslator
-) {
+): void {
   translator = translator || nullTranslator;
   const trans = translator.load('jupyterlab');
   const entries = [];
@@ -36,6 +36,6 @@ export function reportInstallError(
   void showDialog({
     title: trans.__('Extension Installation Error'),
     body,
-    buttons: [Dialog.warnButton({ label: trans.__('OK') })]
+    buttons: [Dialog.warnButton({ label: trans.__('Ok') })]
   });
 }

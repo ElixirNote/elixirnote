@@ -14,7 +14,7 @@ commander
   .option('--skip-commit', 'Whether to skip commit changes')
   .arguments('<spec>')
   .action((spec: any, opts: any) => {
-    utils.exitOnUuncaughtException();
+    utils.exitOnUncaughtException();
 
     // Get the previous version.
     const prev = utils.getPythonVersion();
@@ -62,18 +62,6 @@ commander
       return;
     }
 
-    // If this is a major release during the alpha cycle, bump
-    // just the Python version.
-    if (prev.indexOf('a') !== -1 && spec === 'major') {
-      // Bump the version.
-      utils.run(`bumpversion ${spec}`);
-
-      // Run the post-bump script.
-      utils.postbump(commit);
-
-      return;
-    }
-
     // Determine the version spec to use for lerna.
     let lernaVersion = 'preminor';
     if (spec === 'build') {
@@ -104,10 +92,10 @@ commander
       },
       true
     );
-    // For a preminor release, we bump 10 minor versions so that we do
+    // For a major release, we bump 10 minor versions so that we do
     // not conflict with versions during minor releases of the top
     // level package.
-    if (lernaVersion === 'preminor') {
+    if (spec === 'major') {
       for (let i = 0; i < 10; i++) {
         utils.run(cmd);
       }

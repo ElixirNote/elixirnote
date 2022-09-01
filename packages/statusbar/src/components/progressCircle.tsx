@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) Jupyter Development Team.
+ * Distributed under the terms of the Modified BSD License.
+ */
+
 import React from 'react';
 export namespace ProgressCircle {
   /**
@@ -34,7 +39,13 @@ export function ProgressCircle(props: ProgressCircle.IProps): JSX.Element {
     return shape;
   };
   return (
-    <div className={'jp-Statusbar-ProgressCircle'}>
+    <div
+      className={'jp-Statusbar-ProgressCircle'}
+      role="progressbar"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={props.progress}
+    >
       <svg viewBox="0 0 250 250">
         <circle
           cx="125"

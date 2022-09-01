@@ -27,7 +27,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     const style = '@jupyterlab/theme-light-extension/index.css';
     manager.register({
       name: 'JupyterLab Light',
-      displayName: trans.__('Notebook Light'),
+      displayName: trans.__('JupyterLab Light'),
       isLight: true,
       themeScrollbars: false,
       load: () => manager.loadCSS(style),

@@ -6,14 +6,12 @@ import { Token } from '@lumino/coreutils';
 import { JsonSettingEditor as JSONSettingEditor } from './jsonsettingeditor';
 import { SettingsEditor } from './settingseditor';
 
-/* tslint:disable */
 /**
  * The setting editor tracker token.
  */
 export const ISettingEditorTracker = new Token<ISettingEditorTracker>(
   '@jupyterlab/settingeditor:ISettingEditorTracker'
 );
-/* tslint:enable */
 
 /**
  * The setting editor tracker token.

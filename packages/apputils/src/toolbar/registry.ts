@@ -1,8 +1,16 @@
-import { LabIcon } from '@jupyterlab/ui-components';
+/*
+ * Copyright (c) Jupyter Development Team.
+ * Distributed under the terms of the Modified BSD License.
+ */
+
+import {
+  CommandToolbarButton,
+  LabIcon,
+  Toolbar
+} from '@jupyterlab/ui-components';
 import { CommandRegistry } from '@lumino/commands';
 import { Widget } from '@lumino/widgets';
 import { IToolbarWidgetRegistry, ToolbarRegistry } from '../tokens';
-import { CommandToolbarButton, Toolbar } from './widget';
 
 /**
  * Concrete implementation of IToolbarWidgetRegistry interface
@@ -52,14 +60,14 @@ export class ToolbarWidgetRegistry implements IToolbarWidgetRegistry {
   }
 
   /**
-   * Register a new toolbar item factory
+   * Add a new toolbar item factory
    *
    * @param widgetFactory The widget factory name that creates the toolbar
    * @param toolbarItemName The unique toolbar item
    * @param factory The factory function that receives the widget containing the toolbar and returns the toolbar widget.
    * @returns The previously defined factory
    */
-  registerFactory<T extends Widget = Widget>(
+  addFactory<T extends Widget = Widget>(
     widgetFactory: string,
     toolbarItemName: string,
     factory: (main: T) => Widget
@@ -74,15 +82,31 @@ export class ToolbarWidgetRegistry implements IToolbarWidgetRegistry {
     return oldFactory;
   }
 
+  /**
+   * Register a new toolbar item factory
+   *
+   * @param widgetFactory The widget factory name that creates the toolbar
+   * @param toolbarItemName The unique toolbar item
+   * @param factory The factory function that receives the widget containing the toolbar and returns the toolbar widget.
+   * @returns The previously defined factory
+   *
+   * @deprecated since v4 use `addFactory` instead
+   */
+  registerFactory<T extends Widget = Widget>(
+    widgetFactory: string,
+    toolbarItemName: string,
+    factory: (main: T) => Widget
+  ): ((main: T) => Widget) | undefined {
+    return this.addFactory(widgetFactory, toolbarItemName, factory);
+  }
+
   protected _defaultFactory: (
     widgetFactory: string,
     widget: Widget,
     toolbarItem: ToolbarRegistry.IWidget
   ) => Widget;
-  protected _widgets: Map<
-    string,
-    Map<string, (main: Widget) => Widget>
-  > = new Map<string, Map<string, (main: Widget) => Widget>>();
+  protected _widgets: Map<string, Map<string, (main: Widget) => Widget>> =
+    new Map<string, Map<string, (main: Widget) => Widget>>();
 }
 
 /**

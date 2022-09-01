@@ -13,6 +13,9 @@
       "path": "../observables"
     },
     {
+      "path": "../rendermime-interfaces"
+    },
+    {
       "path": "../services"
     },
     {
@@ -20,6 +23,9 @@
     },
     {
       "path": "../statedb"
+    },
+    {
+      "path": "../statusbar"
     },
     {
       "path": "../translation"

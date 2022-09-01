@@ -32,6 +32,12 @@
       "path": "./packages/attachments"
     },
     {
+      "path": "./packages/cell-toolbar"
+    },
+    {
+      "path": "./packages/cell-toolbar-extension"
+    },
+    {
       "path": "./packages/cells"
     },
     {
@@ -48,6 +54,12 @@
     },
     {
       "path": "./packages/codemirror-extension"
+    },
+    {
+      "path": "./packages/collaboration"
+    },
+    {
+      "path": "./packages/collaboration-extension"
     },
     {
       "path": "./packages/completer"
@@ -158,6 +170,12 @@
       "path": "./packages/logconsole-extension"
     },
     {
+      "path": "./packages/lsp"
+    },
+    {
+      "path": "./packages/lsp-extension"
+    },
+    {
       "path": "./packages/mainmenu"
     },
     {
@@ -168,6 +186,9 @@
     },
     {
       "path": "./packages/markdownviewer-extension"
+    },
+    {
+      "path": "./packages/markedparser-extension"
     },
     {
       "path": "./packages/mathjax2"

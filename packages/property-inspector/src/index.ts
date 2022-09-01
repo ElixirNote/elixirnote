@@ -6,12 +6,12 @@
  */
 
 import { ILabShell } from '@jupyterlab/application';
-import { ReactWidget } from '@jupyterlab/apputils';
 import {
   ITranslator,
   nullTranslator,
   TranslationBundle
 } from '@jupyterlab/translation';
+import { ReactWidget } from '@jupyterlab/ui-components';
 import { ISignal, Signal } from '@lumino/signaling';
 import { FocusTracker, SingletonLayout, Widget } from '@lumino/widgets';
 import * as React from 'react';
@@ -24,7 +24,8 @@ export { IPropertyInspector, IPropertyInspectorProvider };
  */
 abstract class PropertyInspectorProvider
   extends Widget
-  implements IPropertyInspectorProvider {
+  implements IPropertyInspectorProvider
+{
   /**
    * Construct a new Property Inspector.
    */
@@ -262,7 +263,7 @@ namespace Private {
     /**
      * Whether the property inspector is disposed.
      */
-    get isDisposed() {
+    get isDisposed(): boolean {
       return this._isDisposed;
     }
 

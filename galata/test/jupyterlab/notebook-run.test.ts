@@ -1,8 +1,7 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
 
-import { galata, test } from '@jupyterlab/galata';
-import { expect } from '@playwright/test';
+import { expect, galata, test } from '@jupyterlab/galata';
 import * as path from 'path';
 
 const fileName = 'simple_notebook.ipynb';
@@ -10,8 +9,8 @@ const fileName = 'simple_notebook.ipynb';
 test.use({ tmpPath: 'notebook-run-test' });
 
 test.describe.serial('Notebook Run', () => {
-  test.beforeAll(async ({ baseURL, tmpPath }) => {
-    const contents = galata.newContentsHelper(baseURL);
+  test.beforeAll(async ({ baseURL, request, tmpPath }) => {
+    const contents = galata.newContentsHelper(baseURL, undefined, request);
     await contents.uploadFile(
       path.resolve(__dirname, `./notebooks/${fileName}`),
       `${tmpPath}/${fileName}`
@@ -26,8 +25,8 @@ test.describe.serial('Notebook Run', () => {
     await page.filebrowser.openDirectory(tmpPath);
   });
 
-  test.afterAll(async ({ baseURL, tmpPath }) => {
-    const contents = galata.newContentsHelper(baseURL);
+  test.afterAll(async ({ baseURL, request, tmpPath }) => {
+    const contents = galata.newContentsHelper(baseURL, undefined, request);
     await contents.deleteDirectory(tmpPath);
   });
 

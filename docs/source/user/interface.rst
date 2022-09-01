@@ -1,3 +1,6 @@
+.. Copyright (c) Jupyter Development Team.
+.. Distributed under the terms of the Modified BSD License.
+
 .. _interface:
 
 The JupyterLab Interface
@@ -15,10 +18,10 @@ containing tabs of documents and activities, a collapsible :ref:`left sidebar
 terminals <running>`, the :ref:`command palette <commands>`, the :ref:`notebook
 cell tools inspector <notebook>`, and the :ref:`tabs list <tabs>`.
 
-.. image:: images/interface_jupyterlab.png
+.. image:: ../images/interface-jupyterlab.png
    :align: center
    :class: jp-screenshot
-   :alt: A screenshot of the JupyterLab interface. The main work area is in the middle section of the interface. There is also a left sidebar and a top menu bar.
+   :alt: A screenshot of the default JupyterLab interface. The main work area is in the middle. There is also a left sidebar and a top menu bar.
 
 JupyterLab sessions always reside in a :ref:`workspace <url-workspaces-ui>`.
 Workspaces contain the state of JupyterLab: the files that are currently open,
@@ -66,10 +69,10 @@ The left sidebar contains a number of commonly-used tabs including:
 - the :ref:`table of contents <toc>`,
 - the :ref:`extension manager <extension_manager>`.
 
-.. image:: images/interface_left.png
+.. image:: ../images/interface-left.png
    :align: center
    :class: jp-screenshot
-   :alt: A screenshot of the primary JupyterLab sidebar showing a variety of files in the file browser.
+   :alt: The left JupyterLab sidebar showing a variety of files in the file browser.
 
 .. _right-sidebar:
 
@@ -78,10 +81,10 @@ The right sidebar contains:
 - the property inspector (active in notebooks),
 - the :ref:`debugger <debugger>`.
 
-.. image:: images/interface_right.png
+.. image:: ../images/interface-right.png
    :align: center
    :class: jp-screenshot
-   :alt: A screenshot of the secondary JupyterLab sidebar showing the property inspector.
+   :alt: The right JupyterLab sidebar showing the property inspector.
 
 The column that allows to switch between tabs is called Activity Bar in JupyterLab.
 
@@ -130,17 +133,17 @@ Tabs and Simple Interface Mode
 The Tabs panel in the left sidebar lists the open documents or
 activities in the main work area:
 
-.. image:: images/interface_tabs.png
+.. image:: ../images/interface-tabs.png
    :align: center
    :class: jp-screenshot
-   :alt: A screenshot of the tabs panel in JupyterLab that lists some sample documents.
+   :alt: The tabs panel in JupyterLab with a list of sample documents.
 
 The same information is also available in the Tabs menu:
 
-.. image:: images/interface_tabs_menu.png
+.. image:: ../images/interface-tabs-menu.png
    :align: center
    :class: jp-screenshot
-   :alt: A screenshot of the tabs menu in JupyterLab with a list of sample documents.
+   :alt: The tabs menu in JupyterLab with a list of sample documents.
 
 .. _tabs-singledocument:
 
@@ -201,6 +204,33 @@ Keyboard Shortcuts in the Settings tab.
     <div class="jp-youtube-video">
        <iframe src="https://www.youtube-nocookie.com/embed/rhW3kAExCik?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
+
+To define a custom keyboard shortcut which runs more than one command, add a keyboard shortcut
+for ``apputils:run-all-enabled`` command in Keyboard Shortcuts advanced settings. The commands you
+wish to run are passed in the ``args`` argument as a list of strings:
+
+.. code:: json
+
+    {
+      "shortcuts": [
+        {
+          "command": "apputils:run-all-enabled",
+          "keys": [
+            "Accel T"
+          ],
+          "args": {
+            "commands": [
+              "docmanager:save",
+              "application:close"
+            ]
+          },
+          "selector": "body"
+        }
+      ]
+    }
+
+In this example ``docmanager:save`` and ``application:close`` commands are mapped to ``Accel T``.
+The commands are run in succession when you use the shortcut.
 
 .. _editor-keymaps:
 

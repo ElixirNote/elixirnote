@@ -42,6 +42,7 @@ export class DocumentManager implements IDocumentManager {
     this._collaborative = !!options.collaborative;
     this._dialogs = options.sessionDialogs || sessionContextDialogs;
     this._docProviderFactory = options.docProviderFactory;
+    this._isConnectedCallback = options.isConnectedCallback || (() => true);
 
     this._opener = options.opener;
     this._when = options.when || options.manager.ready;
@@ -130,6 +131,17 @@ export class DocumentManager implements IDocumentManager {
     this._contexts.forEach(context => {
       context.lastModifiedCheckMargin = value;
     });
+  }
+
+  /**
+   * Whether to ask the user to rename untitled file on first manual save.
+   */
+  get renameUntitledFileOnSave(): boolean {
+    return this._renameUntitledFileOnSave;
+  }
+
+  set renameUntitledFileOnSave(value: boolean) {
+    this._renameUntitledFileOnSave = value;
   }
 
   /**
@@ -275,6 +287,18 @@ export class DocumentManager implements IDocumentManager {
   }
 
   /**
+   * Duplicate a file.
+   *
+   * @param path - The full path to the file to be duplicated.
+   *
+   * @returns A promise which resolves when the file is duplicated.
+   */
+  duplicate(path: string): Promise<Contents.IModel> {
+    const basePath = PathExt.dirname(path);
+    return this.services.contents.copy(path, basePath);
+  }
+
+  /**
    * See if a widget already exists for the given path and widget name.
    *
    * @param path - The file path to use.
@@ -384,10 +408,13 @@ export class DocumentManager implements IDocumentManager {
   ): IDocumentWidget | undefined {
     const widget = this.findWidget(path, widgetName);
     if (widget) {
-      this._opener.open(widget, options || {});
+      this._opener.open(widget, {
+        type: widgetName,
+        ...options
+      });
       return widget;
     }
-    return this.open(path, widgetName, kernel, options || {});
+    return this.open(path, widgetName, kernel, options ?? {});
   }
 
   /**
@@ -475,6 +502,7 @@ export class DocumentManager implements IDocumentManager {
       options?: DocumentRegistry.IOpenOptions
     ) => {
       this._widgetManager.adoptWidget(context, widget);
+      // TODO should we pass the type for layout customization
       this._opener.open(widget, options);
     };
     const modelDBFactory =
@@ -495,6 +523,7 @@ export class DocumentManager implements IDocumentManager {
     });
     const handler = new SaveHandler({
       context,
+      isConnectedCallback: this._isConnectedCallback,
       saveInterval: this.autosaveInterval
     });
     Private.saveHandlerProperty.set(context, handler);
@@ -587,7 +616,7 @@ export class DocumentManager implements IDocumentManager {
     }
 
     const widget = this._widgetManager.createWidget(widgetFactory, context);
-    this._opener.open(widget, options || {});
+    this._opener.open(widget, { type: widgetFactory.name, ...options });
 
     // If the initial opening of the context fails, dispose of the widget.
     ready.catch(err => {
@@ -620,11 +649,13 @@ export class DocumentManager implements IDocumentManager {
   private _autosave = true;
   private _autosaveInterval = 120;
   private _lastModifiedCheckMargin = 500;
+  private _renameUntitledFileOnSave = true;
   private _when: Promise<void>;
   private _setBusy: (() => IDisposable) | undefined;
   private _dialogs: ISessionContext.IDialogs;
   private _docProviderFactory: IDocumentProviderFactory | undefined;
   private _collaborative: boolean;
+  private _isConnectedCallback: () => boolean;
 }
 
 /**
@@ -680,6 +711,12 @@ export namespace DocumentManager {
      * If true, the context will connect through yjs_ws_server to share information if possible.
      */
     collaborative?: boolean;
+
+    /**
+     * Autosaving should be paused while this callback function returns `false`.
+     * By default, it always returns `true`.
+     */
+    isConnectedCallback?: () => boolean;
   }
 
   /**

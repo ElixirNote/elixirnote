@@ -9,6 +9,9 @@
       "path": "../observables"
     },
     {
+      "path": "../rendermime-interfaces"
+    },
+    {
       "path": "../services"
     },
     {
@@ -16,6 +19,9 @@
     },
     {
       "path": "../statedb"
+    },
+    {
+      "path": "../statusbar"
     },
     {
       "path": "../translation"
@@ -28,27 +34,6 @@
     },
     {
       "path": "../../testutils"
-    },
-    {
-      "path": "../coreutils"
-    },
-    {
-      "path": "../observables"
-    },
-    {
-      "path": "../services"
-    },
-    {
-      "path": "../settingregistry"
-    },
-    {
-      "path": "../statedb"
-    },
-    {
-      "path": "../translation"
-    },
-    {
-      "path": "../ui-components"
     }
   ]
 }

@@ -15,10 +15,12 @@
   align-items: center;
 }
 
-#jp-MainLogo > svg {
-  width: 34px;
-  height: 34px;
-}
+#jp-top-bar {
+  --jp-private-toolbar-height: var(--jp-private-menu-panel-height);
 
-#elixir-help {
+  flex: 1 1 auto;
+  padding: 0 2px;
+  box-shadow: none;
+  border: none;
+  align-items: center;
 }

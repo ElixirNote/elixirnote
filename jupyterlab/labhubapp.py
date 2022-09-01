@@ -27,7 +27,7 @@ else:
 class SingleUserLabApp(SingleUserServerApp):
     @default("default_url")
     def _default_url(self):
-        return "/doc"
+        return "/lab"
 
     def find_server_extensions(self):
         """unconditionally enable jupyterlab server extension

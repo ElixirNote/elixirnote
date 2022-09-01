@@ -1,3 +1,6 @@
+.. Copyright (c) Jupyter Development Team.
+.. Distributed under the terms of the Modified BSD License.
+
 Internationalization and Localization
 =====================================
 
@@ -9,7 +12,7 @@ Four elements are used to handle the internationalization of JupyterLab:
 - `language-packs <https://github.com/jupyterlab/language-packs>`_ repository: It contains
   the source strings, their translations, the language packs and the GitHub workflows to
   update and publish the translations.
-- `Crowdin project <https://crowdin.com/project/jupyterlab>`_: Crowdin is the cloud-based solution 
+- `Crowdin project <https://crowdin.com/project/jupyterlab>`_: Crowdin is the cloud-based solution
   that streamlines localization management for JupyterLab. This is the place where contributors
   can translate JupyterLab strings.
 - `jupyterlab-translate <https://github.com/jupyterlab/jupyterlab-translate>`_ repository: Python
@@ -19,7 +22,7 @@ Four elements are used to handle the internationalization of JupyterLab:
 
 The *language-packs* repository is the main entry point. It interacts with Crowdin to publish
 newer source strings and get the latest translation. It also creates and updates the language packs.
-And finally it publishes them. All those actions are carried out using helpers defined in 
+And finally it publishes them. All those actions are carried out using helpers defined in
 ``jupyterlab-translate`` and the cookiecutter template.
 
 Workflows
@@ -89,6 +92,8 @@ The workflow is as follow:
     requests updating the source strings need to be closed in order for the Crowdin integration to
     re-open the PR.
 
+.. _language-update:
+
 Language packs update
 ^^^^^^^^^^^^^^^^^^^^^
 
@@ -100,17 +105,18 @@ There is one optional setting:
 - The new version in form *X.Y.postZ* - if not provided, the post number will be bumped.
 
 .. image:: prep_language_packs.png
+  :alt: The "Prepare language packs for release" workflow on GitHub Actions.
 
 The workflow is:
 
-1. Trigger the manual *Prepare language packs for release* workflow  
+1. Trigger the manual *Prepare language packs for release* workflow
 2. That workflow will open a new pull request with the changes to the language packs
 3. The validation workflow `Check language packs version <https://github.com/jupyterlab/language-packs/blob/master/.github/workflows/check_version.yml>`_ should pass on that pull request
 4. A maintainer needs to merge the pull request
 
 .. note::
 
-    The version policy for the language packs is to follow major and minor version numbers of 
+    The version policy for the language packs is to follow major and minor version numbers of
     JupyterLab and bumping the post number for any intermediate updates. The version
     of all language packs is identical to ease maintenance.
 
@@ -135,3 +141,17 @@ will be automatically triggered. Its steps are:
     Publication is done using jupyterlab-bot credentials on all PyPI projects.
 
     `Conda recipe <https://github.com/conda-forge/jupyterlab-language-packs-feedstock>`_ should be updated by the auto-tick bot of conda-forge.
+
+
+Adding a new language pack
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This requires the following manual actions to be executed (in that order):
+
+1. Add the language on Crowdin
+2. Execute the :ref:`language-update` workflow
+3. Manually upload the package on PyPI
+4. Update the owner on PyPI to add jupyterlab-bot as maintainer
+5. Acknowledge the grant for the bot
+6. Update the `github action list <https://github.com/jupyterlab/language-packs/blob/814ee5589fd83ceaeb6ecaefa8ad2db741f3a2df/.github/workflows/release_publish.yml#L42>`_
+7. Update the `conda-forge variant list <https://github.com/conda-forge/jupyterlab-language-packs-feedstock/blob/master/recipe/conda_build_config.yaml>`_

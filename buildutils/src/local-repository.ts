@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) Jupyter Development Team.
+ * Distributed under the terms of the Modified BSD License.
+ */
+
+/* eslint-disable camelcase */
 import * as fs from 'fs-extra';
 import * as child_process from 'child_process';
 import * as crypto from 'crypto';
@@ -33,10 +39,10 @@ async function startLocalRegistry(out_dir: string, port = DEFAULT_PORT) {
   } catch (e) {
     // Do nothing
   }
-  if (!prev_npm || prev_npm.indexOf('localhost') !== -1) {
+  if (!prev_npm || prev_npm.indexOf('0.0.0.0') !== -1) {
     prev_npm = 'https://registry.npmjs.org/';
   }
-  if (prev_yarn.indexOf('localhost') !== -1) {
+  if (prev_yarn.indexOf('0.0.0.0') !== -1) {
     prev_yarn = '';
   }
 
@@ -50,6 +56,7 @@ auth:
 uplinks:
     npmjs:
         url: ${prev_npm}
+        timeout: 10m
 packages:
   '@*/*':
     access: $all
@@ -66,7 +73,7 @@ packages:
   const log_file = path.join(out_dir, 'verdaccio.log');
 
   // Start local registry
-  const args = `-c verdaccio.yml -l localhost:${port}`;
+  const args = `-c verdaccio.yml -l 0.0.0.0:${port}`;
   console.log(`Starting verdaccio on port ${port} in ${out_dir}`);
 
   // Ensure a clean log file
@@ -119,10 +126,20 @@ packages:
   utils.writeJSONFile(info_file, data);
 
   // Set registry to local registry
-  const local_registry = `http://localhost:${port}`;
-  child_process.execSync(`npm config set registry "${local_registry}"`);
+  const local_registry = `http://0.0.0.0:${port}`;
+  child_process.execFileSync('npm', [
+    'config',
+    'set',
+    'registry',
+    local_registry
+  ]);
   try {
-    child_process.execSync(`yarn config set registry "${local_registry}"`);
+    child_process.execFileSync('yarn', [
+      'config',
+      'set',
+      'registry',
+      local_registry
+    ]);
   } catch (e) {
     // yarn not available
   }
@@ -141,25 +158,26 @@ packages:
     loginPs.stdout.on('data', (chunk: string) => {
       const data = Buffer.from(chunk, 'utf-8').toString().trim();
       console.log('stdout:', data);
-      switch (data) {
-        case 'Username:':
-          console.log('Passing username...');
-          loginPs.stdin.write(user + '\n');
-          break;
-        case 'Password:':
-          console.log('Passing password...');
-          loginPs.stdin.write(pass + '\n');
-          break;
-        case 'Email: (this IS public)':
-          console.log('Passing email...');
-          loginPs.stdin.write(email + '\n');
-          break;
-        default:
-          reject(`Unexpected prompt: "${data}"`);
-      }
       if (data.indexOf('Logged in as') !== -1) {
         loginPs.stdin.end();
         // do not accept here yet, the token may not have been written
+      } else {
+        switch (data) {
+          case 'Username:':
+            console.log('Passing username...');
+            loginPs.stdin.write(user + '\n');
+            break;
+          case 'Password:':
+            console.log('Passing password...');
+            loginPs.stdin.write(pass + '\n');
+            break;
+          case 'Email: (this IS public)':
+            console.log('Passing email...');
+            loginPs.stdin.write(email + '\n');
+            break;
+          default:
+            reject(`Unexpected prompt: "${data}"`);
+        }
       }
       loginPs.stderr.on('data', (chunk: string) => {
         const data = Buffer.from(chunk, 'utf-8').toString().trim();
@@ -235,7 +253,7 @@ function fixLinks(package_dir: string) {
   let hash = shasum.update(content);
   console.log('Prior hash', hash.digest('hex'));
 
-  const regex = /http\:\/\/localhost\:\d+/g;
+  const regex = /http\:\/\/0\.0\.0\.0\:\d+/g;
   const new_content = content.replace(regex, yarn_reg);
 
   shasum = crypto.createHash('sha256');
@@ -271,7 +289,7 @@ program
   .option('--port <port>', 'Port to use for the registry')
   .option('--path <path>', 'Path to use for the registry')
   .action(async (options: any) => {
-    utils.exitOnUuncaughtException();
+    utils.exitOnUncaughtException();
     const out_dir = options.path || DEFAULT_OUT_DIR;
     await startLocalRegistry(out_dir, options.port || DEFAULT_PORT);
   });
@@ -280,7 +298,7 @@ program
   .command('stop')
   .option('--path <path>', 'Path to use for the registry')
   .action(async (options: any) => {
-    utils.exitOnUuncaughtException();
+    utils.exitOnUncaughtException();
     const out_dir = options.path || DEFAULT_OUT_DIR;
     await stopLocalRegistry(out_dir);
   });
@@ -289,7 +307,7 @@ program
   .command('fix-links')
   .option('--path <path>', 'Path to the directory with a yarn lock')
   .action((options: any) => {
-    utils.exitOnUuncaughtException();
+    utils.exitOnUncaughtException();
     fixLinks(options.path || process.cwd());
   });
 
@@ -297,7 +315,7 @@ program
   .command('publish-dists')
   .option('--path <path>', 'Path to the directory with npm tar balls')
   .action((options: any) => {
-    utils.exitOnUuncaughtException();
+    utils.exitOnUncaughtException();
     publishPackages(options.path || process.cwd());
   });
 

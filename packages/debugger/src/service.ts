@@ -3,6 +3,12 @@
 
 import { KernelSpec, Session } from '@jupyterlab/services';
 
+import {
+  ITranslator,
+  nullTranslator,
+  TranslationBundle
+} from '@jupyterlab/translation';
+
 import { IDisposable } from '@lumino/disposable';
 
 import { ISignal, Signal } from '@lumino/signaling';
@@ -35,6 +41,7 @@ export class DebuggerService implements IDebugger, IDisposable {
     this._specsManager = options.specsManager ?? null;
     this._model = new Debugger.Model();
     this._debuggerSources = options.debuggerSources ?? null;
+    this._trans = (options.translator || nullTranslator).load('jupyterlab');
   }
 
   /**
@@ -335,11 +342,27 @@ export class DebuggerService implements IDebugger, IDisposable {
 
     const variableScopes = [
       {
-        name: 'Globals',
+        name: this._trans.__('Globals'),
         variables: variables
       }
     ];
     this._model.variables.scopes = variableScopes;
+  }
+
+  async displayModules(): Promise<void> {
+    if (!this.session) {
+      throw new Error('No active debugger session');
+    }
+
+    const modules = await this.session.sendRequest('modules', {});
+    this._model.kernelSources.kernelSources = modules.body.modules.map(
+      module => {
+        return {
+          name: module.name as string,
+          path: module.path as string
+        };
+      }
+    );
   }
 
   /**
@@ -497,11 +520,19 @@ export class DebuggerService implements IDebugger, IDisposable {
       this._model.breakpoints.restoreBreakpoints(remoteBreakpoints);
     }
 
+    // Removes duplicated breakpoints. It is better to do it here than
+    // in the editor, because the kernel can change the line of a
+    // breakpoint (when you attemp to set a breakpoint on an empty
+    // line for instance).
+    let addedLines = new Set<number>();
     // Set the kernel's breakpoints for this path.
     const reply = await this._setBreakpoints(localBreakpoints, path);
-    const updatedBreakpoints = reply.body.breakpoints.filter(
-      (val, _, arr) => arr.findIndex(el => el.line === val.line) > -1
-    );
+    const updatedBreakpoints = reply.body.breakpoints.filter((val, _, arr) => {
+      const cond1 = arr.findIndex(el => el.line === val.line) > -1;
+      const cond2 = !addedLines.has(val.line!);
+      addedLines.add(val.line!);
+      return cond1 && cond2;
+    });
 
     // Update the local model and finish kernel configuration.
     this._model.breakpoints.setBreakpoints(path, updatedBreakpoints);
@@ -582,15 +613,17 @@ export class DebuggerService implements IDebugger, IDisposable {
   getDebuggerState(): IDebugger.State {
     const breakpoints = this._model.breakpoints.breakpoints;
     let cells: string[] = [];
-    for (const id of breakpoints.keys()) {
-      const editorList = this._debuggerSources!.find({
-        focus: false,
-        kernel: this.session?.connection?.kernel?.name ?? '',
-        path: this._session?.connection?.path ?? '',
-        source: id
-      });
-      const tmp_cells = editorList.map(e => e.model.value.text);
-      cells = cells.concat(tmp_cells);
+    if (this._debuggerSources) {
+      for (const id of breakpoints.keys()) {
+        const editorList = this._debuggerSources.find({
+          focus: false,
+          kernel: this.session?.connection?.kernel?.name ?? '',
+          path: this._session?.connection?.path ?? '',
+          source: id
+        });
+        const tmpCells = editorList.map(e => e.model.value.text);
+        cells = cells.concat(tmpCells);
+      }
     }
     return { cells, breakpoints };
   }
@@ -851,22 +884,6 @@ export class DebuggerService implements IDebugger, IDisposable {
     this._model.variables.scopes = variableScopes;
   }
 
-  async displayModules(): Promise<void> {
-    if (!this.session) {
-      throw new Error('No active debugger session');
-    }
-
-    const modules = await this.session.sendRequest('modules', {});
-    this._model.kernelSources.kernelSources = modules.body.modules.map(
-      module => {
-        return {
-          name: module.name as string,
-          path: module.path as string
-        };
-      }
-    );
-  }
-
   /**
    * Handle a variable expanded event and request variables from the kernel.
    *
@@ -949,6 +966,7 @@ export class DebuggerService implements IDebugger, IDisposable {
     this
   );
   private _specsManager: KernelSpec.IManager | null;
+  private _trans: TranslationBundle;
 }
 
 /**
@@ -973,5 +991,10 @@ export namespace DebuggerService {
      * The optional kernel specs manager.
      */
     specsManager?: KernelSpec.IManager | null;
+
+    /**
+     * The application language translator.
+     */
+    translator?: ITranslator | null;
   }
 }

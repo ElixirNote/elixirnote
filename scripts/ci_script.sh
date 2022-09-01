@@ -14,7 +14,7 @@ fi
 if [[ $GROUP == python ]]; then
     jupyter lab build --debug
     # Run the python tests
-    py.test
+    python -m pytest
 fi
 
 
@@ -39,12 +39,9 @@ fi
 
 if [[ $GROUP == docs ]]; then
     # Build the docs (includes API docs)
+    pip install .[docs]
     pushd docs
-    conda env create -f environment.yml
-    conda init --all
-    source $CONDA/bin/activate jupyterlab_documentation
     make html
-    conda deactivate
     popd
 fi
 
@@ -64,7 +61,10 @@ fi
 
 if [[ $GROUP == lint ]]; then
     # Lint our files.
-    jlpm run lint:check || (echo 'Please run `jlpm run lint` locally and push changes' && exit 1)
+    jlpm run prettier:check || (echo 'Please run `jlpm run prettier` locally and push changes' && exit 1)
+    jlpm run eslint:check || (echo 'Please run `jlpm run eslint` locally and push changes' && exit 1)
+    jlpm run eslint:check:typed || (echo echo 'Please run `jlpm run eslint:typed` locally and push changes' && exit 1)
+    jlpm run stylelint:check || (echo 'Please run `jlpm run stylelint` locally and push changes' && exit 1)
 fi
 
 
@@ -72,17 +72,11 @@ if [[ $GROUP == integrity2 ]]; then
     # Run the integrity script to link binary files
     jlpm integrity
 
-    # Check the manifest
-    check-manifest -v
-
     # Build the packages individually.
     jlpm run build:src
 
     # Make sure we can build for release
     jlpm run build:dev:prod:release
-
-    # Make sure the storybooks build.
-    jlpm run build:storybook
 
     jlpm config set prefix ~/.yarn
 
@@ -115,7 +109,8 @@ if [[ $GROUP == integrity3 ]]; then
     jlpm bumpversion release --force # switch to rc
     jlpm bumpversion build --force
     jlpm bumpversion next --force
-    VERSION=$(python setup.py --version)
+    pip install hatchling
+    VERSION=$(hatchling version)
     if [[ $VERSION != *rc2 ]]; then exit 1; fi
 
     # make sure we can patch release
@@ -145,6 +140,7 @@ if [[ $GROUP == release_test ]]; then
     jlpm run publish:js --yes
     jlpm run prepare:python-release
     cat jupyterlab/staging/package.json
+
     ./scripts/release_test.sh
     node buildutils/lib/local-repository.js stop
 fi
@@ -239,16 +235,6 @@ if [[ $GROUP == usage ]]; then
     jupyter labextension enable -h
     jupyter labextension disable -h
 
-    # Make sure we can run JupyterLab under classic notebook
-    python -m jupyterlab.browser_check --notebook
-
-    # Make sure we can add and remove a sibling package.
-    # jlpm run add:sibling jupyterlab/tests/mock_packages/extension
-    # jlpm run build
-    # jlpm run remove:package extension
-    # jlpm run build
-    # jlpm run integrity --force  # Should have a clean tree now
-
     # Test cli tools
     jlpm run get:dependency mocha
     jlpm run update:dependency mocha
@@ -260,19 +246,6 @@ if [[ $GROUP == usage ]]; then
     # Use the extension upgrade script
     pip install cookiecutter
     python -m jupyterlab.upgrade_extension --no-input jupyterlab/tests/mock_packages/extension
-
-    # Test theme creation - make sure we can add it as a package, build,
-    # and run browser
-    pip install -q pexpect
-    python scripts/create_theme.py
-    mv foo packages
-    jlpm run integrity
-    jlpm run build:packages
-    jlpm run build:dev
-    python -m jupyterlab.browser_check --dev-mode
-    jlpm run remove:package foo
-    jlpm run integrity
-
 fi
 
 
@@ -306,15 +279,9 @@ if [[ $GROUP == usage2 ]]; then
 
     # Make sure we can non-dev install.
     virtualenv -p $(which python3) test_install
-    ./test_install/bin/pip install -q ".[test]"  # this populates <sys_prefix>/share/jupyter/lab
+    ./test_install/bin/pip install -q ".[dev,test]"  # this populates <sys_prefix>/share/jupyter/lab
 
     ./test_install/bin/jupyter server extension list 1>serverextensions 2>&1
-    cat serverextensions
-    cat serverextensions | grep -i "jupyterlab.*enabled"
-    cat serverextensions | grep -i "jupyterlab.*OK"
-
-    # TODO: remove when we no longer support classic notebook
-    ./test_install/bin/jupyter serverextension list 1>serverextensions 2>&1
     cat serverextensions
     cat serverextensions | grep -i "jupyterlab.*enabled"
     cat serverextensions | grep -i "jupyterlab.*OK"

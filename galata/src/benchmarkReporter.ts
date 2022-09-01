@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) Jupyter Development Team.
+ * Distributed under the terms of the Modified BSD License.
+ */
+
 import { JSONObject } from '@lumino/coreutils';
 import { chromium, firefox, webkit } from '@playwright/test';
 import {
@@ -9,7 +14,6 @@ import {
   TestResult
 } from '@playwright/test/reporter';
 import { dists, meanpw, variancepn } from '@stdlib/stats/base';
-import * as canvas from 'canvas';
 import fs from 'fs';
 import path from 'path';
 import si from 'systeminformation';
@@ -340,6 +344,9 @@ class BenchmarkReporter implements Reporter {
 
     this._comparison = options.comparison ?? 'snapshot';
 
+    this._expectedReference =
+      process.env['BENCHMARK_EXPECTED_REFERENCE'] ??
+      benchmark.DEFAULT_EXPECTED_REFERENCE;
     this._reference =
       process.env['BENCHMARK_REFERENCE'] ?? benchmark.DEFAULT_REFERENCE;
 
@@ -382,9 +389,9 @@ class BenchmarkReporter implements Reporter {
         ...result.attachments
           .filter(a => a.name === benchmark.DEFAULT_NAME_ATTACHMENT)
           .map(raw => {
-            const json = (JSON.parse(
+            const json = JSON.parse(
               raw.body?.toString() ?? '{}'
-            ) as any) as benchmark.IRecord;
+            ) as any as benchmark.IRecord;
             return { ...json, reference: this._reference };
           })
       );
@@ -430,7 +437,10 @@ class BenchmarkReporter implements Reporter {
         if (!hasExpectations || this.config.updateSnapshots === 'all') {
           expectations = {
             values: report.values.map(d => {
-              return { ...d, reference: benchmark.DEFAULT_EXPECTED_REFERENCE };
+              return {
+                ...d,
+                reference: this._expectedReference
+              };
             }),
             metadata: report.metadata
           };
@@ -451,10 +461,8 @@ class BenchmarkReporter implements Reporter {
       }
 
       // - Create report
-      const [
-        reportContentString,
-        reportExtension
-      ] = await this._buildTextReport(allData);
+      const [reportContentString, reportExtension] =
+        await this._buildTextReport(allData);
       const reportFile = path.resolve(
         outputDir,
         `${baseName}.${reportExtension}`
@@ -468,25 +476,11 @@ class BenchmarkReporter implements Reporter {
       const vegaSpec = vl.compile(config as any).spec;
 
       const view = new vega.View(vega.parse(vegaSpec), {
-        renderer: 'canvas'
+        renderer: 'svg'
       }).initialize();
-      const canvas = ((await view.toCanvas()) as any) as canvas.Canvas;
-      const graphFile = path.resolve(outputDir, `${baseName}.png`);
-      const fileStream = fs.createWriteStream(graphFile);
-
-      // Wait for pipe operation to finish
-      let resolver: (v: unknown) => void;
-      const waitForPipe = new Promise(resolve => {
-        resolver = resolve;
-      });
-      fileStream.once('finish', () => {
-        resolver(void 0);
-      });
-
-      const stream = canvas.createPNGStream();
-      stream.pipe(fileStream, {});
-
-      await waitForPipe;
+      const svgFigure = await view.toSVG();
+      const graphFile = path.resolve(outputDir, `${baseName}.svg`);
+      fs.writeFileSync(graphFile, svgFigure);
     } else {
       console.log(reportString);
     }
@@ -501,7 +495,7 @@ class BenchmarkReporter implements Reporter {
    * @param allData all test records.
    * @param comparison logic of test comparisons:
    * 'snapshot' or 'project'; default 'snapshot'.
-   * @return A list of two strings, the first one
+   * @returns A list of two strings, the first one
    * is the content of report, the second one is the extension of report file.
    */
   protected async defaultTextReportFactory(
@@ -554,10 +548,12 @@ class BenchmarkReporter implements Reporter {
     }
 
     const compare =
-      (groups.values().next().value?.values().next().value as Map<
-        string,
-        Map<string, number[]>
-      >).size === 2;
+      (
+        groups.values().next().value?.values().next().value as Map<
+          string,
+          Map<string, number[]>
+        >
+      ).size === 2;
 
     // - Create report
     const reportContent = new Array<string>(
@@ -578,10 +574,13 @@ class BenchmarkReporter implements Reporter {
 
     let header = '| Test file |';
     let nFiles = 0;
-    for (const [
-      file
-    ] of groups.values().next().value.values().next().value.values().next()
-      .value) {
+    for (const [file] of groups
+      .values()
+      .next()
+      .value.values()
+      .next()
+      .value.values()
+      .next().value) {
       header += ` ${file} |`;
       nFiles++;
     }
@@ -589,7 +588,7 @@ class BenchmarkReporter implements Reporter {
     reportContent.push(new Array(nFiles + 2).fill('|').join(' --- '));
     const filler = new Array(nFiles).fill('|').join(' ');
 
-    let changeReference = benchmark.DEFAULT_EXPECTED_REFERENCE;
+    let changeReference = this._expectedReference;
 
     for (const [test, testGroup] of groups) {
       reportContent.push(`| **${test}** | ` + filler);
@@ -603,10 +602,7 @@ class BenchmarkReporter implements Reporter {
             const [q1, median, q3] = vs.quartiles(dataGroup);
 
             if (compare) {
-              if (
-                reference === benchmark.DEFAULT_REFERENCE ||
-                !actual.has(filename)
-              ) {
+              if (reference === this._reference || !actual.has(filename)) {
                 actual.set(filename, dataGroup);
               } else {
                 changeReference = reference;
@@ -676,7 +672,7 @@ class BenchmarkReporter implements Reporter {
    * @param allData all test records.
    * @param comparison logic of test comparisons:
    * 'snapshot' or 'project'; default 'snapshot'.
-   * @return VegaLite configuration
+   * @returns VegaLite configuration
    */
   protected defaultVegaLiteConfigFactory(
     allData: Array<IReportRecord>,
@@ -744,6 +740,7 @@ class BenchmarkReporter implements Reporter {
   protected config: FullConfig;
   protected suite: Suite;
   private _comparison: 'snapshot' | 'project';
+  private _expectedReference: string;
   private _outputFile: string;
   private _reference: string;
   private _report: IReportRecord[];

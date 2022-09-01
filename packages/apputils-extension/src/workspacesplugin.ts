@@ -15,11 +15,7 @@ import {
   IDocumentWidget
 } from '@jupyterlab/docregistry';
 import { FileBrowser, IFileBrowserFactory } from '@jupyterlab/filebrowser';
-import {
-  ContentsManager,
-  Workspace,
-  WorkspaceManager
-} from '@jupyterlab/services';
+import { Contents, Workspace, WorkspaceManager } from '@jupyterlab/services';
 import { IStateDB } from '@jupyterlab/statedb';
 import { ITranslator, nullTranslator } from '@jupyterlab/translation';
 import { Widget } from '@lumino/widgets';
@@ -120,7 +116,7 @@ namespace Private {
    */
   export async function save(
     userPath: string,
-    contents: ContentsManager,
+    contents: Contents.IManager,
     data: Promise<Workspace.IWorkspace>,
     state: IStateDB
   ): Promise<void> {
@@ -151,7 +147,7 @@ namespace Private {
    */
   export async function saveAs(
     browser: FileBrowser,
-    contents: ContentsManager,
+    contents: Contents.IManager,
     data: Promise<Workspace.IWorkspace>,
     state: IStateDB,
     translator?: ITranslator
@@ -186,7 +182,8 @@ namespace Private {
     constructor(options: WorkspaceFactory.IOptions) {
       const trans = (options.translator || nullTranslator).load('jupyterlab');
       super({
-        name: trans.__('Workspace loader'),
+        name: 'Workspace loader',
+        label: trans.__('Workspace loader'),
         fileTypes: [WORKSPACE_NAME],
         defaultFor: [WORKSPACE_NAME],
         readOnly: true
@@ -207,7 +204,7 @@ namespace Private {
       // Save a file's contents as a workspace and navigate to that workspace.
       void context.ready.then(async () => {
         const file = context.model;
-        const workspace = (file.toJSON() as unknown) as Workspace.IWorkspace;
+        const workspace = file.toJSON() as unknown as Workspace.IWorkspace;
         const path = context.path;
         const id = workspace.metadata.id;
 
@@ -275,7 +272,7 @@ namespace Private {
     const result = await showDialog({
       title: trans.__('Save Current Workspace As…'),
       body: new SaveWidget(defaultPath),
-      buttons: [Dialog.cancelButton({ label: trans.__('Cancel') }), saveBtn]
+      buttons: [Dialog.cancelButton(), saveBtn]
     });
     if (result.button.label === trans.__('Save')) {
       return result.value;

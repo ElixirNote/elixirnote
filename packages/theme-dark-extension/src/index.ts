@@ -27,7 +27,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     const style = '@jupyterlab/theme-dark-extension/index.css';
     manager.register({
       name: 'JupyterLab Dark',
-      displayName: trans.__('Notebook Dark'),
+      displayName: trans.__('JupyterLab Dark'),
       isLight: false,
       themeScrollbars: true,
       load: () => manager.loadCSS(style),

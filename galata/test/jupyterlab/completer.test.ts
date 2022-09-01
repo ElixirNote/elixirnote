@@ -1,8 +1,7 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
 
-import { test } from '@jupyterlab/galata';
-import { expect } from '@playwright/test';
+import { expect, test } from '@jupyterlab/galata';
 
 const fileName = 'notebook.ipynb';
 const COMPLETER_SELECTOR = '.jp-Completer';
@@ -26,10 +25,14 @@ test.describe('Completer', () => {
       // we need to wait until the completer gets bound to the cell after entering it
       await page.waitForTimeout(50);
       await page.keyboard.press('Tab');
-
-      const completer = page.locator(COMPLETER_SELECTOR);
+      let completer = page.locator(COMPLETER_SELECTOR);
       await completer.waitFor();
-
+      await page.keyboard.press('Escape');
+      await page.waitForTimeout(50);
+      await expect(completer).toBeHidden();
+      await page.keyboard.press('Tab');
+      completer = page.locator(COMPLETER_SELECTOR);
+      await completer.waitFor();
       const imageName = 'completer.png';
       // TODO: on first trigger types are not properly displayed, reference image will need updating
       expect(await completer.screenshot()).toMatchSnapshot(imageName);
@@ -50,10 +53,15 @@ test.describe('Completer', () => {
       await page.waitForTimeout(50);
       await page.keyboard.press('Tab');
 
-      const completer = page.locator(COMPLETER_SELECTOR);
+      let completer = page.locator(COMPLETER_SELECTOR);
       await completer.waitFor();
-
-      await page.keyboard.type('g', { delay: 10 });
+      await page.keyboard.press('Escape');
+      await page.waitForTimeout(50);
+      await expect(completer).toBeHidden();
+      await page.keyboard.press('Tab');
+      completer = page.locator(COMPLETER_SELECTOR);
+      await completer.waitFor();
+      await page.keyboard.type('g', { delay: 50 });
 
       const imageName = 'completer-filter.png';
       expect(await completer.screenshot()).toMatchSnapshot(imageName);
@@ -66,7 +74,7 @@ test.describe('Completer', () => {
 
       await page.click('button:has-text("Select")');
 
-      await page.waitForSelector('text=[ ]: ​ >> div[role="presentation"]');
+      await page.waitForSelector('[aria-label="Code Cell Content"]');
       await page.waitForSelector('text=| Idle');
 
       await page.keyboard.type('import getopt\ngetopt.');

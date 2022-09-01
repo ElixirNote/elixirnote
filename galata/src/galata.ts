@@ -5,7 +5,7 @@
 import * as nbformat from '@jupyterlab/nbformat';
 import { Session, TerminalAPI, Workspace } from '@jupyterlab/services';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
-import { Browser, Page } from '@playwright/test';
+import { APIRequestContext, Browser, Page } from '@playwright/test';
 import * as json5 from 'json5';
 import fetch from 'node-fetch';
 import { ContentsHelper } from './contents';
@@ -32,6 +32,14 @@ export namespace galata {
       codeCellConfig: { cursorBlinkRate: 0 },
       markdownCellConfig: { cursorBlinkRate: 0 },
       rawCellConfig: { cursorBlinkRate: 0 }
+    }
+  };
+
+  export const DEFAULT_DOCUMENTATION_STATE: Record<string, any> = {
+    data: {
+      'layout-restorer:data': {
+        relativeSizes: [0, 1, 0]
+      }
     }
   };
 
@@ -177,13 +185,15 @@ export namespace galata {
    *
    * @param baseURL Application base URL
    * @param page Playwright page model
+   * @param request Playwright API request context
    * @returns Contents REST API helpers
    */
   export function newContentsHelper(
     baseURL: string,
-    page?: Page
+    page?: Page,
+    request?: APIRequestContext
   ): ContentsHelper {
-    return new ContentsHelper(baseURL, page);
+    return new ContentsHelper(baseURL, page, request);
   }
 
   /**
@@ -239,11 +249,26 @@ export namespace galata {
    */
   export namespace Routes {
     /**
+     * Contents API
+     *
+     * The content path can be found in the named group `path`.
+     *
+     * The path will be prefixed by '/'.
+     * The path will be undefined for the root folder.
+     */
+    export const contents = /.*\/api\/contents(?<path>\/.+)?\?/;
+
+    /**
+     * Extensions API
+     */
+    export const extensions = /.*\/lab\/api\/extensions/;
+
+    /**
      * Sessions API
      *
      * The session id can be found in the named group `id`.
      *
-     * The id will be suffixed by '/'.
+     * The id will be prefixed by '/'.
      */
     export const sessions = /.*\/api\/sessions(?<id>\/[@:-\w]+)?/;
 
@@ -252,7 +277,7 @@ export namespace galata {
      *
      * The schema name can be found in the named group `id`.
      *
-     * The id will be suffixed by '/'.
+     * The id will be prefixed by '/'.
      */
     export const settings = /.*\/api\/settings(?<id>(\/[@:-\w]+)*)/;
 
@@ -261,7 +286,7 @@ export namespace galata {
      *
      * The terminal id can be found in the named group `id`.
      *
-     * The id will be suffixed by '/'.
+     * The id will be prefixed by '/'.
      */
     export const terminals = /.*\/api\/terminals(?<id>\/[@:-\w]+)?/;
 
@@ -270,7 +295,7 @@ export namespace galata {
      *
      * The locale can be found in the named group `id`.
      *
-     * The id will be suffixed by '/'.
+     * The id will be prefixed by '/'.
      */
     export const translations = /.*\/api\/translations(?<id>\/[@:-\w]+)?/;
 
@@ -279,7 +304,7 @@ export namespace galata {
      *
      * The space name can be found in the named group `id`.
      *
-     * The id will be suffixed by '/'.
+     * The id will be prefixed by '/'.
      */
     export const workspaces = /.*\/api\/workspaces(?<id>(\/[-\w]+)+)/;
   }
@@ -396,24 +421,95 @@ export namespace galata {
    */
   export namespace Mock {
     /**
+     * Set last modified attributes one day ago one listing
+     * directory content.
+     *
+     * @param page Page model object
+     *
+     * #### Notes
+     * The goal is to freeze the file browser display
+     */
+    export async function freezeContentLastModified(page: Page): Promise<void> {
+      // Listen for closing connection (may happen when request are still being processed)
+      let isClosed = false;
+      const ctxt = page.context();
+      ctxt.on('close', () => {
+        isClosed = true;
+      });
+      ctxt.browser()?.on('disconnected', () => {
+        isClosed = true;
+      });
+
+      return page.route(Routes.contents, async (route, request) => {
+        switch (request.method()) {
+          case 'GET': {
+            // Proxy the GET request
+            const response = await ctxt.request.fetch(request);
+            if (!response.ok()) {
+              if (!page.isClosed() && !isClosed) {
+                return route.fulfill({
+                  status: response.status(),
+                  body: await response.text()
+                });
+              }
+              break;
+            }
+            const data = await response.json();
+            // Modify the last_modified values to be set one day before now.
+            if (
+              data['type'] === 'directory' &&
+              Array.isArray(data['content'])
+            ) {
+              const now = Date.now();
+              const aDayAgo = new Date(now - 24 * 3600 * 1000).toISOString();
+              for (const entry of data['content'] as any[]) {
+                // Mutate the list in-place
+                entry['last_modified'] = aDayAgo;
+              }
+            }
+
+            if (!page.isClosed() && !isClosed) {
+              return route.fulfill({
+                status: 200,
+                body: JSON.stringify(data),
+                contentType: 'application/json'
+              });
+            }
+            break;
+          }
+          default:
+            return route.continue();
+        }
+      });
+    }
+
+    /**
      * Clear all wanted sessions or terminals.
      *
      * @param baseURL Application base URL
      * @param runners Session or terminal ids to stop
      * @param type Type of runner; session or terminal
+     * @param request API request context
      * @returns Whether the runners were closed or not
      */
     export async function clearRunners(
       baseURL: string,
       runners: string[],
-      type: 'sessions' | 'terminals'
+      type: 'sessions' | 'terminals',
+      request?: APIRequestContext
     ): Promise<boolean> {
       const responses = await Promise.all(
         [...new Set(runners)].map(id =>
-          fetch(`${baseURL}/api/${type}/${id}`, { method: 'DELETE' })
+          request
+            ? request.fetch(`/api/${type}/${id}`, {
+                method: 'DELETE'
+              })
+            : fetch(`${baseURL}/api/${type}/${id}`, { method: 'DELETE' })
         )
       );
-      return responses.every(response => response.ok);
+      return responses.every(response =>
+        typeof response.ok === 'function' ? response.ok() : response.ok
+      );
     }
 
     /**
@@ -460,14 +556,11 @@ export namespace galata {
             if (id) {
               if (runners.has(id)) {
                 // Proxy the GET request
-                const response = await fetch(request.url(), {
-                  headers: await request.allHeaders(),
-                  method: request.method()
-                });
-                if (!response.ok) {
+                const response = await ctxt.request.fetch(request);
+                if (!response.ok()) {
                   if (!page.isClosed() && !isClosed) {
                     return route.fulfill({
-                      status: response.status,
+                      status: response.status(),
                       body: await response.text()
                     });
                   }
@@ -495,14 +588,11 @@ export namespace galata {
               }
             } else {
               // Proxy the GET request
-              const response = await fetch(request.url(), {
-                headers: await request.allHeaders(),
-                method: request.method()
-              });
-              if (!response.ok) {
+              const response = await ctxt.request.fetch(request);
+              if (!response.ok()) {
                 if (!page.isClosed() && !isClosed) {
                   return route.fulfill({
-                    status: response.status,
+                    status: response.status(),
                     body: await response.text()
                   });
                 }
@@ -539,15 +629,11 @@ export namespace galata {
           }
           case 'PATCH': {
             // Proxy the PATCH request
-            const response = await fetch(request.url(), {
-              body: request.postDataBuffer()!,
-              headers: await request.allHeaders(),
-              method: request.method()
-            });
-            if (!response.ok) {
+            const response = await ctxt.request.fetch(request);
+            if (!response.ok()) {
               if (!page.isClosed() && !isClosed) {
                 return route.fulfill({
-                  status: response.status,
+                  status: response.status(),
                   body: await response.text()
                 });
               }
@@ -568,15 +654,11 @@ export namespace galata {
           }
           case 'POST': {
             // Proxy the POST request
-            const response = await fetch(request.url(), {
-              body: request.postDataBuffer()!,
-              headers: await request.allHeaders(),
-              method: request.method()
-            });
-            if (!response.ok) {
+            const response = await ctxt.request.fetch(request);
+            if (!response.ok()) {
               if (!page.isClosed() && !isClosed) {
                 return route.fulfill({
-                  status: response.status,
+                  status: response.status(),
                   body: await response.text()
                 });
               }
@@ -666,9 +748,7 @@ export namespace galata {
             if (!id) {
               // Get all settings
               if (settings.length === 0) {
-                const response = await fetch(request.url(), {
-                  headers: await request.allHeaders()
-                });
+                const response = await ctxt.request.fetch(request);
                 const loadedSettings = (await response.json())
                   .settings as ISettingRegistry.IPlugin[];
 
@@ -694,9 +774,7 @@ export namespace galata {
               // Get specific settings
               let pluginSettings = settings.find(setting => setting.id === id);
               if (!pluginSettings) {
-                const response = await fetch(request.url(), {
-                  headers: await request.allHeaders()
-                });
+                const response = await ctxt.request.fetch(request);
                 pluginSettings = await response.json();
                 if (pluginSettings) {
                   const mocked = mockedSettings[id] ?? {};

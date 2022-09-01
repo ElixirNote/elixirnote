@@ -7,14 +7,7 @@
  * @module htmlviewer
  */
 
-import {
-  IFrame,
-  IWidgetTracker,
-  ReactWidget,
-  ToolbarButton,
-  ToolbarButtonComponent,
-  UseSignal
-} from '@jupyterlab/apputils';
+import { IWidgetTracker } from '@jupyterlab/apputils';
 import { ActivityMonitor } from '@jupyterlab/coreutils';
 import {
   ABCWidgetFactory,
@@ -23,7 +16,14 @@ import {
   IDocumentWidget
 } from '@jupyterlab/docregistry';
 import { ITranslator, nullTranslator } from '@jupyterlab/translation';
-import { refreshIcon } from '@jupyterlab/ui-components';
+import {
+  IFrame,
+  ReactWidget,
+  refreshIcon,
+  ToolbarButton,
+  ToolbarButtonComponent,
+  UseSignal
+} from '@jupyterlab/ui-components';
 import { Token } from '@lumino/coreutils';
 import { ISignal, Signal } from '@lumino/signaling';
 import { Widget } from '@lumino/widgets';
@@ -65,7 +65,8 @@ const CSS_CLASS = 'jp-HTMLViewer';
  */
 export class HTMLViewer
   extends DocumentWidget<IFrame>
-  implements IDocumentWidget<IFrame> {
+  implements IDocumentWidget<IFrame>
+{
   /**
    * Create a new widget for rendering HTML.
    */
@@ -191,10 +192,8 @@ export class HTMLViewer
   protected translator: ITranslator;
   private _renderPending = false;
   private _parser = new DOMParser();
-  private _monitor: ActivityMonitor<
-    DocumentRegistry.IModel,
-    void
-  > | null = null;
+  private _monitor: ActivityMonitor<DocumentRegistry.IModel, void> | null =
+    null;
   private _objectUrl: string = '';
   private _trustedChanged = new Signal<this, boolean>(this);
 }

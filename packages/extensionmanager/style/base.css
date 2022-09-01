@@ -1,9 +1,14 @@
 /*
+ * Copyright (c) Jupyter Development Team.
+ * Distributed under the terms of the Modified BSD License.
+ */
+
+/*
   Main widget layout and styling
 */
 
 .jp-extensionmanager-view {
-  padding-bottom: 0px;
+  padding-bottom: 0;
   color: var(--jp-ui-font-color1);
   background: var(--jp-layout-color1);
   display: flex;
@@ -53,7 +58,7 @@
   display: flex;
   justify-content: space-between;
   flex: 0 0 auto;
-  margin: 0px;
+  margin: 0;
   padding-bottom: 8px;
   font-weight: 600;
   text-transform: uppercase;
@@ -66,7 +71,7 @@
 }
 
 .jp-extensionmanager-view .jp-stack-panel-header > .jp-ToolbarButtonComponent {
-  padding: 0px 2px;
+  padding: 0 2px;
   border: 1px solid transparent;
   background-color: var(--jp-layout-color1);
   color: var(--jp-ui-font-color1);
@@ -76,27 +81,15 @@
   .jp-stack-panel-header
   .jp-extensionmanager-headerText {
   flex: 1 0 auto;
-  margin: 0px 4px;
+  margin: 0 4px;
 }
 
 .jp-extensionmanager-view
   .jp-stack-panel-header
   .jp-extensionmanager-headerTextDisabled {
   flex: 1 0 auto;
-  margin: 0px 4px;
+  margin: 0 4px;
   color: var(--jp-layout-color3);
-}
-
-.jp-extensionmanager-view .jp-stack-panel-header > .jp-ToolbarButtonComponent {
-  border: 1px solid transparent;
-  background-color: var(--jp-layout-color1);
-  color: var(--jp-ui-font-color1);
-}
-
-.jp-extensionmanager-view
-  .jp-stack-panel-header
-  > .jp-ToolbarButtonComponent:hover {
-  /* border: 1px solid var(--jp-brand-color1); */
 }
 
 /*
@@ -154,8 +147,8 @@
 
 .jp-extensionmanager-view ul.pagination {
   display: inline-block;
-  padding-left: 0px;
-  padding-right: 0px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .jp-extensionmanager-view .pagination li {
@@ -225,8 +218,10 @@
   padding-left: 4px;
 }
 
-.jp-extensionmanager-entry.jp-extensionmanager-entry-warning {
-}
+/* this is not styled */
+
+/* .jp-extensionmanager-entry.jp-extensionmanager-entry-warning {
+} */
 
 .jp-extensionmanager-entry-name {
   font-size: var(--jp-ui-font-size1);
@@ -249,12 +244,6 @@
 .jp-extensionmanager-entry-name a:hover {
   color: var(--jp-content-link-color);
   text-decoration: underline;
-}
-
-.jp-extensionmanager-entry-description {
-  font-size: var(--jp-ui-font-size1);
-  color: var(--jp-ui-font-color2);
-  font-weight: 400;
 }
 
 .jp-extensionmanager-loader,
@@ -286,7 +275,7 @@
   background-color: var(--jp-layout-color1);
 }
 
-.jp-extensionmanager-pending.jp-mod-hasPending:before {
+.jp-extensionmanager-pending.jp-mod-hasPending::before {
   display: block;
   position: absolute;
   content: '';
@@ -303,18 +292,23 @@
     left: -200px;
     width: 30%;
   }
+
   50% {
     width: 30%;
   }
+
   70% {
     width: 70%;
   }
+
   80% {
     left: 50%;
   }
+
   95% {
     left: 120%;
   }
+
   to {
     left: 100%;
   }
@@ -332,7 +326,7 @@
 }
 
 .jp-extensionmanager-disclaimer-enable {
-  background-color: var(--jp-brand-color1) !important;
+  background-color: var(--jp-error-color1) !important;
   color: white !important;
   border: 0;
   background-image: none !important;

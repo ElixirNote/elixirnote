@@ -116,7 +116,7 @@ export class NotebookHelper {
     const nbPanel = await this.activity.getPanel(name);
 
     if (nbPanel) {
-      return await nbPanel.$('.jp-NotebookPanel-toolbar');
+      return await nbPanel.$('.jp-Toolbar');
     }
 
     return null;
@@ -705,6 +705,113 @@ export class NotebookHelper {
   }
 
   /**
+   * Clicks a cell gutter line for code cells
+   *
+   * @param cellIndex Cell index
+   * @param lineNumber Cell line number, starts at 1
+   */
+  async clickCellGutter(
+    cellIndex: number,
+    lineNumber: number
+  ): Promise<boolean> {
+    if (lineNumber < 1) {
+      return false;
+    }
+
+    if (!(await this.isCellGutterPresent(cellIndex))) {
+      return false;
+    }
+
+    const cell = await this.getCell(cellIndex);
+    const gutters = await cell!.$$(
+      '.cm-gutters > .cm-gutter.cm-breakpoint-gutter > .cm-gutterElement'
+    );
+    if (gutters.length < lineNumber) {
+      return false;
+    }
+    await gutters[lineNumber].click();
+    return true;
+  }
+
+  /**
+   * Check if cell gutter is present
+   *
+   * @param cellIndex
+   */
+  async isCellGutterPresent(cellIndex: number): Promise<boolean> {
+    const cell = await this.getCell(cellIndex);
+    if (!cell) {
+      return false;
+    }
+    return (await cell.$('.cm-gutters')) !== null;
+  }
+
+  /**
+   * Wait until cell gutter is visible
+   *
+   * @param cellIndex
+   */
+  async waitForCellGutter(cellIndex: number): Promise<void> {
+    const cell = await this.getCell(cellIndex);
+    if (cell) {
+      await this.page.waitForSelector('.cm-gutters', {
+        state: 'attached'
+      });
+    }
+  }
+
+  /**
+   * Clicks a code gutter line for scripts
+   *
+   * @param lineNumber Cell line number, starts at 1
+   */
+  async clickCodeGutter(lineNumber: number): Promise<boolean> {
+    if (lineNumber < 1) {
+      return false;
+    }
+
+    if (!(await this.isCodeGutterPresent())) {
+      return false;
+    }
+
+    const panel = await this.activity.getPanel();
+    const gutters = await panel!.$$(
+      '.cm-gutters > .cm-gutter.cm-breakpoint-gutter > .cm-gutterElement'
+    );
+    if (gutters.length < lineNumber) {
+      return false;
+    }
+    await gutters[lineNumber].click();
+    return true;
+  }
+
+  /**
+   * Check if code gutter is present
+   *
+   */
+  async isCodeGutterPresent(): Promise<boolean> {
+    const panel = await this.activity.getPanel();
+    if (!panel) {
+      return false;
+    }
+    return (await panel.$('.cm-gutters')) !== null;
+  }
+
+  /**
+   * Wait until cell gutter is visible
+   *
+   * @param cellIndex
+   */
+  async waitForCodeGutter(): Promise<void> {
+    const panel = await this.activity.getPanel();
+    if (panel) {
+      await this.page.waitForSelector('.cm-gutters', {
+        state: 'attached'
+      });
+    }
+  }
+
+  /**
    * Select cells
    *
    * @param startIndex Start cell index
@@ -778,11 +885,9 @@ export class NotebookHelper {
 
     await this.selectCells(numCells - 1);
     await this.clickToolbarItem('insert');
-    await Utils.waitForCondition(
-      async (): Promise<boolean> => {
-        return (await this.getCellCount()) === numCells + 1;
-      }
-    );
+    await Utils.waitForCondition(async (): Promise<boolean> => {
+      return (await this.getCellCount()) === numCells + 1;
+    });
 
     return await this.setCell(numCells, cellType, source);
   }

@@ -69,28 +69,6 @@
   transform: rotate(-90deg);
 }
 
-.jp-SideBar .lm-TabBar-tab.lm-mod-current .jp-icon3 {
-  /*min-height: calc(*/
-  /*  var(--jp-private-sidebar-tab-width) + var(--jp-border-width)*/
-  /*);*/
-  /*max-height: calc(*/
-  /*  var(--jp-private-sidebar-tab-width) + var(--jp-border-width)*/
-  /*);*/
-  /* transform: translateY(var(--jp-border-width)); */
-  fill: var(--jp-layout-color1);
-}
-
-.jp-SideBar .lm-TabBar-tab .jp-icon3 {
-  /*min-height: calc(*/
-  /*  var(--jp-private-sidebar-tab-width) + var(--jp-border-width)*/
-  /*);*/
-  /*max-height: calc(*/
-  /*  var(--jp-private-sidebar-tab-width) + var(--jp-border-width)*/
-  /*);*/
-  /* transform: translateY(var(--jp-border-width)); */
-  fill: #f8f8f8;
-}
-
 .jp-SideBar .lm-TabBar-tab:not(.lm-mod-current),
 #jp-down-stack .lm-TabBar-tab:not(.lm-mod-current) {
   /*background: var(--jp-layout-color1);*/
@@ -254,6 +232,7 @@
 #jp-left-stack > .lm-Widget,
 #jp-right-stack > .lm-Widget {
   min-width: var(--jp-sidebar-min-width);
+  background-color: var(--jp-layout-color1);
 }
 
 #jp-right-stack {

@@ -53,7 +53,7 @@ export class DebuggerModel implements IDebugger.Model.IService {
   readonly sources: SourcesModel;
 
   /**
-   * The kernel sources model.
+   * The sources model.
    */
   readonly kernelSources: KernelSourcesModel;
 
@@ -128,6 +128,7 @@ export class DebuggerModel implements IDebugger.Model.IService {
       return;
     }
     this._isDisposed = true;
+    this.kernelSources.dispose();
     this._disposed.emit();
   }
 

@@ -7,11 +7,11 @@ import { KernelMessage, Session } from '@jupyterlab/services';
 
 import { ReadonlyJSONObject, Token } from '@lumino/coreutils';
 
-import { IObservableDisposable } from '@lumino/disposable';
+import { IDisposable, IObservableDisposable } from '@lumino/disposable';
 
 import { ISignal, Signal } from '@lumino/signaling';
 
-import { Widget } from '@lumino/widgets';
+import { Panel } from '@lumino/widgets';
 
 import { DebugProtocol } from '@vscode/debugprotocol';
 
@@ -123,6 +123,11 @@ export interface IDebugger {
   displayDefinedVariables(): Promise<void>;
 
   /**
+   * Requests all the loaded modules and display them.
+   */
+  displayModules(): Promise<void>;
+
+  /**
    * Request whether debugging is available for the given session connection.
    *
    * @param connection The session connection.
@@ -133,11 +138,6 @@ export interface IDebugger {
    * Makes the current thread run again for one step.
    */
   next(): Promise<void>;
-
-  /**
-   * Requests all the loaded modules and display them.
-   */
-  displayModules(): Promise<void>;
 
   /**
    * Restart the debugger.
@@ -229,6 +229,21 @@ export namespace IDebugger {
   };
 
   /**
+   * The type for a kernel source file.
+   */
+  export type KernelSource = {
+    /**
+     * The name of the source.
+     */
+    name: string;
+
+    /**
+     * The path of the source.
+     */
+    path: string;
+  };
+
+  /**
    * Single breakpoint in an editor.
    */
   export interface IBreakpoint extends DebugProtocol.Breakpoint {}
@@ -246,21 +261,6 @@ export namespace IDebugger {
      * Map of breakpoints to send back to the kernel after it has restarted
      */
     breakpoints: Map<string, IDebugger.IBreakpoint[]>;
-  };
-
-  /**
-   * The type for a kernel source file.
-   */
-  export type KernelSource = {
-    /**
-     * The name of the source.
-     */
-    name: string;
-
-    /**
-     * The path of the source.
-     */
-    path: string;
   };
 
   /**
@@ -326,13 +326,13 @@ export namespace IDebugger {
      */
     connection: Session.ISessionConnection | null;
 
-    /*
+    /**
      * Returns the initialize response .
      */
     readonly capabilities: DebugProtocol.Capabilities | undefined;
 
     /**
-     * Whether the debug session is started.
+     * Whether the debug session is started
      */
     readonly isStarted: boolean;
 
@@ -495,7 +495,7 @@ export namespace IDebugger {
       completions: DebugProtocol.CompletionsArguments;
       configurationDone: DebugProtocol.ConfigurationDoneArguments;
       continue: DebugProtocol.ContinueArguments;
-      debugInfo: {};
+      debugInfo: Record<string, never>;
       disconnect: DebugProtocol.DisconnectArguments;
       dumpCell: IDumpCellArguments;
       evaluate: DebugProtocol.EvaluateArguments;
@@ -503,7 +503,7 @@ export namespace IDebugger {
       goto: DebugProtocol.GotoArguments;
       gotoTargets: DebugProtocol.GotoTargetsArguments;
       initialize: DebugProtocol.InitializeRequestArguments;
-      inspectVariables: {};
+      inspectVariables: Record<string, never>;
       launch: DebugProtocol.LaunchRequestArguments;
       loadedSources: DebugProtocol.LoadedSourcesArguments;
       modules: DebugProtocol.ModulesArguments;
@@ -527,7 +527,7 @@ export namespace IDebugger {
       stepOut: DebugProtocol.StepOutArguments;
       terminate: DebugProtocol.TerminateArguments;
       terminateThreads: DebugProtocol.TerminateThreadsArguments;
-      threads: {};
+      threads: Record<string, never>;
       variables: DebugProtocol.VariablesArguments;
     };
 
@@ -689,22 +689,7 @@ export namespace IDebugger {
   /**
    * Debugger sidebar interface.
    */
-  export interface ISidebar extends Widget {
-    /**
-     * Add item at the end of the sidebar.
-     */
-    addItem(widget: Widget): void;
-
-    /**
-     * Insert item at a specified index.
-     */
-    insertItem(index: number, widget: Widget): void;
-
-    /**
-     * Return all items that were added to sidebar.
-     */
-    readonly items: readonly Widget[];
-  }
+  export interface ISidebar extends Panel {}
 
   /**
    * A utility to find text editors used by the debugger.
@@ -929,7 +914,7 @@ export namespace IDebugger {
     /**
      * The kernel sources UI model.
      */
-    export interface IKernelSources {
+    export interface IKernelSources extends IDisposable {
       /**
        * The kernel source.
        */

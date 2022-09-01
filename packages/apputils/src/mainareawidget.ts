@@ -2,12 +2,16 @@
 // Distributed under the terms of the Modified BSD License.
 
 import { ITranslator, nullTranslator } from '@jupyterlab/translation';
+import { ReactiveToolbar, Spinner, Toolbar } from '@jupyterlab/ui-components';
 import { Message, MessageLoop } from '@lumino/messaging';
 import { BoxLayout, BoxPanel, Widget } from '@lumino/widgets';
 import { DOMUtils } from './domutils';
 import { Printing } from './printing';
-import { Spinner } from './spinner';
-import { ReactiveToolbar, Toolbar } from './toolbar';
+
+/**
+ * A flag to indicate that event handlers are caught in the capture phase.
+ */
+const USE_CAPTURE = true;
 
 /**
  * A widget meant to be contained in the JupyterLab main area.
@@ -20,7 +24,8 @@ import { ReactiveToolbar, Toolbar } from './toolbar';
  */
 export class MainAreaWidget<T extends Widget = Widget>
   extends Widget
-  implements Printing.IPrintable {
+  implements Printing.IPrintable
+{
   /**
    * Construct a new main area widget.
    *
@@ -164,12 +169,30 @@ export class MainAreaWidget<T extends Widget = Widget>
    */
   protected onActivateRequest(msg: Message): void {
     if (this._isRevealed) {
-      if (this._content) {
-        this._focusContent();
-      }
+      this._focusContent();
     } else {
       this._spinner.node.focus();
     }
+  }
+
+  /**
+   * Handle `after-attach` messages for the widget.
+   */
+  protected onAfterAttach(msg: Message): void {
+    super.onAfterAttach(msg);
+    // Focus content in capture phase to ensure relevant commands operate on the
+    // current main area widget.
+    // Add the event listener directly instead of using `handleEvent` in order
+    // to save sub-classes from needing to reason about calling it as well.
+    this.node.addEventListener('mousedown', this._evtMouseDown, USE_CAPTURE);
+  }
+
+  /**
+   * Handle `before-detach` messages for the widget.
+   */
+  protected onBeforeDetach(msg: Message): void {
+    this.node.removeEventListener('mousedown', this._evtMouseDown, USE_CAPTURE);
+    super.onBeforeDetach(msg);
   }
 
   /**
@@ -267,6 +290,11 @@ export class MainAreaWidget<T extends Widget = Widget>
 
   private _isRevealed = false;
   private _revealed: Promise<void>;
+  private _evtMouseDown = () => {
+    if (!this.node.contains(document.activeElement)) {
+      this._focusContent();
+    }
+  };
 }
 
 /**
@@ -322,7 +350,7 @@ export namespace MainAreaWidget {
     content?: T;
 
     /**
-     * The toolbar to use for the widget.  Defaults to an empty toolbar.
+     * The toolbar to use for the widget. Defaults to an empty toolbar.
      */
     toolbar?: Toolbar;
 

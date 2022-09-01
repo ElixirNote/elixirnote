@@ -33,7 +33,7 @@ export class Switch extends Widget {
   /**
    * The value of the switch.
    */
-  get value() {
+  get value(): boolean {
     return this._value;
   }
   set value(newValue: boolean) {
@@ -77,8 +77,7 @@ export class Switch extends Widget {
   handleEvent(event: Event): void {
     switch (event.type) {
       case 'click':
-        // fixme @ciusji: current only supports `single-document` mode
-        // this.value = !this.value;
+        this.value = !this.value;
         break;
       default:
         break;
@@ -89,7 +88,7 @@ export class Switch extends Widget {
     this._button.addEventListener('click', this);
   }
 
-  protected onBeforeDetach() {
+  protected onBeforeDetach(): void {
     this._button.removeEventListener('click', this);
   }
 

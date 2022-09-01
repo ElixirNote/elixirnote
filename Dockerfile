@@ -1,3 +1,6 @@
+# Copyright (c) Jupyter Development Team.
+# Distributed under the terms of the Modified BSD License.
+
 FROM mambaorg/micromamba:0.14.0 as build
 
 # Install basic tools
@@ -6,7 +9,7 @@ RUN micromamba install -qy -c conda-forge python nodejs yarn \
     && chown jovyan $HOME
 
 # Install npm packages - faster build thanks to caching
-## package_json.tar.gz contains all package.json files using 
+## package_json.tar.gz contains all package.json files using
 ## `tar cvf package_json.tar.gz package.json packages/*/package.package_json`
 ADD ./package_json.tar.gz /tmp/jupyterlab-dev
 COPY yarn.lock /tmp/jupyterlab-dev
