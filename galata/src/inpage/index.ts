@@ -137,7 +137,7 @@ export class GalataInpage implements IGalataInpage {
    *
    * @param path Path to monitor
    */
-  async waitForLaunch(path = '/lab'): Promise<void> {
+  async waitForLaunch(path = '/doc'): Promise<void> {
     let resolver: () => void;
     const delegate = new Promise<void>(resolve => {
       resolver = resolve;

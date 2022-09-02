@@ -477,7 +477,7 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
         licenses=(LabLicensesApp, LabLicensesApp.description.splitlines()[0]),
     )
 
-    default_url = Unicode("/lab", config=True, help="The default URL to redirect to from `/`")
+    default_url = Unicode("/doc", config=True, help="The default URL to redirect to from `/`")
 
     override_static_url = Unicode(
         config=True, help=("The override url for static lab assets, typically a CDN.")
@@ -536,7 +536,7 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
         help="Whether to expose the global app instance to browser via window.jupyterlab",
     )
 
-    collaborative = Bool(False, config=True, help="Whether to enable collaborative mode.")
+    collaborative = Bool(True, config=True, help="Whether to enable collaborative mode.")
 
     collaborative_file_poll_interval = Int(
         1,

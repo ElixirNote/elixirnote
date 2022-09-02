@@ -16,7 +16,7 @@
 }
 
 .jp-InputArea-editor {
-  display: table-cell;
+  /*display: table-cell;*/
   overflow: hidden;
   vertical-align: top;
 

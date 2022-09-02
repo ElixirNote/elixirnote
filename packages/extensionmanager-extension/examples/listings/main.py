@@ -21,7 +21,7 @@ with open(os.path.join(HERE, "package.json")) as fid:
 
 class ListingsApp(LabApp):
     base_url = "/"
-    default_url = Unicode("/lab", help="The default URL to redirect to from `/`")
+    default_url = Unicode("/doc", help="The default URL to redirect to from `/`")
 
     def init_webapp(self):
         """initialize tornado webapp and httpserver."""
