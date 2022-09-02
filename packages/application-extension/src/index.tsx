@@ -327,43 +327,43 @@ const mainCommands: JupyterFrontEndPlugin<void> = {
         isEnabled: () => !labShell.isEmpty('left')
       });
 
-      commands.addCommand(CommandIDs.toggleRightArea, {
-        label: trans.__('Show Right Sidebar'),
-        execute: () => {
-          if (labShell.rightCollapsed) {
-            labShell.expandRight();
-          } else {
-            labShell.collapseRight();
-            if (labShell.currentWidget) {
-              labShell.activateById(labShell.currentWidget.id);
-            }
-          }
-        },
-        isToggled: () => !labShell.rightCollapsed,
-        isEnabled: () => !labShell.isEmpty('right')
-      });
+      // commands.addCommand(CommandIDs.toggleRightArea, {
+      //   label: trans.__('Show Right Sidebar'),
+      //   execute: () => {
+      //     if (labShell.rightCollapsed) {
+      //       labShell.expandRight();
+      //     } else {
+      //       labShell.collapseRight();
+      //       if (labShell.currentWidget) {
+      //         labShell.activateById(labShell.currentWidget.id);
+      //       }
+      //     }
+      //   },
+      //   isToggled: () => !labShell.rightCollapsed,
+      //   isEnabled: () => !labShell.isEmpty('right')
+      // });
 
-      commands.addCommand(CommandIDs.toggleSideTabBar, {
-        label: args =>
-          args.side === 'right'
-            ? trans.__('Show Right Activity Bar')
-            : trans.__('Show Left Activity Bar'),
-        execute: args => {
-          if (args.side === 'right') {
-            labShell.toggleSideTabBarVisibility('right');
-          } else {
-            labShell.toggleSideTabBarVisibility('left');
-          }
-        },
-        isToggled: args =>
-          args.side === 'right'
-            ? labShell.isSideTabBarVisible('right')
-            : labShell.isSideTabBarVisible('left'),
-        isEnabled: args =>
-          args.side === 'right'
-            ? !labShell.isEmpty('right')
-            : !labShell.isEmpty('left')
-      });
+      // commands.addCommand(CommandIDs.toggleSideTabBar, {
+      //   label: args =>
+      //     args.side === 'right'
+      //       ? trans.__('Show Right Activity Bar')
+      //       : trans.__('Show Left Activity Bar'),
+      //   execute: args => {
+      //     if (args.side === 'right') {
+      //       labShell.toggleSideTabBarVisibility('right');
+      //     } else {
+      //       labShell.toggleSideTabBarVisibility('left');
+      //     }
+      //   },
+      //   isToggled: args =>
+      //     args.side === 'right'
+      //       ? labShell.isSideTabBarVisible('right')
+      //       : labShell.isSideTabBarVisible('left'),
+      //   isEnabled: args =>
+      //     args.side === 'right'
+      //       ? !labShell.isEmpty('right')
+      //       : !labShell.isEmpty('left')
+      // });
 
       commands.addCommand(CommandIDs.togglePresentationMode, {
         label: () => trans.__('Presentation Mode'),
@@ -396,17 +396,17 @@ const mainCommands: JupyterFrontEndPlugin<void> = {
         }
       });
 
-      commands.addCommand(CommandIDs.toggleMode, {
-        label: trans.__('Simple Interface'),
-        isToggled: () => labShell.mode === 'single-document',
-        execute: () => {
-          const args =
-            labShell.mode === 'multiple-document'
-              ? { mode: 'single-document' }
-              : { mode: 'multiple-document' };
-          return commands.execute(CommandIDs.setMode, args);
-        }
-      });
+      // commands.addCommand(CommandIDs.toggleMode, {
+      //   label: trans.__('Simple Interface'),
+      //   isToggled: () => labShell.mode === 'single-document',
+      //   execute: () => {
+      //     const args =
+      //       labShell.mode === 'multiple-document'
+      //         ? { mode: 'single-document' }
+      //         : { mode: 'multiple-document' };
+      //     return commands.execute(CommandIDs.setMode, args);
+      //   }
+      // });
 
       commands.addCommand(CommandIDs.resetLayout, {
         label: trans.__('Reset Default Layout'),
@@ -501,7 +501,7 @@ const main: JupyterFrontEndPlugin<ITreePathUpdater> = {
     const trans = translator.load('jupyterlab');
 
     if (!(app instanceof JupyterLab)) {
-      throw new Error(`${main.id} must be activated in JupyterLab.`);
+      throw new Error(`${main.id} must be activated in Notebook.`);
     }
 
     // These two internal state variables are used to manage the two source
@@ -640,7 +640,7 @@ const main: JupyterFrontEndPlugin<ITreePathUpdater> = {
 
         const body = (
           <div>
-            {trans.__('JupyterLab build is suggested:')}
+            {trans.__('Notebook build is suggested:')}
             <br />
             <pre>{response.message}</pre>
           </div>
@@ -715,7 +715,7 @@ const dirty: JupyterFrontEndPlugin<void> = {
     }
     const trans = translator.load('jupyterlab');
     const message = trans.__(
-      'Are you sure you want to exit JupyterLab?\n\nAny unsaved changes will be lost.'
+      'Are you sure you want to exit Notebook?\n\nAny unsaved changes will be lost.'
     );
 
     // The spec for the `beforeunload` event is implemented differently by
@@ -1074,7 +1074,7 @@ const propertyInspector: JupyterFrontEndPlugin<IPropertyInspectorProvider> = {
     widget.title.icon = buildIcon;
     widget.title.caption = trans.__('Property Inspector');
     widget.id = 'jp-property-inspector';
-    labshell.add(widget, 'right', { rank: 100, type: 'Property Inspector' });
+    labshell.add(widget, 'left', { rank: 900, type: 'Property Inspector' });
 
     app.commands.addCommand(CommandIDs.showPropertyPanel, {
       label: trans.__('Property Inspector'),
@@ -1202,7 +1202,6 @@ const plugins: JupyterFrontEndPlugin<any>[] = [
   shell,
   status,
   info,
-  modeSwitchPlugin,
   paths,
   propertyInspector,
   JupyterLogo,
@@ -1216,7 +1215,7 @@ namespace Private {
     const result = await showDialog({
       title: trans.__('Information'),
       body: trans.__(
-        'Context menu customization has changed. You will need to reload JupyterLab to see the changes.'
+        'Context menu customization has changed. You will need to reload Notebook to see the changes.'
       ),
       buttons: [
         Dialog.cancelButton(),

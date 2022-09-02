@@ -327,7 +327,7 @@ namespace Private {
     output.split('\n').forEach(line => {
       const baseUrlMatch = line.match(/(http:\/\/localhost:\d+\/[^?]*)/);
       if (baseUrlMatch) {
-        baseUrl = baseUrlMatch[1].replace('/lab', '');
+        baseUrl = baseUrlMatch[1].replace('/doc', '');
         PageConfig.setOption('baseUrl', baseUrl);
       }
     });

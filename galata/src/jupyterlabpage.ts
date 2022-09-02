@@ -258,7 +258,7 @@ export class JupyterLabPage implements IJupyterLabPage {
     readonly page: Page,
     readonly baseURL: string,
     waitForApplication: (page: Page, helpers: IJupyterLabPage) => Promise<void>,
-    readonly appPath: string = '/lab'
+    readonly appPath: string = '/doc'
   ) {
     this.waitIsReady = waitForApplication;
     this.activity = new ActivityHelper(page);

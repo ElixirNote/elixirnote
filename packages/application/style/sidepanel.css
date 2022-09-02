@@ -140,7 +140,7 @@
   transform: rotate(90deg);
 }
 
-.jp-icon3[fill]  {
+.jp-SideBar.lm-TabBar.jp-mod-left .jp-icon3[fill]  {
   fill: white;
 }
 
