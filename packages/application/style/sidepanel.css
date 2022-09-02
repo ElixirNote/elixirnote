@@ -64,7 +64,6 @@
   /* transform: translateY(var(--jp-border-width)); */
   /*color: var(--jp-info-color2);*/
   color: #ffffff;
-  /*background: var(--jp-info-color3);*/
   background: #051C38;
   transform: rotate(-90deg);
 }
@@ -130,15 +129,19 @@
   /*transform: rotate(-90deg) translateX(-100%);*/
 }
 
-.jp-SideBar.lm-TabBar.jp-mod-left .lm-TabBar-content li:last-child {
-  position: absolute;
-  bottom: 0
-}
+/*.jp-SideBar.lm-TabBar.jp-mod-left .lm-TabBar-content li:last-child {*/
+/*  position: absolute;*/
+/*  bottom: 0*/
+/*}*/
 
 .jp-SideBar.lm-TabBar.jp-mod-left
   .lm-TabBar-tab:not(.lm-mod-current)
   .lm-TabBar-tabIcon {
   transform: rotate(90deg);
+}
+
+.jp-icon3[fill]  {
+  fill: white;
 }
 
 .jp-SideBar.lm-TabBar.jp-mod-left
