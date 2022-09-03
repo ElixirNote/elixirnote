@@ -74,11 +74,8 @@ If you use `pip`, you can install it with:
 
 ```shell
 git clone git@github.com:ElixirNote/elixirnote.git
-cd ./exlixirnote/server
-pip install ./
-cd ../elixirnote
-# root path
-pip install -e .
+cd elixirnote
+pip install -e ".[dev,test]"
 jlpm install
 jlpm run build  # Build the dev mode assets (optional)
 jlpm run build:core  # Build the core mode assets (optional)
