@@ -142,7 +142,7 @@ export class SidebarHelper {
         )) as ISettingRegistry;
         const SHELL_ID = '@jupyterlab/application-extension:shell';
         const sidebars = {
-          Debugger: 'left',
+          Debugger: 'right',
           'Property Inspector': 'left',
           'Extension Manager': 'left',
           'File Browser': 'left',
