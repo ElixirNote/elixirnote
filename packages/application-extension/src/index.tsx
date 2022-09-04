@@ -1074,7 +1074,7 @@ const propertyInspector: JupyterFrontEndPlugin<IPropertyInspectorProvider> = {
     widget.title.icon = buildIcon;
     widget.title.caption = trans.__('Property Inspector');
     widget.id = 'jp-property-inspector';
-    labshell.add(widget, 'left', { rank: 900, type: 'Property Inspector' });
+    labshell.add(widget, 'right', { rank: 100, type: 'Property Inspector' });
 
     app.commands.addCommand(CommandIDs.showPropertyPanel, {
       label: trans.__('Property Inspector'),
@@ -1099,9 +1099,9 @@ const JupyterLogo: JupyterFrontEndPlugin<void> = {
     jupyterIcon.element({
       container: logo.node,
       elementPosition: 'center',
-      margin: '2px 2px 2px 8px',
+      margin: '2px 2px 2px 2px',
       height: 'auto',
-      width: '16px'
+      width: '32px'
     });
     logo.id = 'jp-MainLogo';
     shell.add(logo, 'top', { rank: 0 });

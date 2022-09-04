@@ -56,15 +56,22 @@
 
 .jp-SideBar .lm-TabBar-tab.lm-mod-current {
   /*min-height: calc(*/
+
   /*  var(--jp-private-sidebar-tab-width) + var(--jp-border-width)*/
+
   /*);*/
+
   /*max-height: calc(*/
+
   /*  var(--jp-private-sidebar-tab-width) + var(--jp-border-width)*/
+
   /*);*/
+
   /* transform: translateY(var(--jp-border-width)); */
+
   /*color: var(--jp-info-color2);*/
-  color: #ffffff;
-  background: #051C38;
+  color: #fff;
+  background: #051c38;
   transform: rotate(-90deg);
 }
 
@@ -126,12 +133,16 @@
 
 .jp-SideBar.lm-TabBar.jp-mod-left .lm-TabBar-content {
   /*flex-direction: row-reverse;*/
+
   /*transform: rotate(-90deg) translateX(-100%);*/
 }
 
 /*.jp-SideBar.lm-TabBar.jp-mod-left .lm-TabBar-content li:last-child {*/
+
 /*  position: absolute;*/
+
 /*  bottom: 0*/
+
 /*}*/
 
 .jp-SideBar.lm-TabBar.jp-mod-left
@@ -140,7 +151,7 @@
   transform: rotate(90deg);
 }
 
-.jp-SideBar.lm-TabBar.jp-mod-left .jp-icon3[fill]  {
+.jp-SideBar.lm-TabBar.jp-mod-left .jp-icon3[fill] {
   fill: white;
 }
 
@@ -160,6 +171,7 @@
 
 .jp-SideBar.lm-TabBar.jp-mod-right {
   border-left: var(--jp-border-width) solid var(--jp-border-color0);
+  background-color: #fff;
 }
 
 .jp-SideBar.lm-TabBar.jp-mod-right .lm-TabBar-tab + .lm-TabBar-tab {
@@ -211,6 +223,7 @@
 
 #jp-down-stack > .lm-TabBar {
   border-top: var(--jp-border-width) solid var(--jp-border-color0);
+
   /*border-bottom: var(--jp-border-width) solid var(--jp-border-color0);*/
 }
 

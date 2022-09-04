@@ -742,7 +742,7 @@ const main: JupyterFrontEndPlugin<void> = {
 
     sidebar.title.caption = trans.__('Debugger');
 
-    shell.add(sidebar, 'left', { type: 'Debugger' });
+    shell.add(sidebar, 'right', { type: 'Debugger' });
 
     commands.addCommand(CommandIDs.showPanel, {
       label: translator.load('jupyterlab').__('Debugger Panel'),
