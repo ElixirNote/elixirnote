@@ -73,6 +73,11 @@ Project installation instructions from the git sources are available in the [con
 If you use `pip`, you can install it with:
 
 ```shell
+# Clone ElixirServer
+git git@github.com:ElixirNote/elixirserver.git
+cd elixirserver
+pip install -e .
+# Clone ElixirNote
 git clone git@github.com:ElixirNote/elixirnote.git
 cd elixirnote
 pip install -e ".[dev,test]"
