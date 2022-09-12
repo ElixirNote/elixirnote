@@ -92,7 +92,7 @@ export class JupyterLab extends JupyterFrontEnd<ILabShell> {
   /**
    * The name of the JupyterLab application.
    */
-  readonly name = PageConfig.getOption('appName') || 'JupyterLab';
+  readonly name = PageConfig.getOption('appName') || 'ElixirNote';
 
   /**
    * A namespace/prefix plugins may use to denote their provenance.

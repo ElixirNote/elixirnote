@@ -147,7 +147,7 @@ class LabBuildApp(JupyterApp, DebugLogFileMixin):
 
     app_dir = Unicode("", config=True, help="The app directory to build in")
 
-    name = Unicode("JupyterLab", config=True, help="The name of the built application")
+    name = Unicode("ElixirNote", config=True, help="The name of the built application")
 
     version = Unicode("", config=True, help="The version of the built application")
 
@@ -400,18 +400,18 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
     version = version
 
     name = "lab"
-    app_name = "JupyterLab"
+    app_name = "ElixirNote"
 
     # Should your extension expose other server extensions when launched directly?
     load_other_extensions = True
 
     description = """
-    JupyterLab - An extensible computational environment for Jupyter.
+    ElixirNote - An extensible computational environment for Jupyter.
 
     This launches a Tornado based HTML Server that serves up an
     HTML5/Javascript JupyterLab client.
 
-    JupyterLab has three different modes of running:
+    ElixirNote has three different modes of running:
 
     * Core mode (`--core-mode`): in this mode JupyterLab will run using the JavaScript
       assets contained in the installed `jupyterlab` Python package. In core mode, no

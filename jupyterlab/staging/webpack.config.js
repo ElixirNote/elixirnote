@@ -257,7 +257,7 @@ const plugins = [
   new HtmlWebpackPlugin({
     chunksSortMode: 'none',
     template: path.join(__dirname, 'templates', 'template.html'),
-    title: jlab.name || 'JupyterLab'
+    title: jlab.name || 'ElixirNote'
   }),
   // custom plugin for ignoring files during a `--watch` build
   new WPPlugin.FilterWatchIgnorePlugin(ignored),
