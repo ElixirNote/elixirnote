@@ -771,7 +771,7 @@ const layout: JupyterFrontEndPlugin<ILayoutRestorer> = {
           });
 
           settings.changed.connect(onSettingsChanged);
-          Private.activateSidebarSwitcher(app, labShell, settings, trans);
+          // Private.activateSidebarSwitcher(app, labShell, settings, trans);
         });
       })
       .catch(reason => {
