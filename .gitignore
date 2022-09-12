@@ -130,3 +130,5 @@ junit.xml
 
 # generated LSP interfaces
 packages/lsp/src/_*
+
+.jupyter_ystore.db
