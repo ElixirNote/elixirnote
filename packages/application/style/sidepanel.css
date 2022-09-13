@@ -247,8 +247,9 @@
 
 #jp-left-stack > .lm-Widget,
 #jp-right-stack > .lm-Widget {
-  min-width: var(--jp-sidebar-min-width);
-  background-color: var(--jp-layout-color1);
+  /*min-width: var(--jp-sidebar-min-width);*/
+
+  /*background-color: var(--jp-layout-color1);*/
 }
 
 #jp-right-stack {
@@ -256,7 +257,7 @@
 }
 
 #jp-left-stack {
-  border-right: var(--jp-border-width) solid var(--jp-border-color1);
+  /*border-right: var(--jp-border-width) solid var(--jp-border-color1);*/
 }
 
 #jp-down-stack > .lm-TabPanel-stackedPanel {
