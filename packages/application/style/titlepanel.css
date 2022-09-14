@@ -15,8 +15,8 @@
 }
 
 #jp-title-panel-title {
-  flex: 1 1 auto;
-  margin-left: 18px;
+  /*flex: 1 1 auto;*/
+  margin-left: 8px;
 }
 
 #jp-title-panel-title input {
@@ -24,13 +24,14 @@
   margin: 0;
   height: 28px;
   width: 100%;
+  padding: 0;
   box-sizing: border-box;
   border: none;
   font-size: 18px;
   font-weight: normal;
   font-family: var(--jp-ui-font-family);
   line-height: var(--jp-private-title-panel-height);
-  color: #000000;
+  color: #000;
   outline: none;
   appearance: none;
   -webkit-appearance: none;

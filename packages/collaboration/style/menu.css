@@ -19,7 +19,17 @@
   width: 28px;
   height: 28px;
   text-align: center;
-  border-radius: 100%;
+  border-radius: 4px;
+  margin: 0 16px;
+}
+
+.jp-MenuBar-CommonLabel {
+  height: 28px;
+  width: 60px;
+  text-align: center;
+  border-radius: 2px;
+  border: 1px solid #e0e0e0;
+  margin: 0 4px;
 }
 
 .jp-MenuBar-imageIcon img {
@@ -38,7 +48,7 @@
 #jp-UserMenu {
   /*background-color: #00a250;*/
   height: 56px;
-  width: 200px;
+  width: 300px;
   align-items: center;
   justify-content: center;
   display: flex;

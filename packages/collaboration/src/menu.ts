@@ -37,8 +37,11 @@ export class RendererUserMenu extends MenuBar.Renderer {
     return h.li(
       { className, dataset, tabindex: '0', onfocus: data.onfocus, ...aria },
       this._createUserIcon(),
-      this.renderLabel(data),
-      this.renderIcon(data)
+      this.createShareLabel(),
+      this.createPreviewLabel(),
+      this.createPublishLabel()
+      // this.renderLabel(data),
+      // this.renderIcon(data)
     );
   }
 
@@ -96,6 +99,51 @@ export class RendererUserMenu extends MenuBar.Renderer {
         userIcon
       );
     }
+  }
+
+  /**
+   * Render the share icon element for a menu item.
+   *
+   * @returns A virtual element representing the item label.
+   */
+  createShareLabel(): VirtualElement {
+    return h.div(
+      {
+        className:
+          'lm-MenuBar-itemIcon p-MenuBar-itemIcon jp-MenuBar-CommonLabel'
+      },
+      'Share'
+    );
+  }
+
+  /**
+   * Render the preview icon element for a menu item.
+   *
+   * @returns A virtual element representing the item label.
+   */
+  createPreviewLabel(): VirtualElement {
+    return h.div(
+      {
+        className:
+          'lm-MenuBar-itemIcon p-MenuBar-itemIcon jp-MenuBar-CommonLabel'
+      },
+      'Preview'
+    );
+  }
+
+  /**
+   * Render the publish icon element for a menu item.
+   *
+   * @returns A virtual element representing the item label.
+   */
+  createPublishLabel(): VirtualElement {
+    return h.div(
+      {
+        className:
+          'lm-MenuBar-itemIcon p-MenuBar-itemIcon jp-MenuBar-CommonLabel'
+      },
+      'Publish'
+    );
   }
 }
 
