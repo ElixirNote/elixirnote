@@ -51,7 +51,7 @@ import { ITranslator } from '@jupyterlab/translation';
  */
 const consoles: JupyterFrontEndPlugin<void> = {
   id: '@jupyterlab/debugger-extension:consoles',
-  autoStart: true,
+  autoStart: false,
   requires: [IDebugger, IConsoleTracker],
   optional: [ILabShell],
   activate: (
@@ -97,7 +97,7 @@ const consoles: JupyterFrontEndPlugin<void> = {
  */
 const files: JupyterFrontEndPlugin<void> = {
   id: '@jupyterlab/debugger-extension:files',
-  autoStart: true,
+  autoStart: false,
   requires: [IDebugger, IEditorTracker],
   optional: [ILabShell],
   activate: (
@@ -168,7 +168,7 @@ const files: JupyterFrontEndPlugin<void> = {
  */
 const notebooks: JupyterFrontEndPlugin<IDebugger.IHandler> = {
   id: '@jupyterlab/debugger-extension:notebooks',
-  autoStart: true,
+  autoStart: false,
   requires: [IDebugger, INotebookTracker, ITranslator],
   optional: [ILabShell, ICommandPalette],
   provides: IDebuggerHandler,
@@ -254,7 +254,7 @@ const notebooks: JupyterFrontEndPlugin<IDebugger.IHandler> = {
  */
 const service: JupyterFrontEndPlugin<IDebugger> = {
   id: '@jupyterlab/debugger-extension:service',
-  autoStart: true,
+  autoStart: false,
   provides: IDebugger,
   requires: [IDebuggerConfig],
   optional: [IDebuggerSources, ITranslator],
@@ -278,7 +278,7 @@ const service: JupyterFrontEndPlugin<IDebugger> = {
 const configuration: JupyterFrontEndPlugin<IDebugger.IConfig> = {
   id: '@jupyterlab/debugger-extension:config',
   provides: IDebuggerConfig,
-  autoStart: true,
+  autoStart: false,
   activate: () => new Debugger.Config()
 };
 
@@ -287,7 +287,7 @@ const configuration: JupyterFrontEndPlugin<IDebugger.IConfig> = {
  */
 const sources: JupyterFrontEndPlugin<IDebugger.ISources> = {
   id: '@jupyterlab/debugger-extension:sources',
-  autoStart: true,
+  autoStart: false,
   provides: IDebuggerSources,
   requires: [IDebuggerConfig, IEditorServices],
   optional: [INotebookTracker, IConsoleTracker, IEditorTracker],
@@ -314,7 +314,7 @@ const sources: JupyterFrontEndPlugin<IDebugger.ISources> = {
  */
 const variables: JupyterFrontEndPlugin<void> = {
   id: '@jupyterlab/debugger-extension:variables',
-  autoStart: true,
+  autoStart: false,
   requires: [IDebugger, IDebuggerHandler, ITranslator],
   optional: [IThemeManager, IRenderMimeRegistry],
   activate: (
@@ -489,7 +489,7 @@ const sidebar: JupyterFrontEndPlugin<IDebugger.ISidebar> = {
   provides: IDebuggerSidebar,
   requires: [IDebugger, IEditorServices, ITranslator],
   optional: [IThemeManager, ISettingRegistry],
-  autoStart: true,
+  autoStart: false,
   activate: async (
     app: JupyterFrontEnd,
     service: IDebugger,
@@ -561,7 +561,7 @@ const main: JupyterFrontEndPlugin<void> = {
     ILayoutRestorer,
     ILoggerRegistry
   ],
-  autoStart: true,
+  autoStart: false,
   activate: async (
     app: JupyterFrontEnd,
     service: IDebugger,
