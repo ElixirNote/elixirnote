@@ -61,7 +61,7 @@
 
 .jp-Notebook .jp-Cell {
   overflow: visible;
-  margin: 0 0 20px 0;
+  margin: 0 0 20px;
 }
 
 .jp-Notebook .jp-Cell .jp-InputPrompt {
@@ -119,6 +119,7 @@
 /* collapser is hovered */
 .jp-Notebook .jp-Cell .jp-Collapser:hover {
   /*box-shadow: var(--jp-elevation-z2);*/
+
   /*background: var(--jp-brand-color1);*/
   opacity: var(--jp-cell-collapser-not-active-hover-opacity);
 }
@@ -145,7 +146,9 @@
 .jp-Notebook.jp-mod-editMode .jp-Cell.jp-mod-active .jp-InputArea-editor {
   border: var(--jp-border-width) solid var(--jp-cell-editor-active-border-color);
   box-shadow: var(--jp-input-box-shadow);
-  background-color: var(--jp-cell-editor-active-background);
+
+  /*background-color: var(--jp-cell-editor-active-background);*/
+  background-color: #f4f6f8;
 }
 
 /*-----------------------------------------------------------------------------

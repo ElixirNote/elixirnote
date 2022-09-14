@@ -45,11 +45,12 @@ export const jupyterEditorTheme = EditorView.theme({
 
   '.cm-gutters': {
     borderRight: '1px solid var(--jp-border-color2)',
-    backgroundColor: 'var(--jp-layout-color2)'
+    backgroundColor: 'var(--jp-layout-color2)',
+    color: '#abbac9'
   },
 
   '.cm-gutter, .cm-activeLine': {
-    backgroundColor: 'var(--jp-layout-color2)'
+    backgroundColor: '#fff'
   },
 
   '.cm-searchMatch': {
