@@ -222,7 +222,7 @@
 /* Borders */
 
 #jp-down-stack > .lm-TabBar {
-  border-top: var(--jp-border-width) solid var(--jp-border-color0);
+  /*border-top: var(--jp-border-width) solid var(--jp-border-color0);*/
 
   /*border-bottom: var(--jp-border-width) solid var(--jp-border-color0);*/
 }

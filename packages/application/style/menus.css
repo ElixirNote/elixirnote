@@ -18,7 +18,7 @@
 
 .lm-MenuBar {
   /*background: var(--jp-layout-color1);*/
-  color: #000000;
+  color: #000;
   font-size: var(--jp-ui-font-size1);
 }
 
@@ -43,10 +43,14 @@
 }
 
 .lm-MenuBar.lm-mod-active .lm-MenuBar-item.lm-mod-active {
-  z-index: 10001;
+  z-index: 101;
+
   /*background: var(--jp-layout-color0);*/
+
   /*border-left: var(--jp-border-width) solid var(--jp-border-color1);*/
+
   /*border-right: var(--jp-border-width) solid var(--jp-border-color1);*/
+
   /*box-shadow: var(--jp-elevation-z6);*/
   color: #135280;
 }
@@ -81,6 +85,7 @@
   padding: 4px 0;
   background: var(--jp-layout-color0);
   color: var(--jp-ui-font-color1);
+
   /*border: var(--jp-border-width) solid var(--jp-border-color1);*/
   font-size: var(--jp-ui-font-size1);
   box-shadow: var(--jp-elevation-z6);
