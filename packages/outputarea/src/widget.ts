@@ -870,9 +870,10 @@ export class OutputPrompt extends Widget implements IOutputPrompt {
   set executionCount(value: nbformat.ExecutionCount) {
     this._executionCount = value;
     if (value === null) {
-      this.node.textContent = '';
+      this.node.textContent = '>_';
     } else {
-      this.node.textContent = `[${value}]:`;
+      // this.node.textContent = `[${value}]:`;
+      this.node.textContent = '>_';
     }
   }
 

@@ -1,6 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 22 22">
-  <g class="jp-icon-warn0 jp-icon-selectable" fill="#EF6C00">
-    <path d="M18.7 3.3v15.4H3.3V3.3h15.4m1.5-1.5H1.8v18.3h18.3l.1-18.3z"/>
-    <path d="M16.5 16.5l-5.4-4.3-5.6 4.3v-11h11z"/>
-  </g>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>notebook</title>
+    <g id="notebook" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(3.000000, 3.000000)" class="jp-icon-selectable" fill="#288ED7" fill-rule="nonzero" id="Path">
+            <path d="M15.1328106,16 L2.34145821,16 C1.04829308,16 0,14.9766667 0,13.7142917 L0,2.28570833 C0,1.02333333 1.04829308,0 2.34145821,0 L3.51220866,0 L3.51220866,16 L5.46341672,16 L5.46341672,0 L15.1328106,0 C15.6117133,0 16,0.375208333 16,0.838083333 L16,15.1619167 C16,15.6247917 15.6117559,16 15.1328106,16 L15.1328106,16 Z"></path>
+        </g>
+    </g>
 </svg>
