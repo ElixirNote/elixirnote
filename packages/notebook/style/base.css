@@ -39,7 +39,7 @@
 }
 
 .jp-Notebook {
-  padding: 10px 100px 10px 50px;
+  padding: 10px 100px 10px 10px;
   outline: none;
   overflow: auto;
   background: var(--jp-layout-color0);
@@ -108,8 +108,9 @@
 }
 
 .jp-Notebook .jp-Cell.jp-mod-dirty .jp-InputPrompt::before {
-  color: var(--jp-warn-color1);
-  content: '•';
+  /*color: var(--jp-warn-color1);*/
+
+  /*content: '•';*/
 }
 
 .jp-Notebook .jp-Cell.jp-mod-active.jp-mod-dirty .jp-Collapser {

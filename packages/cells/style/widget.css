@@ -113,11 +113,11 @@
 |----------------------------------------------------------------------------*/
 
 .jp-MarkdownOutput {
-  display: table-cell;
-  width: 100%;
+  /*display: table-cell;*/
+  width: calc(100% - 64px);
   margin-top: 0;
   margin-bottom: 0;
-  padding-left: var(--jp-code-padding);
+  padding: 0 16px;
 }
 
 .jp-MarkdownOutput.jp-RenderedHTMLCommon {

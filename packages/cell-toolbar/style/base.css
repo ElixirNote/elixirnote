@@ -17,13 +17,14 @@
 
 .jp-cell-toolbar {
   display: flex;
-  flex-direction: row;
+
+  /*flex-direction: row;*/
   padding: 2px 0;
   min-height: 25px;
   z-index: 6;
   position: absolute;
   top: 5px;
-  right: 8px;
+  right: -40px;
 
   /* Override .jp-Toolbar */
   background-color: inherit;
@@ -44,7 +45,9 @@
 
 .jp-cell-menu {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  border-radius: 2px;
+  border: 1px solid #e0e0e0;
 }
 
 .jp-cell-menu button.jp-ToolbarButtonComponent {
@@ -73,10 +76,12 @@
 /* Custom styling for rendered markdown cells so that cell toolbar is visible */
 .jp-MarkdownOutput {
   border-width: var(--jp-border-width);
-  border-color: transparent;
+  border-color: #8e24aa4d;
   border-style: solid;
+  border-radius: 2px;
 }
 
 .jp-mod-active .jp-MarkdownOutput {
-  border-color: var(--jp-cell-editor-border-color);
+  border-color: #8e24aa;
+  border-radius: 2px;
 }

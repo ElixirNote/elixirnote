@@ -27,7 +27,8 @@ export const jupyterEditorTheme = EditorView.theme({
   },
 
   '.cm-content': {
-    caretColor: 'var(--jp-editor-cursor-color)'
+    caretColor: 'var(--jp-editor-cursor-color)',
+    padding: '12px 2px'
   },
 
   '.cm-cursor, .cm-dropCursor': {

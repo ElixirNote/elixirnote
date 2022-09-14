@@ -135,7 +135,9 @@
 
 .jp-RunningSessions-shutdownAll.jp-mod-styled {
   margin: 0 8px;
-  color: var(--jp-warn-color1);
+
+  /*color: var(--jp-warn-color1);*/
+  color: var(--jp-brand-color1);
   background-color: transparent;
   height: var(--jp-private-running-shutdown-button-height);
   line-height: var(--jp-private-running-shutdown-button-height);
