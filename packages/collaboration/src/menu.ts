@@ -110,7 +110,10 @@ export class RendererUserMenu extends MenuBar.Renderer {
     return h.div(
       {
         className:
-          'lm-MenuBar-itemIcon p-MenuBar-itemIcon jp-MenuBar-CommonLabel'
+          'lm-MenuBar-itemIcon p-MenuBar-itemIcon jp-MenuBar-CommonLabel',
+        onclick: event => {
+          console.log('123131321');
+        }
       },
       'Share'
     );

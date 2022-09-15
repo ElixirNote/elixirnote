@@ -873,7 +873,7 @@ export class OutputPrompt extends Widget implements IOutputPrompt {
       this.node.textContent = '>_';
     } else {
       // this.node.textContent = `[${value}]:`;
-      this.node.textContent = '>_';
+      this.node.textContent = '';
     }
   }
 
