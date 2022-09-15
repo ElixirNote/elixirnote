@@ -54,3 +54,7 @@
   display: flex;
   z-index: 103;
 }
+
+.warningHeader {
+  color: var(--jp-warn-color0);
+}

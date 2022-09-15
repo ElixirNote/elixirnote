@@ -2,10 +2,14 @@
 // Distributed under the terms of the Modified BSD License.
 
 import { caretDownIcon, userIcon } from '@jupyterlab/ui-components';
-import { Menu, MenuBar } from '@lumino/widgets';
+import { Menu, MenuBar, Widget } from '@lumino/widgets';
 import { h, VirtualElement } from '@lumino/virtualdom';
+import { PageConfig, URLExt } from '@jupyterlab/coreutils';
+import { nullTranslator } from '@jupyterlab/translation';
+import { Clipboard, Dialog, showDialog } from '@jupyterlab/apputils';
 
 import { ICurrentUser } from './tokens';
+// import { requestAPI } from './handler';
 
 /**
  * Custom renderer for the user menu.
@@ -107,12 +111,95 @@ export class RendererUserMenu extends MenuBar.Renderer {
    * @returns A virtual element representing the item label.
    */
   createShareLabel(): VirtualElement {
+    const trans = nullTranslator.load('jupyterlab');
     return h.div(
       {
         className:
           'lm-MenuBar-itemIcon p-MenuBar-itemIcon jp-MenuBar-CommonLabel',
-        onclick: event => {
-          console.log('123131321');
+        onclick: async event => {
+          let results: { token: string }[];
+          const isRunningUnderJupyterhub =
+            PageConfig.getOption('hubUser') !== '';
+          if (isRunningUnderJupyterhub) {
+            // We are running on a JupyterHub, so let's just use the token set in PageConfig.
+            // Any extra servers running on the server will still need to use this token anyway,
+            // as all traffic (including any to jupyter-server-proxy) needs this token.
+            results = [{ token: PageConfig.getToken() }];
+          } else {
+            // results = await requestAPI<any>('servers');
+            results = [{ token: PageConfig.getToken() }];
+          }
+
+          const links = results.map(server => {
+            // On JupyterLab, let PageConfig.getUrl do its magic.
+            // Handles workspaces, single document mode, etc
+            return URLExt.normalize(
+              `${PageConfig.getUrl({
+                workspace: PageConfig.defaultWorkspace
+              })}?token=${server.token}`
+            );
+          });
+
+          const entries = document.createElement('div');
+          links.map(link => {
+            const p = document.createElement('p');
+            const text: HTMLInputElement = document.createElement('input');
+            text.readOnly = true;
+            text.value = link;
+            text.addEventListener('click', e => {
+              (e.target as HTMLInputElement).select();
+            });
+            text.style.width = '100%';
+            p.appendChild(text);
+            entries.appendChild(p);
+          });
+
+          // Warn users of the security implications of using this link
+          // FIXME: There *must* be a better way to create HTML
+          const warning = document.createElement('div');
+
+          const warningHeader = document.createElement('h3');
+          warningHeader.innerText = trans.__('Security warning!');
+          warningHeader.className = 'warningHeader';
+          warning.appendChild(warningHeader);
+
+          const messages = [
+            'Anyone with this link has full access to your notebook server, including all your files!',
+            'Please be careful who you share it with.'
+          ];
+          if (isRunningUnderJupyterhub) {
+            messages.push(
+              // You can restart the server to revoke the token in a JupyterHub
+              'To revoke access, go to File -> Hub Control Panel, and restart your server.'
+            );
+          } else {
+            messages.push(
+              // Elsewhere, you *must* shut down your server - no way to revoke it
+              'Currently, there is no way to revoke access other than shutting down your server.'
+            );
+          }
+          messages.map(m => {
+            warning.appendChild(document.createTextNode(trans.__(m)));
+            warning.appendChild(document.createElement('br'));
+          });
+
+          entries.appendChild(warning);
+
+          const result = await showDialog({
+            title: trans.__('Share Notebook Link'),
+            body: new Widget({ node: entries }),
+            buttons: [
+              Dialog.cancelButton({ label: trans.__('Cancel') }),
+              Dialog.okButton({
+                label: trans.__('Copy Link'),
+                caption: trans.__('Copy the link to the Elixir Server')
+              })
+            ]
+          });
+
+          if (result.button.accept) {
+            Clipboard.copyToSystem(links[0]);
+          }
         }
       },
       'Share'
