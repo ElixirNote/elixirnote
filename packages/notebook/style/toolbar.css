@@ -18,7 +18,10 @@
 |----------------------------------------------------------------------------*/
 
 .jp-NotebookPanel-toolbar {
-  padding: var(--jp-notebook-toolbar-padding);
+  /*padding: var(--jp-notebook-toolbar-padding);*/
+  padding-top: 10px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .jp-Toolbar-item.jp-Notebook-toolbarCellType .jp-select-wrapper.jp-mod-focused {
