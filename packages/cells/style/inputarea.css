@@ -9,8 +9,9 @@
 
 /* All input areas */
 .jp-InputArea {
-  display: table;
-  table-layout: fixed;
+  /*display: table;*/
+
+  /*table-layout: fixed;*/
   width: 100%;
   overflow: hidden;
 }
