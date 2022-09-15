@@ -18,7 +18,6 @@
 .jp-Cell {
   padding: var(--jp-cell-padding);
   margin: 0;
-  border: none;
   outline: none;
   background: transparent;
 }
@@ -114,10 +113,12 @@
 
 .jp-MarkdownOutput {
   /*display: table-cell;*/
-  width: calc(100% - 64px);
+
+  /*width: calc(100% - 64px);*/
+  width: 100%;
   margin-top: 0;
   margin-bottom: 0;
-  padding: 0 16px;
+  padding: 10px 6px;
 }
 
 .jp-MarkdownOutput.jp-RenderedHTMLCommon {

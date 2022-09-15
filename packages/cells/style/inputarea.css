@@ -29,18 +29,21 @@
 .jp-InputPrompt {
   display: table-cell;
   vertical-align: top;
-  width: var(--jp-cell-prompt-width);
+
+  /*width: var(--jp-cell-prompt-width);*/
+  width: 100%;
   color: var(--jp-cell-inprompt-font-color);
   font-family: var(--jp-cell-prompt-font-family);
-  padding: var(--jp-code-padding);
+
+  /*padding: var(--jp-code-padding);*/
   letter-spacing: var(--jp-cell-prompt-letter-spacing);
   opacity: var(--jp-cell-prompt-opacity);
   line-height: var(--jp-code-line-height);
-  font-size: var(--jp-code-font-size);
+  font-size: 11px;
   border: var(--jp-border-width) solid transparent;
 
   /* Right align prompt text, don't wrap to handle large prompt numbers */
-  text-align: right;
+  text-align: left;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

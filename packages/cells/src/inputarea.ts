@@ -313,10 +313,10 @@ export class InputPrompt extends Widget implements IInputPrompt {
   set executionCount(value: string | null) {
     this._executionCount = value;
     if (value === null) {
-      this.node.textContent = '>_';
+      this.node.textContent = ' ';
     } else {
-      // this.node.textContent = `[${value || ' '}]:`;
-      this.node.textContent = '>_';
+      this.node.textContent = `[${value || ' '}]:`;
+      // this.node.textContent = '>_';
     }
   }
 

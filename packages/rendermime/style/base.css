@@ -611,7 +611,7 @@ h6:hover .jp-InternalAnchorLink {
  * code cells.
  */
 .jp-RenderedHTMLCommon > *:last-child {
-  margin-bottom: 0.5em;
+  margin-bottom: 0;
 }
 
 .jp-mimeType-highlight {
