@@ -6,8 +6,8 @@
 
 :root {
   --jp-private-toolbar-height: calc(
-    28px + var(--jp-border-width)
-  ); /* leave 28px for content */
+    43px + var(--jp-border-width)
+  ); /* leave 44px for content */
 }
 
 .jp-Toolbar {
@@ -84,6 +84,10 @@ button.jp-ToolbarButtonComponent {
   min-height: unset;
 }
 
+button.jp-ToolbarButtonComponent[title='Switch kernel'] {
+  border: 1px solid #e0e0e0;
+}
+
 button.jp-ToolbarButtonComponent:disabled {
   opacity: 0.4;
 }
@@ -110,6 +114,6 @@ button.jp-ToolbarButtonComponent .jp-ToolbarButtonComponent-label {
 #jp-main-dock-panel[data-mode='single-document']
   .jp-MainAreaWidget
   > .jp-Toolbar {
-  border: none;
+  border-bottom: 1px solid #e0e0e0;
   box-shadow: none;
 }

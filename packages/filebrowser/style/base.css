@@ -25,7 +25,7 @@
 .jp-FileBrowser-toolbar.jp-Toolbar {
   border-bottom: none;
   height: auto;
-  margin: 8px 12px 0 12px;
+  margin: 8px 12px 0;
   box-shadow: none;
   padding: 0;
   justify-content: flex-start;
@@ -123,9 +123,8 @@
   flex-direction: row;
   align-items: center;
   overflow: hidden;
-  border-top: var(--jp-border-width) solid var(--jp-border-color2);
-  border-bottom: var(--jp-border-width) solid var(--jp-border-color1);
-  box-shadow: var(--jp-toolbar-box-shadow);
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
   z-index: 2;
 }
 
