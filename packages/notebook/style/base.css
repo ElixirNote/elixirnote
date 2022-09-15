@@ -108,9 +108,8 @@
 }
 
 .jp-Notebook .jp-Cell.jp-mod-dirty .jp-InputPrompt::before {
-  /*color: var(--jp-warn-color1);*/
-
-  /*content: '•';*/
+  color: var(--jp-warn-color1);
+  content: '•';
 }
 
 .jp-Notebook .jp-Cell.jp-mod-active.jp-mod-dirty .jp-Collapser {

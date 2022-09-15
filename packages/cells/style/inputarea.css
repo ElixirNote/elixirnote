@@ -43,7 +43,7 @@
   border: var(--jp-border-width) solid transparent;
 
   /* Right align prompt text, don't wrap to handle large prompt numbers */
-  text-align: left;
+  text-align: right;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
