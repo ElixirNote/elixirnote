@@ -5,9 +5,7 @@
 |----------------------------------------------------------------------------*/
 
 :root {
-  --jp-private-toolbar-height: calc(
-    43px + var(--jp-border-width)
-  ); /* leave 44px for content */
+  --jp-private-toolbar-height: calc(28px + var(--jp-border-width));
 }
 
 .jp-Toolbar {
