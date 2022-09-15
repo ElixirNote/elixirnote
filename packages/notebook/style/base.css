@@ -307,7 +307,7 @@
 
 .jp-mod-presentationMode .jp-Notebook .jp-Cell .jp-InputPrompt,
 .jp-mod-presentationMode .jp-Notebook .jp-Cell .jp-OutputPrompt {
-  flex: 0 0 110px;
+  flex: 0 0 25px;
 }
 
 /*-----------------------------------------------------------------------------
