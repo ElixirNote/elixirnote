@@ -334,6 +334,10 @@ export class CellToolbarTracker implements IDisposable {
 
 const defaultToolbarItems: ToolbarRegistry.IWidget[] = [
   {
+    command: 'notebook:run-cell',
+    name: 'run-cell'
+  },
+  {
     command: 'notebook:duplicate-below',
     name: 'duplicate-cell'
   },

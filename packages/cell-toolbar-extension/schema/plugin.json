@@ -5,11 +5,19 @@
   "jupyter.lab.toolbars": {
     "Cell": [
       {
+        "name": "run-cell",
+        "command": "notebook:run-cell",
+        "icon": "ui-components:run"
+      },
+      {
+        "name": "interrupt",
+        "command": "notebook:interrupt-kernel",
+        "icon": "ui-components:stop"
+      },
+      {
         "name": "duplicate-cell",
         "command": "notebook:duplicate-below"
       },
-      { "name": "move-cell-up", "command": "notebook:move-cell-up" },
-      { "name": "move-cell-down", "command": "notebook:move-cell-down" },
       {
         "name": "insert-cell-above",
         "command": "notebook:insert-cell-above"
@@ -18,6 +26,8 @@
         "name": "insert-cell-below",
         "command": "notebook:insert-cell-below"
       },
+      { "name": "move-cell-up", "command": "notebook:move-cell-up" },
+      { "name": "move-cell-down", "command": "notebook:move-cell-down" },
       {
         "command": "notebook:delete-cell",
         "icon": "ui-components:delete",
