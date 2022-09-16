@@ -205,10 +205,10 @@ const plugin: JupyterFrontEndPlugin<IMainMenu> = {
       label: trans.__('Open View Menu'),
       execute: () => activateMenu(menu.viewMenu)
     });
-    commands.addCommand(CommandIDs.openSettings, {
-      label: trans.__('Open Settings Menu'),
-      execute: () => activateMenu(menu.settingsMenu)
-    });
+    // commands.addCommand(CommandIDs.openSettings, {
+    //   label: trans.__('Open Settings Menu'),
+    //   execute: () => activateMenu(menu.settingsMenu)
+    // });
     commands.addCommand(CommandIDs.openTabs, {
       label: trans.__('Open Tabs Menu'),
       execute: () => activateMenu(menu.tabsMenu)

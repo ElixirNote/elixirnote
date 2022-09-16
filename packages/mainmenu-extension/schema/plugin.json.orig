@@ -1,7 +1,6 @@
 {
   "title": "Main Menu",
   "description": "Main JupyterLab menu settings.",
-  "jupyter.lab.transform": false,
   "jupyter.lab.menus": {
     "main": [
       {
@@ -309,6 +308,7 @@
       "selector": "body"
     }
   ],
+  "jupyter.lab.transform": true,
   "properties": {
     "menus": {
       "title": "The application menu description.",

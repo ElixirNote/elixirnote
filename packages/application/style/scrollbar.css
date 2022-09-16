@@ -27,6 +27,10 @@
   scrollbar-width: thin;
 }
 
+.jp-scrollbar-tiny[id='jp-MainMenu'] {
+  visibility: hidden;
+}
+
 /*
  * Webkit scrollbar styling
  */

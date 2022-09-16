@@ -107,6 +107,7 @@ button.jp-ToolbarButtonComponent .jp-ToolbarButtonComponent-label {
   > .jp-Toolbar.jp-Toolbar-micro {
   padding: 0;
   min-height: 0;
+  border-bottom: none;
 }
 
 #jp-main-dock-panel[data-mode='single-document']
