@@ -9,7 +9,7 @@ import { nullTranslator } from '@jupyterlab/translation';
 import { Clipboard, Dialog, showDialog } from '@jupyterlab/apputils';
 
 import { ICurrentUser } from './tokens';
-// import { requestAPI } from './handler';
+// import {requestAPI} from "./handler";
 
 /**
  * Custom renderer for the user menu.
@@ -42,8 +42,7 @@ export class RendererUserMenu extends MenuBar.Renderer {
       { className, dataset, tabindex: '0', onfocus: data.onfocus, ...aria },
       this._createUserIcon(),
       this.createShareLabel(),
-      this.createPreviewLabel(),
-      this.createPublishLabel()
+      this.createPreviewLabel()
       // this.renderLabel(data),
       // this.renderIcon(data)
     );
@@ -215,24 +214,30 @@ export class RendererUserMenu extends MenuBar.Renderer {
     return h.div(
       {
         className:
-          'lm-MenuBar-itemIcon p-MenuBar-itemIcon jp-MenuBar-CommonLabel'
+          'lm-MenuBar-itemIcon p-MenuBar-itemIcon jp-MenuBar-CommonLabel',
+        onclick: async event => {
+          const input = document.getElementById(
+            'jp-title-panel-title-ext'
+          ) as HTMLInputElement | null;
+          if (input != null) {
+            const path = input.value;
+            const url = PageConfig.getNBConvertURL({
+              path: path,
+              format: 'html',
+              download: false
+            });
+            const element = document.createElement('a');
+            element.href = url;
+            // element.download = '';
+            element.target = '_blank';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+            return void 0;
+          }
+        }
       },
       'Preview'
-    );
-  }
-
-  /**
-   * Render the publish icon element for a menu item.
-   *
-   * @returns A virtual element representing the item label.
-   */
-  createPublishLabel(): VirtualElement {
-    return h.div(
-      {
-        className:
-          'lm-MenuBar-itemIcon p-MenuBar-itemIcon jp-MenuBar-CommonLabel'
-      },
-      'Publish'
     );
   }
 }

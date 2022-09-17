@@ -14,12 +14,8 @@ export async function requestAPI<T>(
   init: RequestInit = {}
 ): Promise<T> {
   const settings = ServerConnection.makeSettings();
-  const requestUrl = URLExt.join(
-    settings.baseUrl,
-    'jupyterlab_link_share',
-    endPoint
-  );
-
+  const requestUrl = URLExt.join(settings.baseUrl, endPoint);
+  console.log(requestUrl);
   let response: Response;
   try {
     response = await ServerConnection.makeRequest(requestUrl, init, settings);

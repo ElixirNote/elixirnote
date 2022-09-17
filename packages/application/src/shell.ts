@@ -2129,6 +2129,7 @@ namespace Private {
       super();
       const inputElement = document.createElement('input');
       inputElement.type = 'text';
+      inputElement.id = 'jp-title-panel-title-ext';
       this.node.appendChild(inputElement);
       this._shell = shell;
       this.id = 'jp-title-panel-title';

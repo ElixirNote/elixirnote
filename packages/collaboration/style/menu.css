@@ -25,7 +25,7 @@
 
 .jp-MenuBar-CommonLabel {
   height: 28px;
-  width: 60px;
+  width: 70px;
   text-align: center;
   border-radius: 2px;
   border: 1px solid #e0e0e0;
@@ -48,7 +48,7 @@
 #jp-UserMenu {
   /*background-color: #00a250;*/
   height: 56px;
-  width: 300px;
+  width: 250px;
   align-items: center;
   justify-content: center;
   display: flex;

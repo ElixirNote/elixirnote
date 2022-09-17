@@ -16,7 +16,10 @@
 
 #jp-title-panel-title {
   /*flex: 1 1 auto;*/
-  margin-left: 8px;
+  margin-left: 12px;
+  height: 56px;
+  line-height: 56px;
+  z-index: 200;
 }
 
 #jp-title-panel-title input {
