@@ -40,27 +40,19 @@ evolve for ElixirNote extension developers.
 
 Read the current ElixirNote documentation on [ElixirNote Docs](https://ciusji.gitbook.io/elixirnote/).
 
----
-
 ### Screenshot & Gifs
 
-### Install Packages
+### Workspace Overview
 
 ![overview-1](/jupyterlab/staging/assets/overview-1.png)
 
-### One Dot Per Zipcode
+### Example Explore
 
 ![overview-2](/jupyterlab/staging/assets/overview-2.png)
 
-### Multiple Marks
+### Notebook Preview
 
 ![overview-3](/jupyterlab/staging/assets/overview-3.png)
-
-### Hexbin Chart
-
-![overview-4](/jupyterlab/staging/assets/overview-4.png)
-
----
 
 ## Getting started
 
