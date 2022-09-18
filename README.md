@@ -69,6 +69,10 @@ If you use `pip`, you can install it with:
 git git@github.com:ElixirNote/elixirserver.git
 cd elixirserver
 pip install -e .
+# Clone ElixirNBC
+git clone git@github.com:ElixirNote/elixirnbc.git
+cd elixirnbc
+pip install -e .
 # Clone ElixirNote
 git clone git@github.com:ElixirNote/elixirnote.git
 cd elixirnote
@@ -106,8 +110,6 @@ The latest versions of the following browsers are currently _known to work_:
 - Safari
 
 See our [documentation](https://ciusji.gitbook.io/elixirnote/guides/installation) for additional details.
-
----
 
 ## Getting help
 
@@ -173,8 +175,6 @@ Maintainer emeritus:
 
 This list is provided to give the reader context on who we are and how our team functions.
 To be listed, please submit a pull request with your information.
-
----
 
 ### Weekly Dev Meeting
 
