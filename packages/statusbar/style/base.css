@@ -22,7 +22,7 @@
 }
 
 .jp-Statusbar-ProgressCircle path {
-  fill: var(--jp-inverse-layout-color3);
+  fill: var(--jp-warn-color0);
 }
 
 .jp-Statusbar-ProgressBar-progress-bar {
