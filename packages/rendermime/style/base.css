@@ -256,17 +256,18 @@
 }
 
 .jp-RenderedHTMLCommon a:link {
-  text-decoration: none;
-  color: #84c23b;
+  text-decoration: underline;
+  color: var(--jp-brand-color1);
 }
 
 .jp-RenderedHTMLCommon a:hover {
   text-decoration: underline;
-  color: #84c23b;
+  color: var(--jp-brand-color1);
+  background: #fff;
 }
 
 .jp-RenderedHTMLCommon a:visited {
-  text-decoration: none;
+  text-decoration: underline;
   color: var(--jp-content-link-color);
 }
 

@@ -207,7 +207,7 @@
 
 /* CSS for icons in selected filebrowser listing items */
 .jp-DirListing-item.jp-mod-selected .jp-icon-selectable[fill] {
-  fill: #fff;
+  /*fill: #fff;*/
 }
 
 .jp-DirListing-item.jp-mod-selected .jp-icon-selectable-inverse[fill] {

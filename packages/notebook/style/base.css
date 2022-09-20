@@ -62,6 +62,7 @@
 .jp-Notebook .jp-Cell {
   overflow: visible;
   margin: 0 0 20px;
+  padding: 0;
 }
 
 .jp-Notebook .jp-Cell .jp-InputPrompt {
@@ -138,7 +139,7 @@
 
 .jp-Notebook.jp-mod-commandMode
   .jp-Cell.jp-mod-active.jp-mod-selected:not(.jp-mod-multiSelected) {
-  background: transparent;
+  background: #f4f6f8;
 }
 
 /* Edit mode */
@@ -148,7 +149,6 @@
   box-shadow: var(--jp-input-box-shadow);
 
   /*background-color: var(--jp-cell-editor-active-background);*/
-  background-color: #f4f6f8;
 }
 
 /*-----------------------------------------------------------------------------

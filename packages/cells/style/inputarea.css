@@ -22,9 +22,9 @@
   vertical-align: top;
 
   /* This is the non-active, default styling */
-  border: var(--jp-border-width) solid var(--jp-cell-editor-border-color);
-  border-radius: 2px;
-  background: #fff;
+  border: var(--jp-border-width) solid #e0e0e000;
+
+  /*background: #fff;*/
 }
 
 .jp-InputPrompt {

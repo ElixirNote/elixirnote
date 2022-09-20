@@ -17,12 +17,12 @@
   flex-direction: column;
   width: 100%;
   overflow: hidden;
+  background: #fff;
 }
 
 .jp-OutputPrompt {
   display: table-cell;
   vertical-align: top;
-  width: var(--jp-cell-prompt-width);
   color: var(--jp-cell-outprompt-font-color);
   font-family: var(--jp-cell-prompt-font-family);
   padding: 4px 0;
@@ -30,7 +30,7 @@
   letter-spacing: var(--jp-cell-prompt-letter-spacing);
   line-height: var(--jp-code-line-height);
   font-size: 11px;
-  border-bottom: var(--jp-border-width) solid #e0e0e0;
+  border-top: 1px solid #d6dee6;
   opacity: var(--jp-cell-prompt-opacity);
 
   /* Right align prompt text, don't wrap to handle large prompt numbers */
@@ -51,6 +51,9 @@
   width: 100%;
   height: auto;
   overflow: auto;
+
+  /*border: 1px solid #e0e0e0;*/
+  border-radius: 2px;
   user-select: text;
   -moz-user-select: text;
   -webkit-user-select: text;

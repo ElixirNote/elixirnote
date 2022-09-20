@@ -76,6 +76,13 @@
   width: 40px;
 }
 
+.jp-FileBrowser-toolbar
+  > .jp-Toolbar-item
+  .jp-ToolbarButtonComponent[data-command='notebook:create-new'] {
+  width: 60px;
+  background: #f4f6f8;
+}
+
 /*-----------------------------------------------------------------------------
 | Other styles
 |----------------------------------------------------------------------------*/
@@ -246,8 +253,10 @@
 }
 
 .jp-DirListing-item.jp-mod-selected {
-  color: var(--jp-ui-inverse-font-color1);
-  background: var(--jp-brand-color1);
+  color: #000;
+
+  /*background: var(--jp-brand-color1);*/
+  background: #f4f6f8;
 }
 
 .jp-DirListing-item.jp-mod-dropTarget {
@@ -283,7 +292,7 @@
 }
 
 .jp-DirListing-item.jp-mod-running .jp-DirListing-itemIcon::before {
-  color: var(--jp-success-color1);
+  color: var(--jp-brand-color1);
   content: '\25CF';
   font-size: 8px;
   position: absolute;
@@ -292,7 +301,7 @@
 
 .jp-DirListing-item.jp-mod-running.jp-mod-selected
   .jp-DirListing-itemIcon::before {
-  color: var(--jp-ui-inverse-font-color1);
+  color: var(--jp-brand-color0);
 }
 
 .jp-DirListing-item.lm-mod-drag-image,

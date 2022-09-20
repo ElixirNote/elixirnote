@@ -4,6 +4,12 @@
   "jupyter.lab.toolbars": {
     "FileBrowser": [
       {
+        "name": "new-notebook",
+        "command": "notebook:create-new",
+        "icon": "ui-components:add",
+        "rank": 5
+      },
+      {
         "name": "new-directory",
         "command": "filebrowser:create-new-directory",
         "rank": 10

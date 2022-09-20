@@ -65,7 +65,7 @@
 
 /* Put a space between input and output when there IS output */
 .jp-Cell:not(.jp-mod-noOutputs) .jp-Cell-outputWrapper {
-  margin-top: 5px;
+  margin-top: 15px;
 }
 
 .jp-CodeCell.jp-mod-outputsScrolled .jp-Cell-outputArea {
@@ -144,6 +144,16 @@
 
 .jp-collapseHeadingButton.jp-mod-collapsed {
   background-image: var(--jp-icon-caret-right);
+}
+
+.jp-MarkdownCell {
+  background: #fff;
+}
+
+.jp-CodeCell {
+  background: #f4f6f8;
+  border: 1px solid #e0e0e0;
+  border-radius: 2px;
 }
 
 /*
