@@ -251,7 +251,7 @@ async function activateTOC(
   toc.toolbar.addItem('submenu', menuButton);
 
   // Add the ToC to the left area:
-  app.shell.add(toc, 'left', { rank: 400, type: 'Table of Contents' });
+  app.shell.add(toc, 'left', { rank: 10, type: 'Table of Contents' });
 
   // Update the ToC when the active widget changes:
   if (labShell) {
