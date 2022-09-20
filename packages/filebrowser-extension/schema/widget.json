@@ -15,7 +15,12 @@
         "rank": 10
       },
       { "name": "uploader", "rank": 20 },
-      { "name": "refresh", "command": "filebrowser:refresh", "rank": 30 }
+      {
+        "name": "new-terminal",
+        "command": "terminal:create-new",
+        "rank": 30
+      },
+      { "name": "refresh", "command": "filebrowser:refresh", "rank": 50 }
     ]
   },
   "jupyter.lab.transform": true,
