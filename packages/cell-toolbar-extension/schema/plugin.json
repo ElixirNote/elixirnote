@@ -26,8 +26,6 @@
         "name": "insert-cell-below",
         "command": "notebook:insert-cell-below"
       },
-      { "name": "move-cell-up", "command": "notebook:move-cell-up" },
-      { "name": "move-cell-down", "command": "notebook:move-cell-down" },
       {
         "command": "notebook:delete-cell",
         "icon": "ui-components:delete",

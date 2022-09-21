@@ -342,14 +342,6 @@ const defaultToolbarItems: ToolbarRegistry.IWidget[] = [
     name: 'duplicate-cell'
   },
   {
-    command: 'notebook:move-cell-up',
-    name: 'move-cell-up'
-  },
-  {
-    command: 'notebook:move-cell-down',
-    name: 'move-cell-down'
-  },
-  {
     command: 'notebook:insert-cell-above',
     name: 'insert-cell-above'
   },
