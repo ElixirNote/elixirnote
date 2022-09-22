@@ -15,18 +15,21 @@
 }
 
 #jp-title-panel-title {
-  /*flex: 1 1 auto;*/
+  /*flex: 0.5;*/
   margin-left: 12px;
   height: 56px;
   line-height: 56px;
   z-index: 200;
+  display: flex;
+  align-items: center;
 }
 
 #jp-title-panel-title input {
   background: transparent;
   margin: 0;
   height: 28px;
-  width: 100%;
+
+  /*width: 70%;*/
   padding: 0;
   box-sizing: border-box;
   border: none;
@@ -39,4 +42,21 @@
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+}
+
+.jp-title-ext {
+  display: flex;
+  align-items: center;
+}
+
+.jp-title-ext-tip {
+  color: var(--jp-ui-font-color3);
+  font-size: 10px;
+  width: 100%;
+  margin-left: 4px;
+}
+
+.jp-title-ext-tip-img {
+  display: flex;
+  margin-left: 8px;
 }

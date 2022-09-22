@@ -5,6 +5,7 @@ import { DocumentRegistry, DocumentWidget } from '@jupyterlab/docregistry';
 import { ITranslator, nullTranslator } from '@jupyterlab/translation';
 import {
   classes,
+  cloudIcon,
   DockPanelSvg,
   LabIcon,
   TabBarSvg,
@@ -2122,6 +2123,7 @@ namespace Private {
   }
 
   export class TitleHandler extends Widget {
+    private tip: HTMLElement;
     /**
      * Construct a new title handler.
      */
@@ -2131,7 +2133,20 @@ namespace Private {
       inputElement.type = 'text';
       inputElement.id = 'jp-title-panel-title-ext';
       this.node.appendChild(inputElement);
+
+      const tip = document.createElement('div');
+      tip.className = 'jp-title-ext';
+
+      const tipImg = document.createElement('div');
+      tipImg.className = 'jp-title-ext-tip-img';
+      tipImg.innerHTML = cloudIcon.svgstr;
+
+      tip.appendChild(tipImg);
+
+      this.node.appendChild(tip);
+      this.tip = tip;
       this._shell = shell;
+
       this.id = 'jp-title-panel-title';
     }
 
@@ -2180,6 +2195,16 @@ namespace Private {
         }
         const oldName = widget.title.label;
         const inputElement = this.inputElement;
+
+        if (this.tip.childElementCount == 1) {
+          const spanTip = document.createElement('span');
+          spanTip.className = 'jp-title-ext-tip';
+          spanTip.textContent = widget.title.caption.split('\n')[3];
+          this.tip.appendChild(spanTip);
+        } else {
+          // @ts-ignore
+          this.tip.lastChild.textContent = widget.title.caption.split('\n')[3];
+        }
         const newName = inputElement.value;
         inputElement.blur();
 

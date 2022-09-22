@@ -85,6 +85,7 @@ import runSvgstr from '../../style/icons/toolbar/run.svg';
 import runningSvgstr from '../../style/icons/sidebar/running.svg';
 import saveSvgstr from '../../style/icons/toolbar/save.svg';
 import searchSvgstr from '../../style/icons/toolbar/search.svg';
+import cloudSvgstr from '../../style/icons/toolbar/cloud.svg';
 import settingsSvgstr from '../../style/icons/filetype/settings.svg';
 import shareSvgstr from '../../style/icons/sidebar/share.svg';
 import spreadsheetSvgstr from '../../style/icons/filetype/spreadsheet.svg';
@@ -181,6 +182,7 @@ export const runIcon = new LabIcon({ name: 'ui-components:run', svgstr: runSvgst
 export const runningIcon = new LabIcon({ name: 'ui-components:running', svgstr: runningSvgstr });
 export const saveIcon = new LabIcon({ name: 'ui-components:save', svgstr: saveSvgstr });
 export const searchIcon = new LabIcon({ name: 'ui-components:search', svgstr: searchSvgstr });
+export const cloudIcon = new LabIcon({ name: 'ui-components:cloud', svgstr: cloudSvgstr });
 export const settingsIcon = new LabIcon({ name: 'ui-components:settings', svgstr: settingsSvgstr });
 export const shareIcon = new LabIcon({ name: 'ui-components:share', svgstr: shareSvgstr });
 export const spreadsheetIcon = new LabIcon({ name: 'ui-components:spreadsheet', svgstr: spreadsheetSvgstr });
