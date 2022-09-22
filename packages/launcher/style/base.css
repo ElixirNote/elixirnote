@@ -54,6 +54,8 @@
   padding-left: var(--jp-private-launcher-side-padding);
   padding-right: var(--jp-private-launcher-side-padding);
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Launcher section */
@@ -79,8 +81,8 @@
 
 .jp-Launcher-sectionTitle {
   font-size: var(--jp-ui-font-size2);
-  font-weight: normal;
-  color: var(--jp-ui-font-color1);
+  font-weight: bold;
+  color: var(--jp-ui-font-color3);
   box-sizing: border-box;
 }
 
@@ -91,7 +93,7 @@
   padding: 0;
   box-sizing: border-box;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
 }
 
@@ -99,12 +101,17 @@
   display: flex;
   flex-direction: column;
   cursor: pointer;
-  width: var(--jp-private-launcher-card-size);
-  height: var(--jp-private-launcher-card-size);
+
+  /*width: "100%";*/
+
+  /*height: var(--jp-private-launcher-card-size);*/
   margin: 8px;
   padding: 0;
-  border: 1px solid var(--jp-brand-color1);
+
+  /*border: 1px solid var(--jp-brand-color1);*/
+
   /*background: var(--jp-brand-color2);*/
+
   /*box-shadow: var(--jp-elevation-z2);*/
   transition: 0.2s box-shadow;
   border-radius: var(--jp-border-radius);
@@ -112,16 +119,17 @@
 
 .jp-LauncherCard:focus:not(:active) {
   border: 1px solid var(--jp-brand-color1);
-  box-shadow: var(--jp-elevation-z6);
+
+  /*box-shadow: var(--jp-elevation-z6);*/
 }
 
 .jp-LauncherCard:hover {
-  box-shadow: var(--jp-elevation-z6);
+  /*box-shadow: var(--jp-elevation-z6);*/
   background: var(--jp-layout-color1);
 }
 
 .jp-LauncherCard:active {
-  box-shadow: var(--jp-elevation-z4);
+  /*box-shadow: var(--jp-elevation-z4);*/
 }
 
 .jp-LauncherCard-icon {
@@ -151,22 +159,28 @@
 }
 
 .jp-LauncherCard-label {
-  width: 100%;
-  height: var(--jp-private-launcher-card-label-height);
+  /*width: 100%;*/
+
+  /*height: var(--jp-private-launcher-card-label-height);*/
   padding: 0 4px 4px;
   box-sizing: border-box;
   overflow: hidden;
 }
 
 .jp-LauncherCard-label p {
-  height: 28px;
+  /*height: 28px;*/
   word-break: break-word;
-  text-align: center;
-  color: var(--jp-ui-font-color1);
+
+  /*text-align: center;*/
+  color: var(--jp-brand-color1);
   line-height: 14px;
   font-size: 12px;
   overflow: hidden;
   margin: auto;
+}
+
+.jp-LauncherCard-label p:hover {
+  color: var(--jp-ui-font-color0);
 }
 
 /* kernel icons */

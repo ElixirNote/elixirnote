@@ -7,12 +7,7 @@ import {
   nullTranslator,
   TranslationBundle
 } from '@jupyterlab/translation';
-import {
-  classes,
-  LabIcon,
-  VDomModel,
-  VDomRenderer
-} from '@jupyterlab/ui-components';
+import { VDomModel, VDomRenderer } from '@jupyterlab/ui-components';
 import {
   ArrayExt,
   ArrayIterator,
@@ -132,10 +127,12 @@ export class Launcher extends VDomRenderer<ILauncher.IModel> {
     const categories = Object.create(null);
     each(this.model.items(), (item, index) => {
       const cat = item.category || this._trans.__('Other');
-      if (!(cat in categories)) {
-        categories[cat] = [];
+      if (cat != 'Console') {
+        if (!(cat in categories)) {
+          categories[cat] = [];
+        }
+        categories[cat].push(item);
       }
-      categories[cat].push(item);
     });
     // Within each category sort by rank
     for (const cat in categories) {
@@ -167,25 +164,12 @@ export class Launcher extends VDomRenderer<ILauncher.IModel> {
       if (!categories[cat]) {
         return;
       }
-      const item = categories[cat][0] as ILauncher.IItemOptions;
-      const args = { ...item.args, cwd: this.cwd };
       const kernel = kernelCategories.indexOf(cat) > -1;
-
-      // DEPRECATED: remove _icon when lumino 2.0 is adopted
-      // if icon is aliasing iconClass, don't use it
-      const iconClass = this._commands.iconClass(item.command, args);
-      const _icon = this._commands.icon(item.command, args);
-      const icon = _icon === iconClass ? undefined : _icon;
 
       if (cat in categories) {
         section = (
           <div className="jp-Launcher-section" key={cat}>
             <div className="jp-Launcher-sectionHeader">
-              <LabIcon.resolveReact
-                icon={icon}
-                iconClass={classes(iconClass, 'jp-Icon-cover')}
-                stylesheet="launcherSection"
-              />
               <h2 className="jp-Launcher-sectionTitle">{cat}</h2>
             </div>
             <div className="jp-Launcher-cardContainer">
@@ -292,12 +276,6 @@ function Card(
     }
   };
 
-  // DEPRECATED: remove _icon when lumino 2.0 is adopted
-  // if icon is aliasing iconClass, don't use it
-  const iconClass = commands.iconClass(command, args);
-  const _icon = commands.icon(command, args);
-  const icon = _icon === iconClass ? undefined : _icon;
-
   // Return the VDOM element.
   return (
     <div
@@ -309,25 +287,8 @@ function Card(
       data-category={item.category || trans.__('Other')}
       key={Private.keyProperty.get(item)}
     >
-      <div className="jp-LauncherCard-icon">
-        {kernel ? (
-          item.kernelIconUrl ? (
-            <img src={item.kernelIconUrl} className="jp-Launcher-kernelIcon" />
-          ) : (
-            <div className="jp-LauncherCard-noKernelIcon">
-              {label[0].toUpperCase()}
-            </div>
-          )
-        ) : (
-          <LabIcon.resolveReact
-            icon={icon}
-            iconClass={classes(iconClass, 'jp-Icon-cover')}
-            stylesheet="launcherCard"
-          />
-        )}
-      </div>
       <div className="jp-LauncherCard-label" title={title}>
-        <p>{label}</p>
+        <p>New {label}...</p>
       </div>
     </div>
   );
