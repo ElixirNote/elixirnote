@@ -343,10 +343,10 @@ async function updateTabTitle(workspace: string, db: IStateDB, name: string) {
   } else {
     // File name from current path
     let currentFile: string = PathExt.basename(window.location.href);
-    // Truncate to first 12 characters of current document name + ... if length > 15
+    // Truncate to first 15 characters of current document name + ... if length > 18
     currentFile =
-      currentFile.length > 15
-        ? currentFile.slice(0, 12).concat(`…`)
+      currentFile.length > 18
+        ? currentFile.slice(0, 15).concat(`…`)
         : currentFile;
     // Number of restorable items that are either notebooks or editors
     const count: number = Object.keys(data).filter(
@@ -358,9 +358,8 @@ async function updateTabTitle(workspace: string, db: IStateDB, name: string) {
         count > 1 ? ` : ${count}` : ``
       }) - ${name}`;
     } else {
-      document.title = `${currentFile}${
-        count > 1 ? ` (${count})` : ``
-      } - ${name}`;
+      // fix title, remove confusing `count` num
+      document.title = `${currentFile} - ${name}`;
     }
   }
 }
