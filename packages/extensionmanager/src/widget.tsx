@@ -18,7 +18,6 @@ import {
   InputGroup,
   jupyterIcon,
   listingsInfoIcon,
-  refreshIcon,
   ToolbarButtonComponent,
   VDomRenderer
 } from '@jupyterlab/ui-components';
@@ -647,7 +646,6 @@ export class ExtensionView extends VDomRenderer<ListModel> {
   protected translator: ITranslator;
   private _trans: TranslationBundle;
   private _settings: ISettingRegistry.ISettings;
-  private _forceOpen: boolean;
   constructor(
     app: JupyterFrontEnd,
     serviceManager: ServiceManager.IManager,
@@ -658,7 +656,6 @@ export class ExtensionView extends VDomRenderer<ListModel> {
     this.translator = translator || nullTranslator;
     this._trans = this.translator.load('jupyterlab');
     this._settings = settings;
-    this._forceOpen = false;
     this.addClass('jp-extensionmanager-view');
   }
 
@@ -699,7 +696,6 @@ administrator to verify the listings configuration.`)}
         </div>
       ];
     }
-    const pages = Math.ceil(model.totalEntries / model.pagination);
     const elements = [
       <SearchBar
         key="searchbar"
@@ -751,7 +747,10 @@ administrator to verify the listings configuration.`)}
             <Button
               className="jp-extensionmanager-disclaimer-enable"
               onClick={() => {
-                window.open('https://ciusji.gitbook.io/elixirnote/guides/extensions', '_target')
+                window.open(
+                  'https://ciusji.gitbook.io/elixirnote/guides/extensions',
+                  '_target'
+                );
               }}
             >
               {this._trans.__('Visit Extensions')}
@@ -824,77 +823,77 @@ administrator to verify the listings configuration.`)}
         );
       }
 
-      content.push(
-        <CollapsibleSection
-          key="installed-section"
-          isOpen={ListModel.isDisclaimed()}
-          forceOpen={this._forceOpen}
-          disabled={!ListModel.isDisclaimed()}
-          header={this._trans.__('Installed')}
-          headerElements={
-            <ToolbarButtonComponent
-              key="refresh-button"
-              icon={refreshIcon}
-              onClick={() => {
-                model.refreshInstalled();
-              }}
-              tooltip={this._trans.__('Refresh extension list')}
-            />
-          }
-        >
-          {installedContent}
-        </CollapsibleSection>
-      );
-
-      const searchContent = [];
-      if (model.searchError !== null) {
-        searchContent.push(
-          <ErrorMessage key="search-error">
-            {`Error searching for extensions${
-              model.searchError ? `: ${model.searchError}` : '.'
-            }`}
-          </ErrorMessage>
-        );
-      } else {
-        searchContent.push(
-          <ListView
-            key="search-items"
-            listMode={model.listMode}
-            viewType={'searchResult'}
-            // Filter out installed extensions:
-            entries={model.searchResult.filter(
-              entry => model.installed.indexOf(entry) === -1
-            )}
-            numPages={pages}
-            onPage={value => {
-              this.onPage(value);
-            }}
-            performAction={this.onAction.bind(this)}
-            translator={this.translator}
-          />
-        );
-      }
-
-      content.push(
-        <CollapsibleSection
-          key="search-section"
-          isOpen={ListModel.isDisclaimed()}
-          forceOpen={this._forceOpen}
-          disabled={!ListModel.isDisclaimed()}
-          header={
-            model.query
-              ? this._trans.__('Search Results')
-              : this._trans.__('Discover')
-          }
-          onCollapse={(isOpen: boolean) => {
-            if (isOpen && model.query === null) {
-              model.query = '';
-            }
-          }}
-        >
-          {searchContent}
-        </CollapsibleSection>
-      );
+      //   content.push(
+      //     <CollapsibleSection
+      //       key="installed-section"
+      //       isOpen={ListModel.isDisclaimed()}
+      //       forceOpen={this._forceOpen}
+      //       disabled={!ListModel.isDisclaimed()}
+      //       header={this._trans.__('Installed')}
+      //       headerElements={
+      //         <ToolbarButtonComponent
+      //           key="refresh-button"
+      //           icon={refreshIcon}
+      //           onClick={() => {
+      //             model.refreshInstalled();
+      //           }}
+      //           tooltip={this._trans.__('Refresh extension list')}
+      //         />
+      //       }
+      //     >
+      //       {installedContent}
+      //     </CollapsibleSection>
+      //   );
+      //
+      //   const searchContent = [];
+      //   if (model.searchError !== null) {
+      //     searchContent.push(
+      //       <ErrorMessage key="search-error">
+      //         {`Error searching for extensions${
+      //           model.searchError ? `: ${model.searchError}` : '.'
+      //         }`}
+      //       </ErrorMessage>
+      //     );
+      //   } else {
+      //     searchContent.push(
+      //       <ListView
+      //         key="search-items"
+      //         listMode={model.listMode}
+      //         viewType={'searchResult'}
+      //         // Filter out installed extensions:
+      //         entries={model.searchResult.filter(
+      //           entry => model.installed.indexOf(entry) === -1
+      //         )}
+      //         numPages={pages}
+      //         onPage={value => {
+      //           this.onPage(value);
+      //         }}
+      //         performAction={this.onAction.bind(this)}
+      //         translator={this.translator}
+      //       />
+      //     );
+      //   }
+      //
+      //   content.push(
+      //     <CollapsibleSection
+      //       key="search-section"
+      //       isOpen={ListModel.isDisclaimed()}
+      //       forceOpen={this._forceOpen}
+      //       disabled={!ListModel.isDisclaimed()}
+      //       header={
+      //         model.query
+      //           ? this._trans.__('Search Results')
+      //           : this._trans.__('Discover')
+      //       }
+      //       onCollapse={(isOpen: boolean) => {
+      //         if (isOpen && model.query === null) {
+      //           model.query = '';
+      //         }
+      //       }}
+      //     >
+      //       {searchContent}
+      //     </CollapsibleSection>
+      //   );
     }
 
     elements.push(
@@ -902,9 +901,6 @@ administrator to verify the listings configuration.`)}
         {content}
       </div>
     );
-
-    // Reset the force open for future usage.
-    this._forceOpen = false;
 
     return elements;
   }

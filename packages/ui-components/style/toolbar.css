@@ -13,8 +13,9 @@
   flex: 0 0 auto;
   display: flex;
   flex-direction: row;
-  border-bottom: var(--jp-border-width) solid var(--jp-toolbar-border-color);
-  box-shadow: var(--jp-toolbar-box-shadow);
+  border-bottom: var(--jp-border-width) solid #e0e0e0;
+
+  /*box-shadow: var(--jp-toolbar-box-shadow);*/
   background: var(--jp-toolbar-background);
   min-height: var(--jp-toolbar-micro-height);
   padding: 2px;
