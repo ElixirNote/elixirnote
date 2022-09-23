@@ -4,7 +4,7 @@
 <div align="center">
     <img src="/jupyterlab/staging/assets/elixirnote2.svg" width=120 alt="logo" />
     <br />
-    <small>go from data to knowledge | powered by <a href="https://jupyter.org/">Jupyter</a></small>
+    <small>go from data to knowledge</small>
 </div>
 
 # ElixirNote
@@ -40,7 +40,7 @@ evolve for ElixirNote extension developers.
 
 Read the current ElixirNote documentation on [ElixirNote Docs](https://ciusji.gitbook.io/elixirnote/).
 
-### Screenshot & Gifs
+## Screenshot & Gifs
 
 ### Workspace Overview
 
@@ -50,11 +50,35 @@ Read the current ElixirNote documentation on [ElixirNote Docs](https://ciusji.gi
 
 ![overview-2](/jupyterlab/staging/assets/overview-2.png)
 
-### Notebook Preview
+### Data Viz
 
 ![overview-3](/jupyterlab/staging/assets/overview-3.png)
 
-## Getting started
+### Notebook Preview
+
+![overview-3](/jupyterlab/staging/assets/overview-4.png)
+
+## Main Features
+
+- **A new way to notebook**
+  - Use SQL, Python, and Julia together, or alone
+  - No-code visualization
+  - A magic, reactive execution model
+  - Advanced version control
+- **Publish work as interactive data apps**
+  - A full library of UI components
+  - Drag-and-drop layouts
+  - Instant publishing
+  - Live commenting
+- **Build organizational knowledge**
+  - Discovery work in the knowledge library
+  - Organize with categories and statuses
+- **Security first**
+  - Single tenant / private VPC deploys
+  - HIPAA compliant, and BAA friendly
+  - SSO support through Google, Okta, Keycloak, and more
+
+## Getting Started
 
 ### Installation
 
@@ -111,11 +135,11 @@ The latest versions of the following browsers are currently _known to work_:
 
 See our [documentation](https://ciusji.gitbook.io/elixirnote/guides/installation) for additional details.
 
-## Getting help
+## Getting Help
 
 We encourage you to ask questions on the [Discourse forum](https://github.com/orgs/ElixirNote/discussions). A question answered there can become a useful resource for others.
 
-### Bug report
+## Bug Report
 
 To report a bug please read the [guidelines](https://github.com/ElixirNote/elixirnote/issues) and then open a [Github issue](https://github.com/ElixirNote/elixirnote/issues). To keep resolved issues self-contained, the [lock bot](https://github.com/apps/lock) will lock closed issues as resolved after a period of inactivity. If related discussion is still needed after an issue is locked, please open a new issue and reference the old issue.
 
@@ -131,57 +155,13 @@ To contribute code or documentation to ElixirNote itself, please read the [contr
 
 ElixirNote follows the Jupyter [Community Guides](https://jupyter.readthedocs.io/en/latest/community/content-community.html) 🌈.
 
-### License
+## License
 
 ElixirNote uses a shared copyright model that enables all contributors to maintain the
 copyright on their contributions. All code is licensed under the terms of the revised [BSD license](https://github.com/ElixirNote/elixirnote/blob/main/LICENSE).
 
-### Team
+## Elixir Teams
 
-ElixirNote is part of [Project Jupyter](http://jupyter.org/) and is developed by an open community. The maintenance team is assisted by a much larger group of contributors to ElixirNote and Project Jupyter as a whole.
+![elixir-intro](/jupyterlab/staging/assets/elixirnote-intro.svg)
 
-ElixirNote's current maintainers are listed in alphabetical order, with affiliation, and main areas of contribution:
-
-- Mehmet Bektas, Splunk (general development, extensions).
-- Alex Bozarth, IBM (general development, extensions).
-- Eric Charles, Datalayer, (general development, extensions).
-- Frédéric Collonval, QuantStack (general development, extensions).
-- Martha Cryan, IBM (general development, extensions).
-- Afshin Darian, Two Sigma (co-creator, application/high-level architecture,
-  prolific contributions throughout the code base).
-- Vidar T. Fauske, JPMorgan Chase (general development, extensions).
-- Brian Granger, AWS (co-creator, strategy, vision, management, UI/UX design,
-  architecture).
-- Jason Grout, Bloomberg (co-creator, vision, general development).
-- Michał Krassowski, University of Oxford (general development, extensions).
-- Max Klein, JPMorgan Chase (UI Package, build system, general development, extensions).
-- Gonzalo Peña-Castellanos, QuanSight (general development, i18n, extensions).
-- Fernando Perez, UC Berkeley (co-creator, vision).
-- Isabela Presedo-Floyd, QuanSight Labs (design/UX).
-- Steven Silvester, Apple (co-creator, release management, packaging,
-  prolific contributions throughout the code base).
-- Jeremy Tuloup, QuantStack (general development, extensions).
-
-Maintainer emeritus:
-
-- Chris Colbert, Project Jupyter (co-creator, application/low-level architecture,
-  technical leadership, vision, PhosphorJS)
-- Jessica Forde, Project Jupyter (demo, documentation)
-- Tim George, Cal Poly (UI/UX design, strategy, management, user needs analysis).
-- Cameron Oelsen, Cal Poly (UI/UX design).
-- Ian Rose, Quansight/City of LA (general core development, extensions).
-- Andrew Schlaepfer, Bloomberg (general development, extensions).
-- Saul Shanabrook, Quansight (general development, extensions)
-
-This list is provided to give the reader context on who we are and how our team functions.
-To be listed, please submit a pull request with your information.
-
-### Weekly Dev Meeting
-
-We have videoconference meetings every week when we discuss what we have been working on and get feedback from one another.
-
-Anyone is welcome to attend, if they would like to discuss a topic or just to listen in.
-
-- When: Wednesdays [9AM Pacific Time](https://www.thetimezoneconverter.com/?t=9%3A00%20am&tz=San%20Francisco&)
-- Where: [`jovyan` Zoom](https://zoom.us/my/jovyan?pwd=c0JZTHlNdS9Sek9vdzR3aTJ4SzFTQT09)
-- What: [Meeting notes](https://hackmd.io/Y7fBMQPSQ1C08SDGI-fwtg?both)
+[Welcome to joins 👏👏👏](https://guinsoolab.github.io/glab).
