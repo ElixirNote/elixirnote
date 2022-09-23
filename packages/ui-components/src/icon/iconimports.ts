@@ -103,6 +103,7 @@ import userSvgstr from '../../style/icons/sidebar/user.svg';
 import usersSvgstr from '../../style/icons/sidebar/users.svg';
 import vegaSvgstr from '../../style/icons/filetype/vega.svg';
 import yamlSvgstr from '../../style/icons/filetype/yaml.svg';
+import elixrSvgstr from '../../style/icons/jupyter/elixirnote-intro.svg';
 
 // LabIcon instance construction
 export const addAboveIcon = new LabIcon({ name: 'ui-components:add-above', svgstr: addAboveSvgstr });
@@ -200,3 +201,4 @@ export const userIcon = new LabIcon({ name: 'ui-components:user', svgstr: userSv
 export const usersIcon = new LabIcon({ name: 'ui-components:users', svgstr: usersSvgstr });
 export const vegaIcon = new LabIcon({ name: 'ui-components:vega', svgstr: vegaSvgstr });
 export const yamlIcon = new LabIcon({ name: 'ui-components:yaml', svgstr: yamlSvgstr });
+export const elixirIntroIcon = new LabIcon({ name: 'ui-components:elixir-intro', svgstr: elixrSvgstr });
