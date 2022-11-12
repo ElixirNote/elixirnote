@@ -42,6 +42,22 @@ Read the current ElixirNote documentation on [ElixirNote Docs](https://ciusji.gi
   - HIPAA compliant, and BAA friendly
   - SSO support through Google, Okta, Keycloak, and more
 
+## Documentation
+
+- [Get Started](https://ciusji.gitbook.io/elixirnote/guides/get-started)
+- [Installation](https://ciusji.gitbook.io/elixirnote/guides/installation)
+- [Interface Overview](https://ciusji.gitbook.io/elixirnote/guides/interface-overview)
+- [Working With Files](https://ciusji.gitbook.io/elixirnote/guides/working-with-files)
+- [Text Editor](https://ciusji.gitbook.io/elixirnote/guides/text-editor)
+- [Notebooks](https://ciusji.gitbook.io/elixirnote/guides/notebooks)
+- [Terminals](https://ciusji.gitbook.io/elixirnote/guides/terminals)
+- [Command Palette](https://ciusji.gitbook.io/elixirnote/guides/command-palette)
+- [File & Output Format](https://ciusji.gitbook.io/elixirnote/guides/file-and-output-formats)
+- [Extensions](https://ciusji.gitbook.io/elixirnote/guides/extensions)
+- [Elixir Hub](https://ciusji.gitbook.io/elixirnote/guides/elixirnote-hub)
+- [Realtime Collaboration](https://ciusji.gitbook.io/elixirnote/guides/real-time-collaboration)
+- [APIs](https://ciusji.gitbook.io/elixirnote/guides/apis)
+
 ## Getting Help
 
 We encourage you to ask questions on the [Discourse forum](https://github.com/orgs/ElixirNote/discussions). A question answered there can become a useful resource for others.
