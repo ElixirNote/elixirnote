@@ -508,7 +508,7 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
     )
 
     dev_mode = Bool(
-        False,
+        True,
         config=True,
         help="""Whether to start the app in dev mode. Uses the unpublished local
         JavaScript packages in the `dev_mode` folder.  In this case ElixirNote will

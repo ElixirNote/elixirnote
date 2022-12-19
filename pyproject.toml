@@ -48,7 +48,6 @@ dependencies = [
     "tornado>=6.1.0",
     "tomli",
     "ypy-websocket",
-    "elixir-server",
 ]
 dynamic = [
     "version",
