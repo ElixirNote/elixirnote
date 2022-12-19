@@ -7,7 +7,7 @@
     <small>go from data to knowledge</small>
 </div>
 
-# ElixirNote
+# [ElixirNote](https://ciusji.gitbook.io/elixirnote/)
 
 [![Build Status](https://github.com/jupyterlab/jupyterlab/workflows/Linux%20Tests/badge.svg)](https://github.com/jupyterlab/jupyterlab/actions?query=branch%3Amaster+workflow%3A%22Linux+Tests%22)
 [![Build Status](https://github.com/jupyterlab/jupyterlab/workflows/Windows%20Tests/badge.svg)](https://github.com/jupyterlab/jupyterlab/actions?query=branch%3Amaster+workflow%3A%22Windows+Tests%22)
@@ -54,9 +54,11 @@ Read the current ElixirNote documentation on [ElixirNote Docs](https://ciusji.gi
 - [Command Palette](https://ciusji.gitbook.io/elixirnote/guides/command-palette)
 - [File & Output Format](https://ciusji.gitbook.io/elixirnote/guides/file-and-output-formats)
 - [Extensions](https://ciusji.gitbook.io/elixirnote/guides/extensions)
+- [Elixir Server](https://ciusji.gitbook.io/elixirnote/guides/elixirnote-server)
 - [Elixir Hub](https://ciusji.gitbook.io/elixirnote/guides/elixirnote-hub)
 - [Realtime Collaboration](https://ciusji.gitbook.io/elixirnote/guides/real-time-collaboration)
 - [APIs](https://ciusji.gitbook.io/elixirnote/guides/apis)
+- [FAQ](https://ciusji.gitbook.io/elixirnote/appendix/faq)
 
 ## Getting Help
 

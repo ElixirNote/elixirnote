@@ -27,6 +27,7 @@ import circleEmptySvgstr from '../../style/icons/toolbar/circle-empty.svg';
 import circleSvgstr from '../../style/icons/toolbar/circle.svg';
 import clearSvgstr from '../../style/icons/toolbar/clear.svg';
 import closeSvgstr from '../../style/icons/toolbar/close.svg';
+import cloudSvgstr from '../../style/icons/toolbar/cloud.svg';
 import codeCheckSvgstr from '../../style/icons/lsp/code-check.svg';
 import codeSvgstr from '../../style/icons/toolbar/code.svg';
 import collapseAllSvgstr from '../../style/icons/toolbar/collapse-all.svg';
@@ -38,6 +39,7 @@ import deleteSvgstr from '../../style/icons/toolbar/delete.svg';
 import downloadSvgstr from '../../style/icons/toolbar/download.svg';
 import duplicateSvgstr from '../../style/icons/toolbar/duplicate.svg';
 import editSvgstr from '../../style/icons/toolbar/edit.svg';
+import elixirnoteIntroSvgstr from '../../style/icons/jupyter/elixirnote-intro.svg';
 import ellipsesSvgstr from '../../style/icons/toolbar/ellipses.svg';
 import expandAllSvgstr from '../../style/icons/toolbar/expand-all.svg';
 import extensionSvgstr from '../../style/icons/sidebar/extension.svg';
@@ -85,7 +87,6 @@ import runSvgstr from '../../style/icons/toolbar/run.svg';
 import runningSvgstr from '../../style/icons/sidebar/running.svg';
 import saveSvgstr from '../../style/icons/toolbar/save.svg';
 import searchSvgstr from '../../style/icons/toolbar/search.svg';
-import cloudSvgstr from '../../style/icons/toolbar/cloud.svg';
 import settingsSvgstr from '../../style/icons/filetype/settings.svg';
 import shareSvgstr from '../../style/icons/sidebar/share.svg';
 import spreadsheetSvgstr from '../../style/icons/filetype/spreadsheet.svg';
@@ -103,7 +104,6 @@ import userSvgstr from '../../style/icons/sidebar/user.svg';
 import usersSvgstr from '../../style/icons/sidebar/users.svg';
 import vegaSvgstr from '../../style/icons/filetype/vega.svg';
 import yamlSvgstr from '../../style/icons/filetype/yaml.svg';
-import elixrSvgstr from '../../style/icons/jupyter/elixirnote-intro.svg';
 
 // LabIcon instance construction
 export const addAboveIcon = new LabIcon({ name: 'ui-components:add-above', svgstr: addAboveSvgstr });
@@ -125,6 +125,7 @@ export const circleEmptyIcon = new LabIcon({ name: 'ui-components:circle-empty',
 export const circleIcon = new LabIcon({ name: 'ui-components:circle', svgstr: circleSvgstr });
 export const clearIcon = new LabIcon({ name: 'ui-components:clear', svgstr: clearSvgstr });
 export const closeIcon = new LabIcon({ name: 'ui-components:close', svgstr: closeSvgstr });
+export const cloudIcon = new LabIcon({ name: 'ui-components:cloud', svgstr: cloudSvgstr });
 export const codeCheckIcon = new LabIcon({ name: 'ui-components:code-check', svgstr: codeCheckSvgstr });
 export const codeIcon = new LabIcon({ name: 'ui-components:code', svgstr: codeSvgstr });
 export const collapseAllIcon = new LabIcon({ name: 'ui-components:collapse-all', svgstr: collapseAllSvgstr });
@@ -136,6 +137,7 @@ export const deleteIcon = new LabIcon({ name: 'ui-components:delete', svgstr: de
 export const downloadIcon = new LabIcon({ name: 'ui-components:download', svgstr: downloadSvgstr });
 export const duplicateIcon = new LabIcon({ name: 'ui-components:duplicate', svgstr: duplicateSvgstr });
 export const editIcon = new LabIcon({ name: 'ui-components:edit', svgstr: editSvgstr });
+export const elixirnoteIntroIcon = new LabIcon({ name: 'ui-components:elixirnote-intro', svgstr: elixirnoteIntroSvgstr });
 export const ellipsesIcon = new LabIcon({ name: 'ui-components:ellipses', svgstr: ellipsesSvgstr });
 export const expandAllIcon = new LabIcon({ name: 'ui-components:expand-all', svgstr: expandAllSvgstr });
 export const extensionIcon = new LabIcon({ name: 'ui-components:extension', svgstr: extensionSvgstr });
@@ -183,7 +185,6 @@ export const runIcon = new LabIcon({ name: 'ui-components:run', svgstr: runSvgst
 export const runningIcon = new LabIcon({ name: 'ui-components:running', svgstr: runningSvgstr });
 export const saveIcon = new LabIcon({ name: 'ui-components:save', svgstr: saveSvgstr });
 export const searchIcon = new LabIcon({ name: 'ui-components:search', svgstr: searchSvgstr });
-export const cloudIcon = new LabIcon({ name: 'ui-components:cloud', svgstr: cloudSvgstr });
 export const settingsIcon = new LabIcon({ name: 'ui-components:settings', svgstr: settingsSvgstr });
 export const shareIcon = new LabIcon({ name: 'ui-components:share', svgstr: shareSvgstr });
 export const spreadsheetIcon = new LabIcon({ name: 'ui-components:spreadsheet', svgstr: spreadsheetSvgstr });
@@ -201,4 +202,3 @@ export const userIcon = new LabIcon({ name: 'ui-components:user', svgstr: userSv
 export const usersIcon = new LabIcon({ name: 'ui-components:users', svgstr: usersSvgstr });
 export const vegaIcon = new LabIcon({ name: 'ui-components:vega', svgstr: vegaSvgstr });
 export const yamlIcon = new LabIcon({ name: 'ui-components:yaml', svgstr: yamlSvgstr });
-export const elixirIntroIcon = new LabIcon({ name: 'ui-components:elixir-intro', svgstr: elixrSvgstr });

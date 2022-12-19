@@ -51,13 +51,13 @@ from .handlers.extension_manager_handler import (
     extensions_handler_path,
 )
 
-DEV_NOTE = """You're running JupyterLab from source.
-If you're working on the TypeScript sources of JupyterLab, try running
+DEV_NOTE = """You're running ElixirNote from source.
+If you're working on the TypeScript sources of ElixirNote, try running
 
-    jupyter lab --dev-mode --watch
+    elixir-lab --dev-mode --watch
 
 
-to have the system incrementally watch and build JupyterLab for you, as you
+to have the system incrementally watch and build ElixirNote for you, as you
 make changes.
 """
 
@@ -96,22 +96,22 @@ buildFailureMsg = """Build failed.
 Troubleshooting: If the build failed due to an out-of-memory error, you
 may be able to fix it by disabling the `dev_build` and/or `minimize` options.
 
-If you are building via the `jupyter lab build` command, you can disable
+If you are building via the `elixir-lab build` command, you can disable
 these options like so:
 
-jupyter lab build --dev-build=False --minimize=False
+elixir-lab build --dev-build=False --minimize=False
 
-You can also disable these options for all JupyterLab builds by adding these
-lines to a Jupyter config file named `jupyter_config.py`:
+You can also disable these options for all ElixirNote builds by adding these
+lines to a Elixir config file named `elixir_config.py`:
 
 c.LabBuildApp.minimize = False
 c.LabBuildApp.dev_build = False
 
-If you don't already have a `jupyter_config.py` file, you can create one by
-adding a blank file of that name to any of the Jupyter config directories.
+If you don't already have a `elixir_config.py` file, you can create one by
+adding a blank file of that name to any of the Elixir config directories.
 The config directories can be listed by running:
 
-jupyter --paths
+elixir --paths
 
 Explanation:
 
@@ -123,7 +123,7 @@ Explicitly setting `dev-build` to `False` will ensure that the `production`
 build is used in all circumstances.
 
 - `minimize`: This option controls whether your JS bundle is minified
-during the Webpack build, which helps to improve JupyterLab's overall
+during the Webpack build, which helps to improve ElixirNote's overall
 performance. However, the minifier plugin used by Webpack is very memory
 intensive, so turning it off may help the build finish successfully in
 low-memory environments.
@@ -133,10 +133,10 @@ low-memory environments.
 class LabBuildApp(JupyterApp, DebugLogFileMixin):
     version = version
     description = """
-    Build the JupyterLab application
+    Build the ElixirNote application
 
-    The application is built in the JupyterLab app directory in `/staging`.
-    When the build is complete it is put in the JupyterLab app `/static`
+    The application is built in the ElixirNote app directory in `/staging`.
+    When the build is complete it is put in the ElixirNote app `/static`
     directory, where it is used to serve the application.
     """
     aliases = build_aliases
@@ -149,13 +149,14 @@ class LabBuildApp(JupyterApp, DebugLogFileMixin):
 
     name = Unicode("ElixirNote", config=True, help="The name of the built application")
 
-    version = Unicode("", config=True, help="The version of the built application")
+    # version = Unicode("", config=True, help="The version of the built application")
 
     dev_build = Bool(
         None,
         allow_none=True,
         config=True,
-        help="Whether to build in dev mode. Defaults to True (dev mode) if there are any locally linked extensions, else defaults to False (production mode).",
+        help="Whether to build in dev mode. Defaults to True (dev mode) if there are any locally linked extensions, "
+        "else defaults to False (production mode).",
     )
 
     minimize = Bool(
@@ -176,7 +177,7 @@ class LabBuildApp(JupyterApp, DebugLogFileMixin):
             core_config=self.core_config,
             splice_source=self.splice_source,
         )
-        self.log.info("JupyterLab %s", version)
+        self.log.info("ElixirNote %s", version)
         with self.debug_logging():
             if self.pre_clean:
                 self.log.info("Cleaning %s" % app_dir)
@@ -225,7 +226,7 @@ class LabCleanAppOptions(AppOptions):
 class LabCleanApp(JupyterApp):
     version = version
     description = """
-    Clean the JupyterLab application
+    Clean the ElixirNote application
 
     This will clean the app directory by removing the `staging` directories.
     Optionally, the `extensions`, `settings`, and/or `static` directories,
@@ -269,7 +270,7 @@ class LabCleanApp(JupyterApp):
 class LabPathApp(JupyterApp):
     version = version
     description = """
-    Print the configured paths for the JupyterLab application
+    Print the configured paths for the ElixirNote application
 
     The application path can be configured using the JUPYTERLAB_DIR
         environment variable.
@@ -314,7 +315,7 @@ class LabWorkspaceListApp(WorkspaceListApp):
 class LabWorkspaceApp(JupyterApp):
     version = version
     description = """
-    Import or export a JupyterLab workspace or list all the JupyterLab workspaces
+    Import or export a ElixirNote workspace or list all the ElixirNote workspaces
 
     There are three sub-commands for export, import or listing of workspaces. This app
         should not otherwise do any work.
@@ -350,8 +351,8 @@ class LabLicensesApp(LicensesApp):
         False,
         config=True,
         help="""Whether to start the app in dev mode. Uses the unpublished local
-        JavaScript packages in the `dev_mode` folder.  In this case JupyterLab will
-        show a red stripe at the top of the page.  It can only be used if JupyterLab
+        JavaScript packages in the `dev_mode` folder.  In this case ElixirNote will
+        show a red stripe at the top of the page.  It can only be used if ElixirNote
         is installed as `pip install -e .`.
         """,
     )
@@ -409,29 +410,29 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
     ElixirNote - An extensible computational environment for Jupyter.
 
     This launches a Tornado based HTML Server that serves up an
-    HTML5/Javascript JupyterLab client.
+    HTML5/Javascript ElixirNote client.
 
     ElixirNote has three different modes of running:
 
-    * Core mode (`--core-mode`): in this mode JupyterLab will run using the JavaScript
-      assets contained in the installed `jupyterlab` Python package. In core mode, no
-      extensions are enabled. This is the default in a stable JupyterLab release if you
+    * Core mode (`--core-mode`): in this mode ElixirNote will run using the JavaScript
+      assets contained in the installed `ElixirNote` Python package. In core mode, no
+      extensions are enabled. This is the default in a stable ElixirNote release if you
       have no extensions installed.
     * Dev mode (`--dev-mode`): uses the unpublished local JavaScript packages in the
-      `dev_mode` folder.  In this case JupyterLab will show a red stripe at the top of
-      the page.  It can only be used if JupyterLab is installed as `pip install -e .`.
-    * App mode: JupyterLab allows multiple JupyterLab "applications" to be
+      `dev_mode` folder.  In this case ElixirNote will show a red stripe at the top of
+      the page.  It can only be used if ElixirNote is installed as `pip install -e .`.
+    * App mode: ElixirNote allows multiple ElixirNote "applications" to be
       created by the user with different combinations of extensions. The `--app-dir` can
       be used to set a directory for different applications. The default application
       path can be found using `jupyter lab path`.
     """
 
     examples = """
-        jupyter lab                       # start JupyterLab
-        jupyter lab --dev-mode            # start JupyterLab in development mode, with no extensions
-        jupyter lab --core-mode           # start JupyterLab in core mode, with no extensions
-        jupyter lab --app-dir=~/myjupyterlabapp # start JupyterLab with a particular set of extensions
-        jupyter lab --certfile=mycert.pem # use SSL/TLS certificate
+        elixir-lab                       # start ElixirNote
+        elixir-lab --dev-mode            # start ElixirNote in development mode, with no extensions
+        elixir-lab --core-mode           # start ElixirNote in core mode, with no extensions
+        elixir-lab --app-dir=~/myElixirNoteApp # start ElixirNote with a particular set of extensions
+        elixir-lab --certfile=mycert.pem # use SSL/TLS certificate
     """
 
     aliases = aliases
@@ -455,8 +456,8 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
     )
     flags["expose-app-in-browser"] = (
         {"LabApp": {"expose_app_in_browser": True}},
-        """Expose the global app instance to browser via window.jupyterapp.
-        It is also available via the deprecated window.jupyterlab name.""",
+        """Expose the global app instance to browser via window.elixirnote.
+        It is also available via the deprecated window.elixirnote name.""",
     )
     flags["extensions-in-dev-mode"] = (
         {"LabApp": {"extensions_in_dev_mode": True}},
@@ -487,7 +488,7 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
         config=True, help=("The override url for static lab theme assets, typically a CDN.")
     )
 
-    app_dir = Unicode(None, config=True, help="The app directory to launch JupyterLab from.")
+    app_dir = Unicode(None, config=True, help="The app directory to launch ElixirNote from.")
 
     user_settings_dir = Unicode(
         get_user_settings_dir(), config=True, help="The directory for user settings."
@@ -498,9 +499,9 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
     core_mode = Bool(
         False,
         config=True,
-        help="""Whether to start the app in core mode. In this mode, JupyterLab
+        help="""Whether to start the app in core mode. In this mode, ElixirNote
         will run using the JavaScript assets that are within the installed
-        JupyterLab Python package. In core mode, third party extensions are disabled.
+        ElixirNote Python package. In core mode, third party extensions are disabled.
         The `--dev-mode` flag is an alias to this to be used when the Python package
         itself is installed in development mode (`pip install -e .`).
         """,
@@ -510,8 +511,8 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
         False,
         config=True,
         help="""Whether to start the app in dev mode. Uses the unpublished local
-        JavaScript packages in the `dev_mode` folder.  In this case JupyterLab will
-        show a red stripe at the top of the page.  It can only be used if JupyterLab
+        JavaScript packages in the `dev_mode` folder.  In this case ElixirNote will
+        show a red stripe at the top of the page.  It can only be used if ElixirNote
         is installed as `pip install -e .`.
         """,
     )
@@ -521,7 +522,7 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
         config=True,
         help="""Whether to load prebuilt extensions in dev mode. This may be
         useful to run and test prebuilt extensions in development installs of
-        JupyterLab. APIs in a JupyterLab development install may be
+        ElixirNote. APIs in a ElixirNote development install may be
         incompatible with published packages, so prebuilt extensions compiled
         against published packages may not work correctly.""",
     )
@@ -533,7 +534,7 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
     expose_app_in_browser = Bool(
         False,
         config=True,
-        help="Whether to expose the global app instance to browser via window.jupyterlab",
+        help="Whether to expose the global app instance to browser via window.elixirnote",
     )
 
     collaborative = Bool(True, config=True, help="Whether to enable collaborative mode.")
@@ -618,14 +619,14 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
         return ""
 
     def initialize_templates(self):
-        # Determine which model to run JupyterLab
+        # Determine which model to run ElixirNote
         if self.core_mode or self.app_dir.startswith(HERE + os.sep):
             self.core_mode = True
-            self.log.info("Running JupyterLab in core mode")
+            self.log.info("Running ElixirNote in core mode")
 
         if self.dev_mode or self.app_dir.startswith(DEV_DIR + os.sep):
             self.dev_mode = True
-            self.log.info("Running JupyterLab in dev mode")
+            self.log.info("Running ElixirNote in dev mode")
 
         if self.watch and self.core_mode:
             self.log.warning("Cannot watch in core mode, did you mean --dev-mode?")
@@ -635,7 +636,7 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
             self.log.warning("Conflicting modes, choosing dev_mode over core_mode")
             self.core_mode = False
 
-        # Set the paths based on JupyterLab's mode.
+        # Set the paths based on ElixirNote's mode.
         if self.dev_mode:
             dev_static_dir = ujoin(DEV_DIR, "static")
             self.static_paths = [dev_static_dir]
@@ -657,7 +658,7 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
 
         handlers = []
 
-        # Set config for Jupyterlab
+        # Set config for ElixirNote
         page_config = self.serverapp.web_app.settings.setdefault("page_config_data", {})
         page_config.setdefault("buildAvailable", not self.core_mode and not self.dev_mode)
         page_config.setdefault("buildCheck", not self.core_mode and not self.dev_mode)
@@ -671,8 +672,8 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
         # Client-side code assumes notebookVersion is a JSON-encoded string
         page_config["notebookVersion"] = json.dumps(jpserver_version_info)
 
-        self.log.info("JupyterLab extension loaded from %s" % HERE)
-        self.log.info("JupyterLab application directory is %s" % self.app_dir)
+        self.log.info("ElixirNote extension loaded from %s" % HERE)
+        self.log.info("ElixirNote application directory is %s" % self.app_dir)
 
         build_handler_options = AppOptions(
             logger=self.log,
@@ -704,7 +705,7 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
                 errored = True
 
         if self.watch:
-            self.log.info("Starting JupyterLab watch mode...")
+            self.log.info("Starting ElixirNote watch mode...")
             if self.dev_mode:
                 watch_dev(self.log)
             else:
@@ -731,7 +732,7 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
             api_token = os.getenv("JUPYTERHUB_API_TOKEN", "")
             page_config["token"] = api_token
 
-        # Update Jupyter Server's webapp settings with jupyterlab settings.
+        # Update Jupyter Server's webapp settings with ElixirNote settings.
         self.serverapp.web_app.settings.update(
             {
                 "page_config_data": page_config,
@@ -741,7 +742,7 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
             }
         )
 
-        # Extend Server handlers with jupyterlab handlers.
+        # Extend Server handlers with ElixirNote handlers.
         self.handlers.extend(handlers)
         super().initialize_handlers()
 

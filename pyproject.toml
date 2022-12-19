@@ -1,4 +1,4 @@
-# Copyright (c) Jupyter Development Team.
+# Copyright (c) Elixir Development Team.
 # Distributed under the terms of the Modified BSD License.
 
 [build-system]
@@ -6,17 +6,18 @@ requires = ["hatchling>=1.2.0"]
 build-backend = "hatchling.build"
 
 [project]
-name = "jupyterlab"
-description = "JupyterLab computational environment"
+name = "elixirnote"
+description = "go from data to knowledge"
 readme = "README.md"
 license = ""
 requires-python = ">=3.7"
 authors = [
-    { name = "Jupyter Development Team", email = "jupyter@googlegroups.com" },
+    { name = "ciusji", email = "bqjimaster@gmail.com" },
 ]
 keywords = [
     "ipython",
     "jupyter",
+    "elixirnote",
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -40,7 +41,6 @@ dependencies = [
     "jinja2>=3.0.3",
     "jupyter_core",
     "jupyter-lsp>=1.5.1",
-    "jupyter_server>=1.16.0,<2",
     "jupyter_server_ydoc>=0.1.9,<0.2.0",
     "jupyterlab_server>=2.11.1,<3",
     "notebook_shim>=0.1",
@@ -48,6 +48,7 @@ dependencies = [
     "tornado>=6.1.0",
     "tomli",
     "ypy-websocket",
+    "elixir-server",
 ]
 dynamic = [
     "version",
@@ -55,18 +56,16 @@ dynamic = [
 
 [project.scripts]
 jlpm = "jupyterlab.jlpmapp:main"
-jupyter-lab = "jupyterlab.labapp:main"
-jupyter-labextension = "jupyterlab.labextensions:main"
-jupyter-labhub = "jupyterlab.labhubapp:main"
+elixir-lab = "jupyterlab.labapp:main"
+elixir-labextension = "jupyterlab.labextensions:main"
+elixir-labhub = "jupyterlab.labhubapp:main"
 
 [project.urls]
-Homepage = "https://jupyter.org"
-Changelog = "https://jupyterlab.readthedocs.io/en/stable/getting_started/changelog.html"
-Documentation = "https://jupyterlab.readthedocs.io"
-Source = "https://github.com/jupyterlab/jupyterlab"
-Issues = "https://github.com/jupyterlab/jupyterlab/issues/new/choose"
-Gitter = "https://gitter.im/jupyterlab/jupyterlab"
-Pypi = "https://pypi.org/project/jupyterlab"
+Homepage = "https://ciusji.gitbook.io/elixirnote/"
+Documentation = "https://ciusji.gitbook.io/elixirnote/"
+Source = "https://github.com/ElixirNote/elixirnote"
+Issues = "https://github.com/ElixirNote/elixirnote/issues"
+Pypi = "https://pypi.org/project/elixirnote/"
 
 [project.optional-dependencies]
 docs = [
