@@ -2,7 +2,7 @@
 # Distributed under the terms of the Modified BSD License.
 
 [build-system]
-requires = ["hatchling>=1.2.0"]
+requires = ["hatchling>=1.5.0"]
 build-backend = "hatchling.build"
 
 [project]
@@ -40,10 +40,9 @@ dependencies = [
     "ipykernel",
     "jinja2>=3.0.3",
     "jupyter_core",
-    "jupyter-lsp>=1.5.1",
     "jupyter_server_ydoc>=0.1.9,<0.2.0",
-    "jupyterlab_server>=2.11.1,<3",
-    "notebook_shim>=0.1",
+    "elixirlab-server>=2.16.5",
+    "elixir-shim>=0.2.2",
     "packaging",
     "tornado>=6.1.0",
     "tomli",
