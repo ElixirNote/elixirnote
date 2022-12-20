@@ -48,4 +48,4 @@ COPY ./docker/jupyter_server_config.json /etc/jupyter/
 
 EXPOSE 8888
 
-ENTRYPOINT ["jupyter", "lab"]
+ENTRYPOINT ["elixir-lab"]
