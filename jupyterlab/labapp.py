@@ -508,7 +508,7 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
     )
 
     dev_mode = Bool(
-        True,
+        False,
         config=True,
         help="""Whether to start the app in dev mode. Uses the unpublished local
         JavaScript packages in the `dev_mode` folder.  In this case ElixirNote will
@@ -572,6 +572,7 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
             app_dir = HERE
         elif self.dev_mode:
             app_dir = DEV_DIR
+        self.log.info("Default app dir: {}".format(app_dir))
         return app_dir
 
     @default("app_settings_dir")
@@ -731,6 +732,8 @@ class LabApp(NotebookConfigShimMixin, LabServerApp):
                 page_config["hubServerName"] = self.serverapp.server_name
             api_token = os.getenv("JUPYTERHUB_API_TOKEN", "")
             page_config["token"] = api_token
+
+        self.log.info("App page config: {}".format(page_config))
 
         # Update Jupyter Server's webapp settings with ElixirNote settings.
         self.serverapp.web_app.settings.update(

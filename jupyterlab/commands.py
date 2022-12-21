@@ -691,7 +691,7 @@ class _AppHandler(object):
         info = ["production" if production else "development"]
         if production:
             info.append("minimized" if minimize else "not minimized")
-        self.logger.info(f'Building jupyterlab assets ({", ".join(info)})')
+        self.logger.info(f'Building ElixirNote assets ({", ".join(info)})')
 
         # Set up the build directory.
         app_dir = self.app_dir
