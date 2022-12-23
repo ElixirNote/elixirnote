@@ -62,7 +62,7 @@ Read the current ElixirNote documentation on [ElixirNote Docs](https://ciusji.gi
 
 ## Getting Help
 
-We encourage you to ask questions on the [Discourse forum](https://github.com/orgs/ElixirNote/discussions). A question answered there can become a useful resource for others.
+We encourage you to ask questions on the [discussion forum](https://github.com/orgs/ElixirNote/discussions). A question answered there can become a useful resource for others.
 
 ## Bug Report
 
