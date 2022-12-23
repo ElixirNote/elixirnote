@@ -212,7 +212,7 @@
   },
   "jupyterlab": {
     "name": "ElixirNote",
-    "version": "4.0.0a29",
+    "version": "4.0.0a30",
     "extensions": {
       "@jupyterlab/application-extension": "",
       "@jupyterlab/apputils-extension": "",
