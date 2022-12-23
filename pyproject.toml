@@ -179,7 +179,7 @@ npm = ["node", "jupyterlab/staging/yarn.js"]
 [tool.hatch.build.hooks.jupyter-builder.build-kwargs]
 build_cmd = "build:prod:minimize"
 path = "jupyterlab/staging"
-source_dir = "jupyterlab/staging"
+source_dir = "packages"
 build_dir = "jupyterlab/static"
 npm = ["node", "yarn.js"]
 
