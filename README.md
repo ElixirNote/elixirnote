@@ -1,8 +1,8 @@
 <div align="right">
-    <img src="https://raw.githubusercontent.com/ElixirNote/elixirnote/main/jupyterlab/staging/assets/guinsoolab-badge.png" width=60 alt="badge">
+    <img src="https://raw.githubusercontent.com/ElixirNote/elixirnote/main/docs/assets/guinsoolab-badge.png" width=60 alt="badge">
 </div>
 <div align="center">
-    <img src="https://raw.githubusercontent.com/ElixirNote/elixirnote/main/jupyterlab/staging/assets/elixirnote2.svg" width=120 alt="logo" />
+    <img src="https://raw.githubusercontent.com/ElixirNote/elixirnote/main/docs/assets/elixirnote2.svg" width=120 alt="logo" />
     <br />
     <small>go from data to knowledge</small>
 </div>
@@ -18,7 +18,7 @@
 [ElixirNote](https://github.com/ElixirNote/elixirnote/tags) is a next-generation web-based user interface for
 Project Jupyter. The Commercial product such as [Hex](https://hex.tech/), [Deepnote](https://deepnote.com/) ... are also good choices.
 
-![ecosystem](https://raw.githubusercontent.com/ElixirNote/elixirnote/main/jupyterlab/staging/assets/elixir-ecosystem-v2.svg)
+![ecosystem](https://raw.githubusercontent.com/ElixirNote/elixirnote/main/docs/assets/elixir-ecosystem-v2.svg)
 
 Read the current ElixirNote documentation on [ElixirNote Docs](https://ciusji.gitbook.io/elixirnote/).
 
