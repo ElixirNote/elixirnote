@@ -1074,7 +1074,7 @@ const propertyInspector: JupyterFrontEndPlugin<IPropertyInspectorProvider> = {
     widget.title.icon = buildIcon;
     widget.title.caption = trans.__('Property Inspector');
     widget.id = 'jp-property-inspector';
-    labshell.add(widget, 'right', { rank: 100, type: 'Property Inspector' });
+    labshell.add(widget, 'left', { rank: 600, type: 'Property Inspector' });
 
     app.commands.addCommand(CommandIDs.showPropertyPanel, {
       label: trans.__('Property Inspector'),
