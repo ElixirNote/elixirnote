@@ -4,7 +4,7 @@
 import { defaultSanitizer } from '@jupyterlab/apputils';
 import { CodeEditor } from '@jupyterlab/codeeditor';
 import { renderText } from '@jupyterlab/rendermime';
-import { HoverBox, LabIcon } from '@jupyterlab/ui-components';
+import { codeCheckIcon, HoverBox, LabIcon } from '@jupyterlab/ui-components';
 import { IIterator, IterableOrArrayLike, toArray } from '@lumino/algorithm';
 import { JSONExt, JSONObject } from '@lumino/coreutils';
 import { IDisposable } from '@lumino/disposable';
@@ -324,6 +324,17 @@ export class Completer extends Widget {
       ul.appendChild(li);
     }
     node.appendChild(ul);
+
+    // Add elixir-lsp logo & tip
+    let logoDiv = document.createElement('div');
+    logoDiv.className = 'jp-Completer-footer';
+    logoDiv.innerHTML = codeCheckIcon.svgstr;
+    let logoTip = document.createElement('span');
+    logoTip.innerText = 'Powered by ElixirLsp';
+    logoTip.className = 'jp-Completer-footer-tip';
+    logoDiv.appendChild(logoTip);
+    node.appendChild(logoDiv);
+
     return node;
   }
 

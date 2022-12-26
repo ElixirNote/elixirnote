@@ -40,6 +40,7 @@ dependencies = [
     "ipykernel",
     "jinja2>=3.0.3",
     "jupyter_core",
+    "elixir-lsp>=1.5.1",
     "jupyter_server_ydoc>=0.1.9,<0.2.0",
     "elixirlab-server>=2.16.5",
     "elixir-shim>=0.2.2",
