@@ -39,7 +39,7 @@
 }
 
 .jp-Notebook {
-  padding: 10px 100px;
+  padding: 10px 5%;
   outline: none;
   overflow: auto;
   background: var(--jp-layout-color0);

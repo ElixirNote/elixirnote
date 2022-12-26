@@ -2137,11 +2137,24 @@ namespace Private {
       const tip = document.createElement('div');
       tip.className = 'jp-title-ext';
 
-      const tipImg = document.createElement('div');
-      tipImg.className = 'jp-title-ext-tip-img';
-      tipImg.innerHTML = cloudIcon.svgstr;
+      const titleExtElement = document.getElementById(
+        'jp-title-panel-title-ext'
+      );
+      if (titleExtElement != null) {
+        const titleAttr = titleExtElement.title;
+        const tipImg = document.createElement('div');
+        tipImg.className = 'jp-title-ext-tip-img';
+        tipImg.innerHTML = cloudIcon.svgstr;
 
-      tip.appendChild(tipImg);
+        if (titleAttr != null) {
+          const saveTip = document.createElement('span');
+          saveTip.className = 'jp-title-ext-tip';
+          saveTip.innerText = titleAttr.split('\n')[2];
+
+          tip.appendChild(tipImg);
+          tip.appendChild(saveTip);
+        }
+      }
 
       this.node.appendChild(tip);
       this.tip = tip;

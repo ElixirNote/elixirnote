@@ -393,10 +393,11 @@
 .jp-RenderedHTMLCommon pre,
 .jp-RenderedHTMLCommon code {
   border: 0;
-  background-color: var(--jp-layout-color0);
+
+  /*background-color: var(--jp-layout-color0);*/
   color: var(--jp-content-font-color1);
   font-family: var(--jp-code-font-family);
-  font-size: inherit;
+  font-size: 13px;
   line-height: var(--jp-code-line-height);
   padding: 0;
   white-space: pre-wrap;
