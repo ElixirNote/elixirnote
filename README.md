@@ -18,7 +18,7 @@
 [ElixirNote](https://github.com/ElixirNote/elixirnote/tags) is a next-generation web-based user interface for
 Project Jupyter. The Commercial product such as [Hex](https://hex.tech/), [Deepnote](https://deepnote.com/) ... are also good choices.
 
-![ecosystem](https://raw.githubusercontent.com/ElixirNote/elixirnote/main/docs/assets/elixir-ecosystem-v2.svg)
+![ecosystem](https://raw.githubusercontent.com/ElixirNote/.github/main/profile/elixir-ecosystem-v3.svg)
 
 Read the current ElixirNote documentation on [ElixirNote Docs](https://ciusji.gitbook.io/elixirnote/).
 
@@ -54,11 +54,11 @@ Read the current ElixirNote documentation on [ElixirNote Docs](https://ciusji.gi
 - [Command Palette](https://ciusji.gitbook.io/elixirnote/guides/command-palette)
 - [File & Output Format](https://ciusji.gitbook.io/elixirnote/guides/file-and-output-formats)
 - [Extensions](https://ciusji.gitbook.io/elixirnote/guides/extensions)
-- [Elixir Server](https://ciusji.gitbook.io/elixirnote/guides/elixirnote-server)
+- [Built-in Services](https://ciusji.gitbook.io/elixirnote/guides/built-in-services)
 - [Elixir Hub](https://ciusji.gitbook.io/elixirnote/guides/elixirnote-hub)
 - [Realtime Collaboration](https://ciusji.gitbook.io/elixirnote/guides/real-time-collaboration)
 - [APIs](https://ciusji.gitbook.io/elixirnote/guides/apis)
-- [FAQ](https://ciusji.gitbook.io/elixirnote/appendix/faq)
+- [FAQs](https://ciusji.gitbook.io/elixirnote/appendix/faqs)
 
 ## Getting Help
 
