@@ -2,12 +2,12 @@
     <img src="https://raw.githubusercontent.com/ElixirNote/elixirnote/main/docs/assets/guinsoolab-badge.png" width=60 alt="badge">
 </div>
 <div align="center">
-    <img src="https://raw.githubusercontent.com/ElixirNote/elixirnote/main/docs/assets/elixirnote2.svg" width=120 alt="logo" />
+    <img src="https://raw.githubusercontent.com/ElixirNote/elixirnote/main/docs/assets/elixirnote2.svg" width=100 alt="logo" />
     <br />
-    <small>go from data to knowledge</small>
+    <small>Analyze data any time, anywhere</small>
 </div>
 
-# [ElixirNote](https://ciusji.gitbook.io/elixirnote/)
+# ElixirNote
 
 [![Build Status](https://github.com/jupyterlab/jupyterlab/workflows/Linux%20Tests/badge.svg)](https://github.com/jupyterlab/jupyterlab/actions?query=branch%3Amaster+workflow%3A%22Linux+Tests%22)
 [![Build Status](https://github.com/jupyterlab/jupyterlab/workflows/Windows%20Tests/badge.svg)](https://github.com/jupyterlab/jupyterlab/actions?query=branch%3Amaster+workflow%3A%22Windows+Tests%22)
@@ -84,3 +84,6 @@ ElixirNote follows the Jupyter [Community Guides](https://jupyter.readthedocs.io
 
 ElixirNote uses a shared copyright model that enables all contributors to maintain the
 copyright on their contributions. All code is licensed under the terms of the revised [BSD license](https://github.com/ElixirNote/elixirnote/blob/main/LICENSE).
+
+<img src="https://raw.githubusercontent.com/GuinsooLab/glab/main/src/images/guinsoolab-group.svg" width="120" alt="license" />
+
