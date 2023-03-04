@@ -69,7 +69,7 @@ body {
   padding-left: calc(
     var(--jp-private-sidebar-tab-width) + var(--jp-border-width)
   );
-  border-bottom: var(--jp-border-width) solid var(--jp-border-color0);
+  border-bottom: var(--jp-border-width) solid var(--jp-border-color2);
 
   /* Adjust min-height so open menus show up in the right place */
   min-height: calc(

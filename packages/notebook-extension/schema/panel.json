@@ -3,17 +3,10 @@
   "description": "Notebook Panel settings.",
   "jupyter.lab.toolbars": {
     "Notebook": [
-      {
-        "name": "insert",
-        "command": "notebook:insert-cell-below",
-        "icon": "ui-components:add",
-        "rank": 20
-      },
+      { "name": "executionProgress", "rank": 22 },
       { "name": "spacer", "type": "spacer", "rank": 100 },
-      { "name": "cellType", "rank": 200 },
-      { "name": "kernelName", "rank": 1000 },
-      { "name": "kernelStatus", "rank": 1001 },
-      { "name": "executionProgress", "rank": 1002 }
+      { "name": "run", "command": "notebook:run-all-cells", "rank": 130 },
+      { "name": "restart", "command": "kernelmenu:restart", "rank": 132 }
     ]
   },
   "jupyter.lab.transform": true,

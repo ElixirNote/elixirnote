@@ -15,39 +15,73 @@
 
 .jp-Notebook-ExecutionIndicator {
   position: relative;
-  display: inline-block;
-  height: 100%;
+
+  /*height: 100%;*/
   z-index: 9997;
+  width: 55vw;
+  display: flex;
+  border: var(--jp-border-width) solid #e0e0e0;
+  border-radius: 2px;
+  padding: 4px 16px;
+  align-items: center;
+}
+
+.jp-Notebook-ExecutionIndicator[data-status='unknown'] {
+  position: relative;
+
+  /*height: 100%;*/
+  z-index: 9997;
+  width: 55vw;
+  display: flex;
+  border: var(--jp-border-width) solid #e0e0e0;
+  border-radius: 2px;
+  padding: 4px 16px;
+  align-items: center;
+}
+
+.jp-Notebook-ExecutionIndicator div {
+  display: flex;
+}
+
+.jp-Notebook-ExecutionIndicator[data-status='unknown'] div .jp-icon3 {
+  fill: var(--jp-brand-color0);
+}
+
+.jp-Notebook-ExecutionIndicator[data-status='idle'] svg circle {
+  stroke: var(--jp-success-color1);
 }
 
 .jp-Notebook-ExecutionIndicator-tooltip {
-  visibility: hidden;
+  /*visibility: hidden;*/
   height: auto;
   width: fit-content;
   width: -moz-fit-content;
-  background-color: var(--jp-layout-color2);
+
+  /*background-color: var(--jp-layout-color2);*/
   color: var(--jp-ui-font-color1);
   text-align: justify;
-  border-radius: 6px;
+
+  /*border-radius: 6px;*/
   padding: 0 5px;
   position: fixed;
-  display: table;
+
+  /*display: table;*/
 }
 
 .jp-Notebook-ExecutionIndicator-tooltip.up {
-  transform: translateX(-50%) translateY(-100%) translateY(-32px);
+  /*transform: translateX(-50%) translateY(-100%) translateY(-32px);*/
 }
 
 .jp-Notebook-ExecutionIndicator-tooltip.down {
-  transform: translateX(calc(-100% + 16px)) translateY(5px);
+  /*transform: translateX(calc(-100% + 16px)) translateY(5px);*/
 }
 
 .jp-Notebook-ExecutionIndicator-tooltip.hidden {
-  display: none;
+  /*display: none;*/
 }
 
 .jp-Notebook-ExecutionIndicator:hover .jp-Notebook-ExecutionIndicator-tooltip {
-  visibility: visible;
+  /*visibility: visible;*/
 }
 
 .jp-Notebook-ExecutionIndicator span {
@@ -56,6 +90,8 @@
   color: var(--jp-ui-font-color1);
   line-height: 24px;
   display: block;
+  padding-left: 16px;
+  float: right;
 }
 
 .jp-Notebook-ExecutionIndicator-progress-bar {

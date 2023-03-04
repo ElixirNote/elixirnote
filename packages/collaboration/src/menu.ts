@@ -114,7 +114,7 @@ export class RendererUserMenu extends MenuBar.Renderer {
     return h.div(
       {
         className:
-          'lm-MenuBar-itemIcon p-MenuBar-itemIcon jp-MenuBar-CommonLabel',
+          'lm-MenuBar-itemIcon p-MenuBar-itemIcon jp-MenuBar-CommonLabel-Active',
         onclick: async event => {
           let results: { token: string }[];
           const isRunningUnderJupyterhub =
@@ -237,7 +237,7 @@ export class RendererUserMenu extends MenuBar.Renderer {
           }
         }
       },
-      'Preview'
+      'Publish'
     );
   }
 }

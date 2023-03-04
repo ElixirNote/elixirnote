@@ -60,6 +60,8 @@
 }
 
 /* Copied from the notebook cell type dropdown styling */
-.jp-LogConsole-toolbarLogLevelDropdown span {
-  top: 5px !important;
+.jp-LogConsole-toolbarLogLevelDropdown span svg {
+  display: flex;
+  align-items: center;
+  padding: 8px;
 }

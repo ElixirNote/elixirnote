@@ -14,7 +14,7 @@ const itemPadding = {
 const interactiveHover = {
   $nest: {
     '&:hover': {
-      backgroundColor: vars.hoverColor
+      // backgroundColor: vars.hoverColor
     }
   }
 };

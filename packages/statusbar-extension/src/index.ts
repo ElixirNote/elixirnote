@@ -35,7 +35,7 @@ const statusBar: JupyterFrontEndPlugin<IStatusBar> = {
     const trans = translator.load('jupyterlab');
     const statusBar = new StatusBar();
     statusBar.id = 'jp-main-statusbar';
-    app.shell.add(statusBar, 'bottom');
+    // app.shell.add(statusBar, 'bottom');
 
     // If available, connect to the shell's layout modified signal.
     if (labShell) {
