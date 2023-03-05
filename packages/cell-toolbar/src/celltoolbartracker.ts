@@ -338,6 +338,10 @@ const defaultToolbarItems: ToolbarRegistry.IWidget[] = [
     name: 'run-cell'
   },
   {
+    command: 'notebook:interrupt-kernel',
+    name: 'interrupt'
+  },
+  {
     command: 'notebook:duplicate-below',
     name: 'duplicate-cell'
   },
